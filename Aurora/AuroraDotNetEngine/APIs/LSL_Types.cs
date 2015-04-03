@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using System;
 using System.Collections;
 using System.Globalization;
@@ -1575,11 +1574,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
             #region " Standard string functions "
 
-            //Clone,CompareTo,Contains
-            //CopyTo,EndsWith,Equals,GetEnumerator,GetHashCode,GetType,GetTypeCode
-            //IndexOf,IndexOfAny,Insert,IsNormalized,LastIndexOf,LastIndexOfAny
-            //Length,Normalize,PadLeft,PadRight,Remove,Replace,Split,StartsWith,Substring,ToCharArray,ToLowerInvariant
-            //ToString,ToUpper,ToUpperInvariant,Trim,TrimEnd,TrimStart
             public bool Contains(string value)
             {
                 return m_string.Contains(value);
@@ -1782,26 +1776,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             {
                 return new LSLInteger(i1.value/i2);
             }
-
-            //            static public LSLFloat operator +(LSLInteger i1, double f)
-            //            {
-            //                return new LSLFloat((double)i1.value + f);
-            //            }
-            //
-            //            static public LSLFloat operator -(LSLInteger i1, double f)
-            //            {
-            //                return new LSLFloat((double)i1.value - f);
-            //            }
-            //
-            //            static public LSLFloat operator *(LSLInteger i1, double f)
-            //            {
-            //                return new LSLFloat((double)i1.value * f);
-            //            }
-            //
-            //            static public LSLFloat operator /(LSLInteger i1, double f)
-            //            {
-            //                return new LSLFloat((double)i1.value / f);
-            //            }
 
             public static LSLInteger operator -(LSLInteger i)
             {

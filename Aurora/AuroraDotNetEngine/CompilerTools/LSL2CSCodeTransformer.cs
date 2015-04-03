@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -219,7 +219,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.CompilerTools
                         m_duplicatedLocalVariableValues[GetLocalVariableDictionaryKey()][d.Id] = null;
                     }
                 }
-                //m_duplicatedLocalVariableValues.Add(m_currentState + "_" + evt.Name, new Dictionary<string, SYMBOL>());
             }
             else if (s is GlobalVariableDeclaration)
             {
@@ -490,52 +489,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.CompilerTools
                     }
                 }
             }
-
-            /*if(s is Statement)
-            {
-                if(s.kids.Count == 1 && s.kids[0] is Assignment)
-                {
-                    Assignment assignment = (Assignment)s.kids[0];
-                    object[] p = new object[assignment.kids.Count];
-                    int i = 0;
-                    int toRemove = -1;
-                    foreach(SYMBOL assignmentChild in assignment.kids)
-                    {
-                        p[i] = assignmentChild;
-                        if(assignmentChild is Declaration)
-                        {
-                            Declaration d = (Declaration)assignmentChild;
-                            if(m_allVariableValues.Contains(d.Id))
-                                toRemove = i;
-                            else
-                                m_allVariableValues.Add(d.Id);
-                        }
-                        i++;
-                    }
-                    if(toRemove != -1)
-                    {
-                        List<object> ps = new List<object>();
-                        foreach(object obj in p)
-                            ps.Add(obj);
-                        ps[toRemove] = new IDENT(null)
-                        {
-                            kids = new ObjectList(),
-                            pos = ((SYMBOL)ps[toRemove]).pos,
-                            m_dollar = ((SYMBOL)ps[toRemove]).m_dollar,
-                            yylval = ((SYMBOL)ps[toRemove]).yylval,
-                            yylx = ((SYMBOL)ps[toRemove]).yylx,
-                            yyps = ((SYMBOL)ps[toRemove]).yyps,
-                            yytext = ps[toRemove] is Declaration ?
-                            ((Declaration)ps[toRemove]).Id
-                            : ((SYMBOL)ps[toRemove]).yyname,
-                        };
-                        ((SYMBOL)s.kids[0]).kids = new ObjectList();
-                        foreach(object obj in ps)
-                            if(obj != null)
-                                ((SYMBOL)s.kids[0]).kids.Add(obj);
-                    }
-                }
-            }*/
 
             for (int i = 0; i < s.kids.Count; i++)
             {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -91,9 +90,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Runtime
 
                 if (lease.CurrentState == LeaseState.Initial)
                 {
-                    // Infinite : lease.InitialLeaseTime = TimeSpan.FromMinutes(0);
                     lease.InitialLeaseTime = TimeSpan.FromMinutes(0);
-                    //lease.InitialLeaseTime = TimeSpan.FromMinutes(0);
                     //lease.RenewOnCallTime = TimeSpan.FromMinutes(10.0);
                     //lease.SponsorshipTimeout = TimeSpan.FromMinutes(1.0);
                 }
@@ -137,9 +134,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Runtime
 
         public void InitApi(IScriptApi data)
         {
-            /*ILease lease = (ILease)RemotingServices.GetLifetimeService(data as MarshalByRefObject);
-            if (lease != null)
-                lease.Register(m_sponser);*/
             m_apis.Add(data.Name, data);
         }
 

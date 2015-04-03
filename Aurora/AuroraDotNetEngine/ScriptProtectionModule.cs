@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -728,13 +727,11 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
         public void AddPreviouslyCompiled(string source, ScriptData ID)
         {
-            //string key = source.Length.ToString() + source.GetHashCode().ToString();
             string key = Util.Md5Hash(source);
             lock (PreviouslyCompiled)
             {
                 if (!PreviouslyCompiled.ContainsKey(key))
                 {
-                    //PreviouslyCompiled.Add (source, ID.AssemblyName);
                     PreviouslyCompiled.Add(key, ID.AssemblyName);
                 }
             }
@@ -744,25 +741,22 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
         {
             if (string.IsNullOrEmpty(source))
                 return;
-            //string key = source.Length.ToString() + source.GetHashCode().ToString();
+
             string key = Util.Md5Hash(source);
             lock (PreviouslyCompiled)
             {
                 if (PreviouslyCompiled.ContainsKey(key))
                 {
                     PreviouslyCompiled.Remove(key);
-                    //PreviouslyCompiled.Remove (source);
                 }
             }
         }
 
         public string TryGetPreviouslyCompiledScript(string source)
         {
-            //string key = source.Length.ToString() + source.GetHashCode().ToString();
             string key = source.Length.ToString() + Util.Md5Hash(source);
             string assemblyName = "";
             PreviouslyCompiled.TryGetValue(key, out assemblyName);
-            //PreviouslyCompiled.TryGetValue (source, out assemblyName);
 
             return assemblyName;
         }

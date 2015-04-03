@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo.Entities;
@@ -524,9 +523,8 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             while (!m_ScriptEngine.ConsoleDisabled && !m_ScriptEngine.Disabled &&
                    m_ScriptEngine.Scene.ShouldRunHeartbeat)
             {
-                //int numScriptsProcessed = 0;
                 int numSleepScriptsProcessed = 0;
-                //const int minNumScriptsToProcess = 1;
+
                 //processMoreScripts:
                 QueueItemStruct QIS = new QueueItemStruct();
                 bool found = false;
@@ -572,7 +570,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                             EventSchExec(QIS);
                             lock (SleepingScriptEvents)
                                 SleepingScriptEventCount--;
-                            //numScriptsProcessed++;
                         }
                         else
                         {
@@ -606,15 +603,11 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                         MainConsole.Instance.Warn(QIS.functionName + "," + ScriptEvents.Count);
 #endif
                         EventSchExec(QIS);
-                        //numScriptsProcessed++;
                     }
                     else
                         Interlocked.Exchange(ref m_CheckingEvents, 0);
                 }
                 //Process a bunch each time
-                //if (ScriptEventCount > 0 && numScriptsProcessed < minNumScriptsToProcess)
-                //    goto processMoreScripts;
-
                 if (ScriptEvents.Count == 0 && NextSleepersTest.Ticks != DateTime.MaxValue.Ticks)
                     timeToSleep = (int) (NextSleepersTest - DateTime.Now).TotalMilliseconds;
                 if (timeToSleep < 5)
@@ -678,7 +671,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 MainConsole.Instance.WarnFormat("FOUND BAD VERSION ID, OLD {0}, NEW {1}, FUNCTION NAME {2}",
                                                 QIS.VersionID,
                                                 Interlocked.Read(ref QIS.ID.VersionID), QIS.functionName);
-                //return;
             }
 
             if(MainConsole.Instance.IsTraceEnabled)

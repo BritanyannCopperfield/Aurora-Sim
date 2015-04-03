@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -174,9 +173,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
         // This can be done in two places including the constructor
         // so be carefull what gets added here
 
-        /*
-         * Set up the surface touch detected values
-         */
+        //Set up the surface touch detected values
 
         public SurfaceTouchEventArgs SurfaceTouchArgs
         {

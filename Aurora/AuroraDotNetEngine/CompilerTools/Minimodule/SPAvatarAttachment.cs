@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.SceneInfo;
 using OpenMetaverse;
 
@@ -33,7 +32,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.MiniModule
 {
     public class SPAvatarAttachment : IAvatarAttachment
     {
-        //private readonly UUID m_itemId;
         private readonly UUID m_assetId;
         private readonly int m_location;
         private readonly IScene m_rootScene;
@@ -45,9 +43,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.MiniModule
         {
             m_rootScene = rootScene;
             m_security = security;
-            //m_parent = self;
             m_location = location;
-            //m_itemId = itemId;
             m_assetId = assetId;
         }
 

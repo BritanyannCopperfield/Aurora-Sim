@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -131,8 +130,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             if (lease.CurrentState == LeaseState.Initial)
             {
                 lease.InitialLeaseTime = TimeSpan.FromMinutes(0);
-                //                lease.RenewOnCallTime = TimeSpan.FromSeconds(10.0);
-                //                lease.SponsorshipTimeout = TimeSpan.FromMinutes(1.0);
             }
             return lease;
         }
@@ -142,9 +139,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             throw new Exception("MOD Runtime Error: " + msg);
         }
 
-        //
         //Dumps an error message on the debug console.
-        //
 
         internal void modShoutError(string message)
         {

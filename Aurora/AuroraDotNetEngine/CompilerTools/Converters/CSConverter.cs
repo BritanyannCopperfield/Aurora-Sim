@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -334,7 +334,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.CompilerTools
                              "using Aurora.ScriptEngine.AuroraDotNetEngine.Runtime;\n" +
                              "using Aurora.ScriptEngine.AuroraDotNetEngine;\n" +
                              "using Aurora.ScriptEngine.AuroraDotNetEngine.APIs.Interfaces;\n" +
-                             "using Aurora.Framework;\n" +
                              "using Aurora.Framework.ClientInterfaces;\n" +
                              "using Aurora.Framework.ConsoleFramework;\n" +
                              "using Aurora.Framework.DatabaseInterfaces;\n" +

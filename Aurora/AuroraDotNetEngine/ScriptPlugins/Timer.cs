@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,10 +56,8 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
         {
         }
 
-        //
-        // TIMER
-        //
 
+        // TIMER
         public void RemoveScript(UUID m_ID, UUID m_itemID)
         {
             // Remove from timer
@@ -87,7 +85,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
                                                    new EventParams("timer", new Object[0],
                                                                    new DetectParams[0]), EventPriority.Continued);
                     // set next interval
-
                     ts.next = TickCount + ts.interval;
                 }
             }
@@ -150,7 +147,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
             // Add to timer
             TimerClass ts = new TimerClass {ID = m_ID, itemID = m_itemID, interval = (long) (sec*1000)};
 
-            //ts.next = DateTime.Now.ToUniversalTime().AddSeconds(ts.interval);
             ts.next = Environment.TickCount + ts.interval;
 
             string key = MakeTimerKey(m_ID, m_itemID);

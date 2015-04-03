@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -261,7 +260,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             CoalescedTouchEvents[part.LocalId] = det;
         }
 
-        //public void money(uint localID, UUID agentID, int amount)
         public bool money(UUID primID, UUID agentID, int amount)
         {
             bool ret = false;
@@ -309,8 +307,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "collision_start";
@@ -341,8 +337,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "collision";
@@ -373,8 +367,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "collision_end";
@@ -412,8 +404,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "land_collision_start";
@@ -451,8 +441,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "land_collision";
@@ -490,8 +478,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
                 if (datas == null || datas.Length == 0)
                 {
-                    //datas = ScriptEngine.ScriptProtection.GetScripts(part.ParentGroup.RootPart.UUID);
-                    //if (datas == null || datas.Length == 0)
                     return;
                 }
                 string functionName = "land_collision_end";
@@ -778,7 +764,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 scriptEvents eventType = (scriptEvents) Enum.Parse(typeof (scriptEvents), FunctionName);
 
                 // this must be done even if there is no event method
-
                 if (eventType == scriptEvents.touch_start)
                     ID.RemoveTouchEvents = false;
                 else if (eventType == scriptEvents.collision_start)
@@ -835,17 +820,14 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                         break;
                     case scriptEvents.control:
                         int held = ((LSL_Types.LSLInteger) param[1]).value;
-                        // int changed = ((LSL_Types.LSLInteger)data.Params[2]).value;
 
                         // If the last message was a 0 (nothing held)
                         // and this one is also nothing held, drop it
-                        //
                         if (ID.LastControlLevel == held && held == 0)
                             return true;
 
                         // If there is one or more queued, then queue
                         // only changed ones, else queue unconditionally
-                        //
                         if (ID.ControlEventsInQueue > 0)
                         {
                             if (ID.LastControlLevel == held)

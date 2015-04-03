@@ -35,7 +35,6 @@ using System.Net;
 using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Text.RegularExpressions;
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -80,9 +79,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             get { return m_host.ParentEntity.Scene; }
         }
 
-        //
         // OpenSim functions
-        //
 
         #region IOSSL_Api Members
 
@@ -137,7 +134,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // unstable. This should be changed to Low or VeryLow once
             // The underlying functionality is fixed, since the security
             // as such is sound
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osRegionRestart", m_host, "OSSL", m_itemID))
                 return new int();
 
@@ -283,7 +279,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // This implementation provides absolutely no security
             // It's high griefing potential makes this classification
             // necessary
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.VeryHigh, "osRegionNotice", m_host, "OSSL", m_itemID))
                 return;
 
@@ -299,7 +294,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         {
             // This may be upgraded depending on the griefing or DOS
             // potential, or guarded with a delay
-            //
             if (
                 !ScriptProtection.CheckThreatLevel(ThreatLevel.VeryLow, "osSetDynamicTextureURL", m_host, "OSSL",
                                                    m_itemID)) return "";
@@ -704,7 +698,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         public DateTime osTeleportAgent(string agent, string regionName, LSL_Vector position, LSL_Vector lookat)
         {
             // High because there is no security check. High griefer potential
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osTeleportAgent", m_host, "OSSL", m_itemID))
                 return DateTime.Now;
 
@@ -731,7 +724,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         public DateTime osTeleportAgent(string agent, int regionX, int regionY, LSL_Vector position, LSL_Vector lookat)
         {
             // High because there is no security check. High griefer potential
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osTeleportAgent", m_host, "OSSL", m_itemID))
                 return DateTime.Now;
 
@@ -1065,7 +1057,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
 
 
             //Check to make sure that the script's owner is the estate manager/master
-            //World.Permissions.GenericEstatePermission(
             if (World.Permissions.IsGod(m_host.OwnerID))
             {
                 World.EventManager.TriggerRequestChangeWaterHeight((float) height);
@@ -1086,7 +1077,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
 
 
             //Check to make sure that the script's owner is the estate manager/master
-            //World.Permissions.GenericEstatePermission(
             if (World.Permissions.IsGod(m_host.OwnerID))
             {
                 while (sunHour > 24.0)
@@ -1118,7 +1108,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
 
 
             //Check to make sure that the script's owner is the estate manager/master
-            //World.Permissions.GenericEstatePermission(
             if (World.Permissions.IsGod(m_host.OwnerID))
             {
                 while (sunHour > 24.0)
@@ -1388,7 +1377,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osSetParcelDetails", m_host, "OSSL", m_itemID))
                 return;
             //Check to make sure that the script's owner is the estate manager/master
-            //World.Permissions.GenericEstatePermission(
             if (World.Permissions.IsGod(m_host.OwnerID))
             {
                 if (level < 0 || level > 3)
@@ -1416,7 +1404,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
                 return;
 
             //Check to make sure that the script's owner is the estate manager/master
-            //World.Permissions.GenericEstatePermission(
             if (World.Permissions.IsGod(m_host.OwnerID))
             {
                 if (corner < 0 || corner > 3)
@@ -1434,7 +1421,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // have one, but the current implementation of LSL_Types.list
             // is not allowed to contain any.
             // This really should be removed.
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.None, "osList2Double", m_host, "OSSL", m_itemID))
                 return 0;
 
@@ -1453,7 +1439,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         public void osSetParcelMediaURL(string url)
         {
             // What actually is the difference to the LL function?
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.VeryLow, "osSetParcelMediaURL", m_host, "OSSL", m_itemID))
                 return;
 
@@ -1473,7 +1458,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         public void osSetParcelSIPAddress(string SIPAddress)
         {
             // What actually is the difference to the LL function?
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.VeryLow, "osSetParcelMediaURL", m_host, "OSSL", m_itemID))
                 return;
 
@@ -1505,7 +1489,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // to exploit engine-specific bugs or induce usage patterns
             // that trigger engine-specific failures.
             // Besides, public grid users aren't supposed to know.
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osGetScriptEngineName", m_host, "OSSL", m_itemID))
                 return "";
 
@@ -1538,9 +1521,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         {
             // High because it can be used to target attacks to known weaknesses
             // This would allow a new class of griefer scripts that don't even
-            // require their user to know what they are doing (see script
-            // kiddie)
-            //
+            // require their user to know what they are doing (see script kiddie)
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osGetSimulatorVersion", m_host, "OSSL", m_itemID))
                 return "";
 
@@ -1837,9 +1818,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
 
 
         // This needs ThreatLevel high. It is an excellent griefer tool,
-        // In a loop, it can cause asset bloat and DOS levels of asset
-        // writes.
-        //
+        // In a loop, it can cause asset bloat and DOS levels of asset writes.
         public void osMakeNotecard(string notecardName, LSL_List contents)
         {
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.High, "osMakeNotecard", m_host, "OSSL", m_itemID))
@@ -2217,7 +2196,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         // then gather the physical construction details of the object and transmit it
         // to an unscrupulous third party, thus permitting unauthorized duplication of
         // the object's form.
-        //
         public LSL_List osGetLinkPrimitiveParams(int linknumber, LSL_List rules)
         {
             if (
@@ -2551,9 +2529,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // object owner has to be in that group and required permissions
             GroupMembershipData member = groupsModule.GetMembershipData(m_host.GroupID, m_host.OwnerID);
             if (member == null || (member.GroupPowers & (ulong) GroupPowers.Invite) == 0) return ScriptBaseClass.FALSE;
-            // check if agent is in that group already
-            //member = groupsModule.GetMembershipData(agent, m_host.GroupID, agent);
-            //if (member != null) return ScriptBaseClass.FALSE;
             // invited agent has to be present in this scene
             if (World.GetScenePresence(agent) == null) return ScriptBaseClass.FALSE;
             groupsModule.InviteGroup(null, m_host.OwnerID, m_host.GroupID, agent, UUID.Zero);
@@ -2578,9 +2553,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             // object owner has to be in that group and required permissions
             GroupMembershipData member = groupsModule.GetMembershipData(m_host.GroupID, m_host.OwnerID);
             if (member == null || (member.GroupPowers & (ulong) GroupPowers.Eject) == 0) return ScriptBaseClass.FALSE;
-            // agent has to be in that group
-            //member = groupsModule.GetMembershipData(agent, m_host.GroupID, agent);
-            //if (member == null) return ScriptBaseClass.FALSE;
             // ejectee can be offline
             groupsModule.EjectGroupMember(null, m_host.OwnerID, m_host.GroupID, agent);
             return ScriptBaseClass.TRUE;
@@ -2749,8 +2721,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             if (lease.CurrentState == LeaseState.Initial)
             {
                 lease.InitialLeaseTime = TimeSpan.FromMinutes(0);
-                //                lease.RenewOnCallTime = TimeSpan.FromSeconds(10.0);
-                //                lease.SponsorshipTimeout = TimeSpan.FromMinutes(1.0);
             }
             return lease;
         }
@@ -2768,9 +2738,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
             m_LSL_Api = (LSL_Api)m_ScriptEngine.GetApi(m_itemID, "ll");
         }
 
-        //
         //Dumps an error message on the debug console.
-        //
 
         internal void OSSLShoutError(string message)
         {
@@ -2804,7 +2772,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.APIs
         {
             // This function has no security. It can be used to destroy
             // arbitrary builds the user would normally have no rights to
-            //
             if (!ScriptProtection.CheckThreatLevel(ThreatLevel.VeryHigh, "osSetRot", m_host, "OSSL", m_itemID)) return;
 
 

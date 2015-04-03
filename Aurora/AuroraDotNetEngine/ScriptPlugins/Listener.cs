@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
 {
     public class ListenerPlugin : IScriptPlugin
     {
-        // private static readonly ILog MainConsole.Instance = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly List<IWorldComm> m_modules = new List<IWorldComm>();
         public ScriptEngine m_ScriptEngine;
 

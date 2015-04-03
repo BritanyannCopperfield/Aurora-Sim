@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -123,7 +123,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.CompilerTools
         private readonly List<string> AfterFuncCalls = new List<string>();
         private readonly HashSet<string> DTFunctions = new HashSet<string>();
         private readonly List<string> FuncCalls = new List<string>();
-        //        public Dictionary<string, string> IenFunctions = new Dictionary<string, string>();
         private readonly Dictionary<string, GlobalVar> GlobalVariables = new Dictionary<string, GlobalVar>();
         private Dictionary<string, SYMBOL> DuplicatedGlobalVariables = new Dictionary<string, SYMBOL>();
 
@@ -341,15 +340,11 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
         public string Convert(string script)
         {
             //Unless we are using the same LSL_Converter instance for all scripts, we don't need to reset this
-            //ResetCounters();
-
             LSL2CSCodeTransformer codeTransformer;
             try
             {
-                //               lock (p)
                 {
                     codeTransformer = new LSL2CSCodeTransformer(p.Parse(FixAdditionalEvents(script)), script);
-                    //                    p.m_lexer.Reset();
                 }
             }
             catch (CSToolsException e)
@@ -358,12 +353,10 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
 
                 // LL start numbering lines at 0 - geeks!
                 // Also need to subtract one line we prepend!
-                //
                 string emessage = e.Message;
                 string slinfo = e.slInfo.ToString();
 
                 // Remove wrong line number info
-                //
                 if (emessage.StartsWith(slinfo + ": "))
                     emessage = emessage.Substring(slinfo.Length + 2);
 
@@ -377,7 +370,6 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
                                         e.slInfo.charPosition - 1, emessage);
 
                 m_compiler.AddError(message);
-                //                p.m_lexer.Reset();
                 ResetCounters();
                 return "Error parsing the script. " + message;
             }
@@ -387,9 +379,6 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
             DuplicatedLocalVariables = codeTransformer.DuplicatedLocalVars;
             OriginalScript = script;
             StringBuilder retVal = new StringBuilder();
-
-            // line number
-            //m_CSharpLine += 3;
 
             // here's the payload
             retVal.Append(GenerateLine());
@@ -1187,7 +1176,7 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
             foreach (Declaration d in adl.kids)
             {
                 retVal.Append(GenerateDeclaration(d));
-                //                retstr += Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
+
                 if (0 < comma--)
                     retVal.Append(Generate(", "));
             }
@@ -1225,8 +1214,6 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
             StringBuilder retVal = new StringBuilder();
             // opening brace
             retVal.Append(GenerateIndentedLine("{"));
-            //            if (IsParentEnumerable)
-            //                retstr += GenerateLine("if (CheckSlice()) yield return null;");
             m_braceCount++;
 
             foreach (SYMBOL kid in cs.kids)
@@ -1251,40 +1238,12 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
         /// <returns>String containing C# code for Declaration d.</returns>
         private string GenerateDeclaration(Declaration d)
         {
-            //        return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
-
             GlobalVar var;
             if (IsaGlobalVar)
                 return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
 
             if (GlobalVariables.TryGetValue(d.Id, out var))
                 return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
-
-            //Commented out because we can't handle the same var name in different if/else statements
-            /*if (MethodVariables.TryGetValue(d.Id, out var))
-            {
-            if (var.Type != d.Datatype)
-                {
-                Console.WriteLine("[CSCodeGenerator]: found var needing renamed!");
-                string NewVariableName = RandomString(10, true);
-                VarRename r = new VarRename();
-                r.OldVarName = d.Id;
-                r.HasBeenAssigned = false;
-                r.NewVarName = NewVariableName;
-                VariablesToRename.Add(d.Id, r);
-                d.Id = NewVariableName;
-                MethodVariables.Add(d.Id, new GlobalVar() { Type = d.Datatype, Value = "" });
-                return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
-                }
-            else
-                return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
-            }
-        else
-            {
-            MethodVariables[d.Id] = new GlobalVar() { Type = d.Datatype, Value = "" };
-            return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
-            }  
-         * */
 
             return Generate(String.Format("{0} {1}", d.Datatype, CheckName(d.Id)), d);
         }
@@ -1422,7 +1381,6 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
                                         retVal.Append(Generate(String.Format(" {0} ", be.ExpressionSymbol), be));
                                         foreach (SYMBOL kidb in be.kids)
                                         {
-                                            //                                            if (kidb is FunctionCallExpression)
                                             {
                                                 retVal.Append(GenerateNode(kidb));
                                             }
@@ -1507,9 +1465,6 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
             retVal.Append(Generate(String.Format(" {0} ", a.AssignmentType), a));
             foreach (SYMBOL kid in a.kids)
                 retVal.Append(GenerateNode(kid));
-            //fCalls += ";";//Add a ; at the end.
-            //lock (AfterFuncCalls)
-            //    AfterFuncCalls.Add (fCalls);
 
             return DumpFunc(marc) + retVal.ToString() + DumpAfterFunc(marc);
         }
@@ -1643,43 +1598,43 @@ public class ScriptClass : Aurora.ScriptEngine.AuroraDotNetEngine.Runtime.Script
             /*
              * Test script that was used to make sure that if statements do not fail
               integer a = 0;
-integer test()
-{
-    a++;
-    return a;
-}
-default
-{
-    state_entry()
-    {
-        if(test() == 0) //1 gets returned here
-        {
-            llSay(0, "Script running. 0");
-        }
-        else if(test() == 1) //2 gets returned here
-        {
-            llSay(0, "Script running. 2");
-        }
-        else
-        {
-            // 3 gets returned here
-            if(test() == 4)
-            {
+             * integer test()
+             * {
+             * a++;
+             * return a;
+             * }
+             * default
+             * {
+             * state_entry()
+             * {
+             * if(test() == 0) //1 gets returned here
+             * {
+             * llSay(0, "Script running. 0");
+             * }
+             * else if(test() == 1) //2 gets returned here
+             * {
+             * llSay(0, "Script running. 2");
+             * }
+             * else
+             * {
+             * // 3 gets returned here
+             * if(test() == 4)
+             * {
                 llSay(0, "Script running. 4");
-            }
-            else if(test() == 4)
-            {
-                // It should hit this path
+             * }
+             * else if(test() == 4)
+             * {
+             * // It should hit this path
                 llSay(0, "Script running. 2 4");
-            }
-            else
-            {
-              // 5 would be returned here
+             * }
+             * else
+             * {
+             * // 5 would be returned here
                 llSay(0, "Script running. else " + test());
-            }
-        }
-    }
-}*/
+             * }
+             * }
+             * }
+         }*/
             StringBuilder retVal = new StringBuilder(), tmpVal = new StringBuilder();
             bool DoBrace = false;
             bool marc = FuncCallsMarc();
@@ -1692,15 +1647,11 @@ default
 
             // CompoundStatement handles indentation itself but we need to do it
             // otherwise.
-
-            // bool indentHere = ifs.kids.Top is Statement;
-            // if (indentHere) m_braceCount++;
             DoBrace = !(ifs.kids.Top is CompoundStatement);
             if (DoBrace)
                 retVal.Append(GenerateLine("{"));
 
             retVal.Append(GenerateNode((SYMBOL)ifs.kids.Pop()));
-            // if (indentHere) m_braceCount--;
             if (DoBrace)
                 retVal.Append(GenerateLine("}"));
 
@@ -1709,8 +1660,6 @@ default
             {
                 retVal.Append(GenerateIndentedLine("else", ifs));
 
-                // indentHere = ifs.kids.Top is Statement;
-                // if (indentHere) m_braceCount++;
                 DoBrace = !(ifs.kids.Top is CompoundStatement);
                 if (DoBrace)
                     retVal.Append(GenerateLine("{"));
@@ -1719,9 +1668,6 @@ default
 
                 if (DoBrace)
                     retVal.Append(GenerateLine("}"));
-
-
-                // if (indentHere) m_braceCount--;
             }
 
             retVal.Append(DumpAfterFunc(marc));
@@ -1848,20 +1794,16 @@ default
 
             // It's possible that we don't have an assignment, in which case
             // the child will be null and we only print the semicolon.
-            // for (x = 0; x < 10; x++)
-            //      ^^^^^
             ForLoopStatement s = (ForLoopStatement) fl.kids.Pop();
             if (null != s)
             {
                 tmpVal.Append(GenerateForLoopStatement(s));
             }
             tmpVal.Append(Generate("; "));
-            // for (x = 0; x < 10; x++)
-            //             ^^^^^^
+
             tmpVal.Append(GenerateNode((SYMBOL) fl.kids.Pop()));
             tmpVal.Append(Generate("; "));
-            // for (x = 0; x < 10; x++)
-            //                     ^^^
+
             tmpVal.Append(GenerateForLoopStatement((ForLoopStatement) fl.kids.Pop()));
             tmpVal.Append(GenerateLine(")"));
 
@@ -1971,11 +1913,6 @@ default
             }
             else
             {
-                /*ObjectList kids = new ObjectList ();
-                for (int i = be.kids.Count-1; i >= 0; i--)
-                {
-                    kids.Add(be.kids[i]);
-                }*/
                 bool weSetTheAdditionExpression = false;
                 if (be.ExpressionSymbol == "+" && !isAdditionExpression)
                 {
@@ -2091,11 +2028,8 @@ default
             string Mname = "";
             bool isEnumerable = false;
 
-            //int NeedCloseParent = 0;
-
             foreach (SYMBOL kid in fc.kids)
             {
-                //                if (kid is ArgumentList && m_SLCompatabilityMode)
                 if (kid is ArgumentList)
                 {
                     ArgumentList al = kid as ArgumentList;
@@ -2106,7 +2040,7 @@ default
                         if (s is BinaryExpression)
                         {
                             BinaryExpression be = s as BinaryExpression;
-                            //FunctionCalls += GenerateNode(s);
+
                             if (be.ExpressionSymbol.Equals("&&") || be.ExpressionSymbol.Equals("||"))
                             {
                                 // special case handling for logical and/or, see Mantis 3174
@@ -2168,10 +2102,7 @@ default
             string rettype = "void";
             if (LocalMethods.TryGetValue(fc.Id, out rettype))
                 isEnumerable = true;
-                /* suspended.. API fails with IEnums
-                        else if (IenFunctions.TryGetValue(fc.Id, out rettype))
-                            isEnumerable = true;
-            */
+
             else if (DTFunctions.Contains(fc.Id))
             {
                 DTFunction = true;
@@ -2275,7 +2206,6 @@ default
                                                   Generate(" }")
                                               };
 
-                    //Let the other things process for a bit here at the end of each enumeration
                     //Let the other things process for a bit here at the end of each enumeration
                     if (NeedRetVal && rettype != "void")
                     {
@@ -2537,19 +2467,6 @@ default
                 return "@" + s;
             else
             {
-                /*VarRename var;
-                if(VariablesToRename.TryGetValue(s, out var))
-                {
-                    Console.WriteLine("[CSCodeGenerator]: found var needing renamed!");
-                    if (var.HasBeenAssigned)
-                        s = var.NewVarName;
-                    else
-                    {
-                        s = var.OldVarName;
-                        var.HasBeenAssigned = true;
-                        VariablesToRename[s] = var;
-                    }
-                }*/
                 return s;
             }
         }
@@ -2620,9 +2537,6 @@ default
 
         private class VarRename
         {
-            //public string NewVarName;
-            //public bool HasBeenAssigned;
-            //public string OldVarName;
         }
 
         #endregion

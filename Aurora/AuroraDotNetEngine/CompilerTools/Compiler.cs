@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.ModuleLoader;
 using OpenMetaverse;
@@ -514,16 +513,13 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.CompilerTools
             parameters.GenerateInMemory = inMemory;
             parameters.OutputAssembly = assembly;
             parameters.IncludeDebugInformation = CompileWithDebugInformation;
-            //parameters.WarningLevel = 1; // Should be 4?
             parameters.TreatWarningsAsErrors = false;
 
             CompilerResults results = converter.Compile(parameters, WriteScriptSourceToDebugFile,
                                                         WriteScriptSourceToDebugFile ? srcFileName : script);
             parameters = null;
-            //
-            // WARNINGS AND ERRORS
-            //
 
+            // WARNINGS AND ERRORS
             if (results.Errors.Count > 0)
             {
                 try

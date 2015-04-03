@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -75,10 +75,8 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
         {
         }
 
-        //
-        // SenseRepeater and Sensors
-        //
 
+        // SenseRepeater and Sensors
         public void RemoveScript(UUID objectID, UUID m_itemID)
         {
             // Remove from timer
@@ -427,13 +425,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
                         // Right type too, what about the other params , key and name ?
                         if (ts.arc < Math.PI)
                         {
-                            // not omni-directional. Can you see it ?
-                            // vec forward_dir = llRot2Fwd(llGetRot())
-                            // vec obj_dir = toRegionPos-fromRegionPos
-                            // dot=dot(forward_dir,obj_dir)
-                            // mag_fwd = mag(forward_dir)
-                            // mag_obj = mag(obj_dir)
-                            // ang = acos(dot /(mag_fwd*mag_obj))
                             double ang_obj = 0;
                             try
                             {
@@ -501,13 +492,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
                                                              // Are they in the required angle of view
                                                              if (ts.arc < Math.PI)
                                                              {
-                                                                 // not omni-directional. Can you see it ?
-                                                                 // vec forward_dir = llRot2Fwd(llGetRot())
-                                                                 // vec obj_dir = toRegionPos-fromRegionPos
-                                                                 // dot=dot(forward_dir,obj_dir)
-                                                                 // mag_fwd = mag(forward_dir)
-                                                                 // mag_obj = mag(obj_dir)
-                                                                 // ang = acos(dot /(mag_fwd*mag_obj))
                                                                  double ang_obj = 0;
                                                                  try
                                                                  {
@@ -593,10 +577,8 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine.Plugins
 
         #endregion
 
-        //
-        // Sensed entity
-        //
 
+        // Sensed entity
         #region Nested type: SensedEntity
 
         private class SensedEntity : IComparable

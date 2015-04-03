@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -219,8 +218,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
             // Remove from internal structure
             ScriptEngine.ScriptProtection.RemoveScript(this);
-            //            if (!Silent) //Don't remove on a recompile because we'll make it under a different assembly
-            //                ScriptEngine.ScriptProtection.RemovePreviouslyCompiled(Source);
 
             //Remove any errors that might be sitting around
             m_ScriptEngine.ScriptErrorReporter.RemoveError(ItemID);
@@ -358,11 +355,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
         {
             if (State != state)
             {
-                //Technically, we should do this,
-                //but we would need to remove timer/listen/sensor events as well to keep compat with SL style lsl
-                //m_ScriptEngine.MaintenanceThread.RemoveFromEventSchQueue (this, false);
-                //m_ScriptEngine.MaintenanceThread.SetEventSchSetIgnoreNew (this, false); // accept new events
-
                 //Remove us from timer, listen, and sensor events
                 m_ScriptEngine.RemoveScriptFromChangedStatePlugins(this);
 
@@ -638,8 +630,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             else
             {
                 Compiled = false;
-                //if (!reupload && Loading && LastStateSave != null && !LastStateSave.Compiled)
-                //    return false;//If we're trying to start up and we failed before, just give up
+
                 if (reupload)
                 {
                     LastStateSave = null;
@@ -747,10 +738,6 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 return false;
             }
             Compiled = true; //We compiled successfully
-
-            //ILease lease = (ILease)RemotingServices.GetLifetimeService(Script as MarshalByRefObject);
-            //if (lease != null) //Its null if it is all running in the same app domain
-            //    lease.Register(Script.Sponsor);
 
             //If its a reupload, an avatar is waiting for the script errors
             if (reupload)
