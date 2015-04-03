@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -36,7 +35,7 @@ using Aurora.Framework.SceneInfo.Entities;
 using Aurora.Framework.Services.ClassHelpers.Inventory;
 using Aurora.Framework.Services.ClassHelpers.Other;
 using Aurora.Framework.Utilities;
-using Games.Pathfinding.AStar2DTest;
+using Aurora.BotManager.AStar2DTest;
 using OpenMetaverse;
 using OpenMetaverse.Packets;
 using System;
@@ -729,7 +728,6 @@ namespace Aurora.BotManager
             StartPath.Map = map;
             StartPath.xLimit = (int) Math.Sqrt(map.Length);
             StartPath.yLimit = (int) Math.Sqrt(map.Length);
-            //ShowMap ("", null);
             List<string> points = StartPath.Path(startX, startY, finishX, finishY, 0, 0, 0);
 
             List<Vector3> waypoints = new List<Vector3>();
@@ -943,7 +941,6 @@ namespace Aurora.BotManager
                     //Nothing between us and the target, go for it!
                     DirectFollowing();
                 else
-                    //if (!BestFitPathFollowing (raycastEntities))//If this doesn't work, try significant positions
                     SignificantPositionFollowing();
             }
             ClearOutInSignificantPositions(false);
@@ -1065,13 +1062,10 @@ namespace Aurora.BotManager
             int targetX = 11*resolution, targetY = 11*resolution;
             //Find where our target is on the map
             FindTargets(currentPos2, targetPos, ref targetX, ref targetY);
-            //ISceneEntity[] entities = m_scenePresence.Scene.Entities.GetEntities (currentPos, 30);
 
             //Add all the entities to the map
             foreach (ISceneEntity entity in entities)
             {
-                //if (entity.AbsolutePosition.Z < m_scenePresence.AbsolutePosition.Z + m_scenePresence.PhysicsActor.Size.Z / 2 + m_scenePresence.Velocity.Z / 2 &&
-                //    entity.AbsolutePosition.Z > m_scenePresence.AbsolutePosition.Z - m_scenePresence.PhysicsActor.Size.Z / 2 + m_scenePresence.Velocity.Z / 2)
                 {
                     int entitybaseX = (11*resolution);
                     int entitybaseY = (11*resolution);
@@ -1111,7 +1105,6 @@ namespace Aurora.BotManager
                 }
             }
 
-            //ShowMap ("", null);
             List<Vector3> path = InnerFindPath(map, (11*resolution), (11*resolution), targetX, targetY);
 
             int i = 0;
@@ -1218,7 +1211,6 @@ namespace Aurora.BotManager
             if (failedToMove > 1)
             {
                 return Vector3.Zero;
-                //CleanUpPos (raycastEntities, entites, ref newPos);
             }
             return newPos;
         }
@@ -2022,8 +2014,6 @@ namespace Aurora.BotManager
 
         public void SendInstantMessage(GridInstantMessage im)
         {
-            //This will cause a stack overflow, as it will loop back to trying to send the IM out again
-            //m_controller.SendInstantMessage(im);
         }
 
         public void Kick(string message)

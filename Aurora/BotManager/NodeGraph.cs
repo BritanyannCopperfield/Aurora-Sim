@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,6 @@
 
 using System;
 using System.Collections.Generic;
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using OpenMetaverse;
 
@@ -102,8 +101,6 @@ namespace Aurora.BotManager
                         position.ApproxEquals(currentPos, closeToRange))
                     {
                         //Its close to a position, go look for the next pos
-                        //m_listOfPositions.RemoveAt (0);
-                        //m_listOfStates.RemoveAt (0);
                         CurrentPos++;
                         m_lastChangedPosition = DateTime.MinValue;
                         goto findNewTarget;

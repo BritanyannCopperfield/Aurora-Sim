@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -138,15 +138,9 @@ namespace Games.Pathfinding.AStar2DTest
                 double xd = Math.Abs(FX - ((AStarNode2D) GoalNode).X);
                 double yd = Math.Abs(FY - ((AStarNode2D) GoalNode).Y);
 
-                // "Euclidean distance" - Used when search can move at any angle.
-                //GoalEstimate = Math.Sqrt((xd * xd) + (yd * yd));//was using this one
-
                 // "Manhattan Distance" - Used when search can only move vertically and 
                 // horizontally.
                 GoalEstimate = Math.Abs(xd) + Math.Abs(yd);
-
-                // "Diagonal Distance" - Used when the search can move in 8 directions.
-                //GoalEstimate = Math.Max(Math.Abs(xd), Math.Abs(yd));
             }
             else
             {
