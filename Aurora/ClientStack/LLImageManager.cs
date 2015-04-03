@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -312,19 +311,6 @@ namespace Aurora.ClientStack
 
         #region Nested type: J2KImageComparer
 
-/*
-        private sealed class J2KImageComparer : IComparer<J2KImage>
-        {
-            #region IComparer<J2KImage> Members
-
-            public int Compare(J2KImage x, J2KImage y)
-            {
-                return x.Priority.CompareTo(y.Priority);
-            }
-
-            #endregion
-        }
-*/
 
         #endregion
     }

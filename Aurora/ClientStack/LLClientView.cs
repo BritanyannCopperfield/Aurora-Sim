@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -347,8 +346,6 @@ namespace Aurora.ClientStack
         ///     ownerless phantom.
         ///     All manipulation of this set has to occur under an m_entityUpdates.SyncRoot lock
         /// </value>
-        //protected HashSet<uint> m_killRecord = new HashSet<uint>();
-//        protected HashSet<uint> m_attachmentsSent;
         private int m_animationSequenceNumber = 1;
 
         private bool m_SendLogoutPacketWhenClosing = true;
@@ -362,7 +359,6 @@ namespace Aurora.ClientStack
             new Dictionary<string, GenericMessage>();
 
         //PauPaw:Local Generic Message handlers
-
         private readonly IScene m_scene;
         private readonly LLImageManager m_imageManager;
         private readonly string m_Name;
@@ -373,9 +369,7 @@ namespace Aurora.ClientStack
         private uint m_agentFOVCounter;
 
         private readonly IAssetService m_assetService;
-// ReSharper disable ConvertToConstant.Local
         private bool m_checkPackets = true;
-// ReSharper restore ConvertToConstant.Local
 
         #endregion Class Members
 
@@ -480,9 +474,6 @@ namespace Aurora.ClientStack
             if (advancedConfig != null)
                 m_allowUDPInv = advancedConfig.GetBoolean("AllowUDPInventory", m_allowUDPInv);
 
-            //m_killRecord = new HashSet<uint>();
-//            m_attachmentsSent = new HashSet<uint>();
-
             m_assetService = m_scene.RequestModuleInterface<IAssetService>();
             m_GroupsModule = scene.RequestModuleInterface<IGroupsModule>();
             m_imageManager = new LLImageManager(this, m_assetService, Scene.RequestModuleInterface<IJ2KDecoder>());
@@ -511,8 +502,6 @@ namespace Aurora.ClientStack
         public void Reset()
         {
             lastarg = null;
-            //Reset the killObjectUpdate packet stats
-            //m_killRecord = new HashSet<uint>();
         }
 
         public void SetDebugPacketLevel(int newDebug)
@@ -1127,7 +1116,6 @@ namespace Aurora.ClientStack
                     for (int x = 0; x < m_scene.RegionInfo.RegionSizeX/Constants.TerrainPatchSize; x += 4)
                     {
                         SendLayerPacket(map, y, x);
-                        //Thread.Sleep(35);
                     }
                 }
             }
@@ -1167,7 +1155,6 @@ namespace Aurora.ClientStack
                     for (int xa = 0; xa < 4; xa++)
                     {
                         // Send oversize packet in individual patches
-                        //
                         SendLayerData(x + xa, y, map);
                     }
                 }
@@ -1181,7 +1168,6 @@ namespace Aurora.ClientStack
                 for (int xa = 0; xa < 4; xa++)
                 {
                     // Send oversize packet in individual patches
-                    //
                     SendLayerData(x + xa, y, map);
                 }
             }
@@ -1190,7 +1176,6 @@ namespace Aurora.ClientStack
                 for (int xa = 0; xa < 4; xa++)
                 {
                     // Bad terrain, send individual chunks
-                    //
                     SendLayerData(x + xa, y, map);
                 }
             }
@@ -1273,7 +1258,6 @@ namespace Aurora.ClientStack
                         for (int xa = 0; xa < Size; xa++)
                         {
                             // Send oversize packet in individual patches
-                            //
                             SendLayerData(x[i + xa], y[i + xa], map);
                         }
                     }
@@ -1287,7 +1271,6 @@ namespace Aurora.ClientStack
                     for (int xa = 0; xa < Size; xa++)
                     {
                         // Send oversize packet in individual patches
-                        //
                         SendLayerData(x[i + xa], y[i + xa], map);
                     }
                 }
@@ -1296,7 +1279,6 @@ namespace Aurora.ClientStack
                     for (int xa = 0; xa < Size; xa++)
                     {
                         // Bad terrain, send individual chunks
-                        //
                         SendLayerData(x[i + xa], y[i + xa], map);
                     }
                 }
@@ -1332,15 +1314,11 @@ namespace Aurora.ClientStack
             patches[0] = new TerrainPatch {Data = new float[16*16]};
             patches[1] = new TerrainPatch {Data = new float[16*16]};
 
-
-//            for (int y = 0; y < 16*16; y+=16)
-//            {
             for (int x = 0; x < 16*16; x++)
             {
                 patches[0].Data[x] = windSpeeds[x].X;
                 patches[1].Data[x] = windSpeeds[x].Y;
             }
-//            }
             byte type = (byte) TerrainPatch.LayerType.Wind;
             if (m_scene.RegionInfo.RegionSizeX > Constants.RegionSize ||
                 m_scene.RegionInfo.RegionSizeY > Constants.RegionSize)
@@ -1364,7 +1342,6 @@ namespace Aurora.ClientStack
             TerrainPatch[] patches = new TerrainPatch[1];
             patches[0] = new TerrainPatch {Data = new float[16*16]};
 
-//            for (int y = 0; y < 16*16; y+=16)
             {
                 for (int x = 0; x < 16*16; x++)
                 {
@@ -1436,8 +1413,6 @@ namespace Aurora.ClientStack
 
             const int maxsend = 10;
 
-            //int packets = Math.Ceiling(mapBlocks2.Length / maxsend);
-
             List<MapBlockData> sendingBlocks = new List<MapBlockData>();
 
             for (int i = 0; i < mapBlocks2.Length; i++)
@@ -1468,8 +1443,6 @@ namespace Aurora.ClientStack
                                        uint locationID,
                                        uint flags, string capsURL)
         {
-            //TeleportFinishPacket teleport = (TeleportFinishPacket)PacketPool.Instance.GetPacket(PacketType.TeleportFinish);
-
             TeleportFinishPacket teleport = new TeleportFinishPacket
                                                 {
                                                     Info =
@@ -1518,7 +1491,6 @@ namespace Aurora.ClientStack
         public void SendTeleportStart(uint flags)
         {
             TeleportStartPacket tpStart = (TeleportStartPacket) PacketPool.Instance.GetPacket(PacketType.TeleportStart);
-            //TeleportStartPacket tpStart = new TeleportStartPacket();
             tpStart.Info.TeleportFlags = flags; //16; // Teleport via location
 
             // Hack to get this out immediately and skip throttles
@@ -1612,12 +1584,6 @@ namespace Aurora.ClientStack
             try
             {
                 OutPacket(PlacesReply, ThrottleOutPacketType.AvatarInfo);
-                //Disabled for now... it doesn't seem to work right...
-                /*IEventQueueService eq = Scene.RequestModuleInterface<IEventQueueService>();
-                if (eq != null)
-                {
-                    eq.QueryReply(PlacesReply, AgentId, RegionTypes.ToArray(), Scene.RegionInfo.RegionHandle);
-                }*/
             }
             catch (Exception ex)
             {
@@ -1644,7 +1610,7 @@ namespace Aurora.ClientStack
             if (entities.Length == 0)
                 return; //........... why!
 
-//            MainConsole.Instance.DebugFormat("[CLIENT]: Sending KillObjectPacket to {0} for {1} in {2}", Name, localID, regionHandle);
+            //MainConsole.Instance.DebugFormat("[CLIENT]: Sending KillObjectPacket to {0} for {1} in {2}", Name, localID, regionHandle);
 
             KillObjectPacket kill = (KillObjectPacket) PacketPool.Instance.GetPacket(PacketType.KillObject);
             kill.ObjectData = new KillObjectPacket.ObjectDataBlock[entities.Length];
@@ -1659,15 +1625,6 @@ namespace Aurora.ClientStack
                     continue;
                 }
 
-                /*if ((entity is SceneObjectPart &&
-                    ((SceneObjectPart)entity).IsAttachment) ||
-                    (entity is SceneObjectGroup &&
-                    ((SceneObjectGroup)entity).RootPart.IsAttachment))
-                {
-                    // Do nothing
-                }
-                else if(entity is SceneObjectPart)
-                    m_killRecord.Add(entity.LocalId);*/
                 KillObjectPacket.ObjectDataBlock block = new KillObjectPacket.ObjectDataBlock {ID = entity.LocalId};
                 kill.ObjectData[i] = block;
                 i++;
@@ -1698,7 +1655,7 @@ namespace Aurora.ClientStack
             if (entities.Length == 0)
                 return; //........... why!
 
-            //            MainConsole.Instance.DebugFormat("[CLIENT]: Sending KillObjectPacket to {0} for {1} in {2}", Name, localID, regionHandle);
+            // MainConsole.Instance.DebugFormat("[CLIENT]: Sending KillObjectPacket to {0} for {1} in {2}", Name, localID, regionHandle);
 
             KillObjectPacket kill = (KillObjectPacket) PacketPool.Instance.GetPacket(PacketType.KillObject);
             kill.ObjectData = new KillObjectPacket.ObjectDataBlock[entities.Length];
@@ -1759,13 +1716,11 @@ namespace Aurora.ClientStack
             InventoryDescendentsPacket currentPacket = null;
 
             // Handle empty folders
-            //
             if (totalItems == 0 && totalFolders == 0)
                 currentPacket = CreateInventoryDescendentsPacket(ownerID, folderID, version, items.Count + folders.Count,
                                                                  0, 0);
 
             // To preserve SL compatibility, we will NOT combine folders and items in one packet
-            //
             while (itemsSent < totalItems || foldersSent < totalFolders)
             {
                 if (currentPacket == null) // Start a new packet
@@ -2016,7 +1971,6 @@ namespace Aurora.ClientStack
             // to be in its own bulk update packet.  Also, we can only fit 5 items in a packet (at least this was the limit
             // being used on the Linden grid at 20081203).
             InventoryCollection contents = invService.GetFolderContent(AgentId, folder.ID);
-            // folder.RequestListOfItems();
             List<InventoryItemBase> items = contents.Items;
             while (items.Count > 0)
             {
@@ -2320,7 +2274,6 @@ namespace Aurora.ClientStack
                                                                                      }).ToArray()
                                                       };
 
-            //int i = 0;
             OutPacket(replyPacket, ThrottleOutPacketType.AvatarInfo);
         }
 
@@ -2551,8 +2504,6 @@ namespace Aurora.ClientStack
                 Position = new Vector3(),
                 RegionID = Scene.RegionInfo.RegionID
             });
-
-            //SendInstantMessage(FromAvatarID, fromSessionID, Message, AgentId, SessionId, FromAvatarName, (byte)21,(uint) Util.UnixTimeSinceEpoch());
         }
 
         public void SendLogoutPacket()
@@ -2802,9 +2753,6 @@ namespace Aurora.ClientStack
             else if (req.AssetRequestSource == 3)
             {
                 Transfer.TransferInfo.Params = req.Params;
-                // Transfer.TransferInfo.Params = new byte[100];
-                //Array.Copy(req.RequestUser.AgentId.GetBytes(), 0, Transfer.TransferInfo.Params, 0, 16);
-                //Array.Copy(req.RequestUser.SessionId.GetBytes(), 0, Transfer.TransferInfo.Params, 16, 16);
             }
             Transfer.TransferInfo.Size = req.AssetInf.Data.Length;
             Transfer.TransferInfo.TransferID = req.TransferRequestID;
@@ -3602,13 +3550,10 @@ namespace Aurora.ClientStack
                     aw.WearableData[idx] = awb;
                     idx++;
 
-                    //                                MainConsole.Instance.DebugFormat(
-                    //                                    "[APPEARANCE]: Sending wearable item/asset {0} {1} (index {2}) for {3}",
-                    //                                    awb.ItemID, awb.AssetID, i, Name);
+                    // MainConsole.Instance.DebugFormat("[APPEARANCE]: Sending wearable item/asset {0} {1} (index {2}) for {3}", awb.ItemID, awb.AssetID, i, Name);
                 }
             }
 
-            //            OutPacket(aw, ThrottleOutPacketType.Texture);
             OutPacket(aw, ThrottleOutPacketType.AvatarInfo);
         }
 
@@ -3638,7 +3583,7 @@ namespace Aurora.ClientStack
             avp.Sender.IsTrial = false;
             avp.Sender.ID = app.Owner;
             //MainConsole.Instance.InfoFormat("[LLClientView]: Sending appearance for {0} to {1}", agentID.ToString(), AgentId.ToString());
-            //            OutPacket(avp, ThrottleOutPacketType.Texture);
+
             OutPacket(avp, ThrottleOutPacketType.AvatarInfo);
         }
 
@@ -3669,15 +3614,12 @@ namespace Aurora.ClientStack
 
                 ani.AnimationSourceList[i] = new AvatarAnimationPacket.AnimationSourceListBlock
                                                  {ObjectID = animations.ObjectIDs[i]};
-                //if (objectIDs[i] == UUID.Zero)
-                //    ani.AnimationSourceList[i].ObjectID = sourceAgentId;
             }
             //We do this here to keep the numbers under control
             m_animationSequenceNumber += (animations.Animations.Length*2);
 
             ani.Header.Reliable = true;
             ani.HasVariableBlocks = false;
-            //            OutPacket(ani, ThrottleOutPacketType.Asset);
             OutPacket(ani, ThrottleOutPacketType.AvatarInfo, true, null,
                       delegate
                           { m_scene.GetScenePresence(AgentId).SceneViewer.FinishedAnimationPacketSend(animations); });
@@ -3839,23 +3781,6 @@ namespace Aurora.ClientStack
                 // Compressed and cached object updates only make sense for LL primitives
                 if (entity is ISceneChildEntity)
                 {
-                    // Please do not remove this unless you can demonstrate on the OpenSim mailing list that a client
-                    // will never receive an update after a prim kill.  Even then, keeping the kill record may be a good
-                    // safety measure.
-                    //
-                    // If a Linden Lab 1.23.5 client (and possibly later and earlier) receives an object update
-                    // after a kill, it will keep displaying the deleted object until relog.  OpenSim currently performs
-                    // updates and kills on different threads with different scheduling strategies, hence this protection.
-                    //
-                    // This doesn't appear to apply to child prims - a client will happily ignore these updates
-                    // after the root prim has been deleted.
-                    /*if (m_killRecord.Contains(entity.LocalId))
-                        {
-                        MainConsole.Instance.ErrorFormat(
-                            "[CLIENT]: Preventing update for prim with local id {0} after client for user {1} told it was deleted. Mantis this at http://mantis.aurora-sim.org/bug_report_page.php !",
-                            entity.LocalId, Name);
-                        return;
-                        }*/
                     ISceneChildEntity ent = (ISceneChildEntity) entity;
                     if (ent.Shape.PCode == 9 && ent.Shape.State != 0)
                     {
@@ -4071,9 +3996,6 @@ namespace Aurora.ClientStack
                 for (int i = 0; i < blocks.Count; i++)
                     packet.ObjectData[i] = blocks[i];
 
-
-                //ObjectUpdatePacket oo = new ObjectUpdatePacket(packet.ToBytes(), ref ii);
-
                 OutPacket(packet, ThrottleOutPacketType.Task, true,
                           p => ResendPrimUpdates(fullUpdates, p),
                           delegate
@@ -4221,8 +4143,6 @@ namespace Aurora.ClientStack
 
         private void ProcessTextureRequests(int numPackets)
         {
-            //note: tmp is never used
-            //int tmp = m_udpClient.GetCurTexPacksInQueue();
             if (m_imageManager != null)
                 m_imageManager.ProcessImageQueue(numPackets);
         }
@@ -4389,7 +4309,6 @@ namespace Aurora.ClientStack
 
         public void SendObjectPropertiesReply(List<IEntity> parts)
         {
-            //ObjectPropertiesPacket proper = (ObjectPropertiesPacket)PacketPool.Instance.GetPacket(PacketType.ObjectProperties);
             // TODO: don't create new blocks if recycling an old packet
 
             //Theres automatic splitting, just let it go on through
@@ -5021,9 +4940,7 @@ namespace Aurora.ClientStack
             data.CollisionPlane.ToBytes(objectData, 0);
             data.OffsetPosition.ToBytes(objectData, 16);
             data.Velocity.ToBytes(objectData, 28);
-            //data.Acceleration.ToBytes(objectData, 40);
             data.Rotation.ToBytes(objectData, 52);
-            //data.AngularVelocity.ToBytes(objectData, 64);
             string[] spl = data.Name.Split(' ');
             string first = spl[0], last = (spl.Length == 1 ? "" : Util.CombineParams(spl, 1));
 
@@ -5136,9 +5053,6 @@ namespace Aurora.ClientStack
                                                                 Material = (byte) data.Material,
                                                                 MediaURL = Utils.StringToBytes(data.CurrentMediaVersion)
                                                             };
-            //update.JointAxisOrAnchor = Vector3.Zero; // These are deprecated
-            //update.JointPivot = Vector3.Zero;
-            //update.JointType = 0;
             if (data.IsAttachment)
             {
                 update.NameValue = Util.StringToBytes256("AttachItemID STRING RW SV " + data.FromUserInventoryItemID);
@@ -5300,7 +5214,6 @@ namespace Aurora.ClientStack
                         Primitive.ParticleSystem Sys = new Primitive.ParticleSystem();
                         byte[] pdata = Sys.GetBytes();
                         objectData.Write(pdata, 0, pdata.Length);
-                        //updateFlags = updateFlags & ~CompressedFlags.HasParticles;
                     }
                     else
                         objectData.Write(part.ParticleSystem, 0, part.ParticleSystem.Length);
@@ -5677,7 +5590,6 @@ namespace Aurora.ClientStack
             if (OnAgentUpdate != null)
             {
                 bool update = false;
-                //bool forcedUpdate = false;
                 AgentUpdatePacket agenUpdate = (AgentUpdatePacket) Pack;
 
                 #region Packet Session and User Check
@@ -5689,8 +5601,7 @@ namespace Aurora.ClientStack
 
                 AgentUpdatePacket.AgentDataBlock x = agenUpdate.AgentData;
 
-                // We can only check when we have something to check
-                // against.
+                // We can only check when we have something to check against.
 
                 if (lastarg != null)
                 {
@@ -5712,12 +5623,10 @@ namespace Aurora.ClientStack
                 }
                 else
                 {
-                    //forcedUpdate = true;
                     update = true;
                 }
 
-                // These should be ordered from most-likely to
-                // least likely to change. I've made an initial
+                // These should be ordered from most-likely to least likely to change. I've made an initial
                 // guess at that.
 
                 if (update)
@@ -6058,7 +5967,6 @@ namespace Aurora.ClientStack
             byte[] message = inchatpack.ChatData.Message;
             byte type = inchatpack.ChatData.Type;
             Vector3 fromPos = new Vector3(); // ClientAvatar.Pos;
-            // UUID fromAgentID = AgentId;
 
             int channel = inchatpack.ChatData.Channel;
 
@@ -6718,7 +6626,6 @@ namespace Aurora.ClientStack
                 #endregion
 
                 UUID itemID = detachtoInv.ObjectData.ItemID;
-                // UUID ATTACH_agentID = detachtoInv.ObjectData.AgentID;
 
                 handlerDetachAttachmentIntoInv(itemID, this);
             }
@@ -7363,8 +7270,6 @@ namespace Aurora.ClientStack
             }
 
             #endregion
-
-//            ObjectDuplicatePacket.AgentDataBlock AgentandGroupData = dupe.AgentData;
 
             foreach (ObjectDuplicatePacket.ObjectDataBlock t in dupe.ObjectData)
             {
@@ -8154,7 +8059,6 @@ namespace Aurora.ClientStack
 
             #endregion
 
-            //handlerTextureRequest = null;
             foreach (RequestImagePacket.RequestImageBlock t in imageRequest.RequestImage)
             {
                 TextureRequestArgs args = new TextureRequestArgs();
@@ -8197,7 +8101,6 @@ namespace Aurora.ClientStack
             //MainConsole.Instance.Debug("Transfer Request: " + transfer.ToString());
             // Validate inventory transfers
             // Has to be done here, because AssetCache can't do it
-            //
             UUID taskID = UUID.Zero;
             if (transfer.TransferInfo.SourceType == (int) SourceType.SimInventoryItem)
             {
@@ -8205,9 +8108,8 @@ namespace Aurora.ClientStack
                 UUID itemID = new UUID(transfer.TransferInfo.Params, 64);
                 UUID requestID = new UUID(transfer.TransferInfo.Params, 80);
 
-//                MainConsole.Instance.DebugFormat(
-//                    "[CLIENT]: Got request for asset {0} from item {1} in prim {2} by {3}",
-//                    requestID, itemID, taskID, Name);
+               // MainConsole.Instance.DebugFormat(
+               //     "[CLIENT]: Got request for asset {0} from item {1} in prim {2} by {3}", requestID, itemID, taskID, Name);
 
                 if (!m_scene.Permissions.BypassPermissions())
                 {
@@ -8956,9 +8858,6 @@ namespace Aurora.ClientStack
                                                                     (uint) updatetask.InventoryData.CreationDate
                                                             };
 
-                        // Unused?  Clicking share with group sets GroupPermissions instead, so perhaps this is something
-                        // different
-                        //newTaskItem.GroupOwned=updatetask.InventoryData.GroupOwned;
                         handlerUpdateTaskInventory(this, updatetask.InventoryData.TransactionID,
                                                    newTaskItem, updatetask.UpdateData.LocalID);
                     }
@@ -9782,21 +9681,7 @@ namespace Aurora.ClientStack
                                                 convertParamStringToBool(messagePacket.ParamList[8].Parameter));
                     }
                     return true;
-                    //                            case "texturebase":
-                    //                                if (((Scene)m_scene).Permissions.CanIssueEstateCommand(AgentId, false))
-                    //                                {
-                    //                                    foreach (EstateOwnerMessagePacket.ParamListBlock block in messagePacket.ParamList)
-                    //                                    {
-                    //                                        string s = Utils.BytesToString(block.Parameter);
-                    //                                        string[] splitField = s.Split(' ');
-                    //                                        if (splitField.Length == 2)
-                    //                                        {
-                    //                                            UUID tempUUID = new UUID(splitField[1]);
-                    //                                            OnSetEstateTerrainBaseTexture(this, Convert.ToInt16(splitField[0]), tempUUID);
-                    //                                        }
-                    //                                    }
-                    //                                }
-                    //                                break;
+
                 case "texturedetail":
                     if (m_scene.Permissions.CanIssueEstateCommand(AgentId, false))
                     {
@@ -10159,9 +10044,6 @@ namespace Aurora.ClientStack
 
         private bool HandleEstateCovenantRequest(IClientAPI sender, Packet Pack)
         {
-            //EstateCovenantRequestPacket.AgentDataBlock epack =
-            //     ((EstateCovenantRequestPacket)Pack).AgentData;
-
             EstateCovenantRequest handlerEstateCovenantRequest = OnEstateCovenantRequest;
             if (handlerEstateCovenantRequest != null)
             {
@@ -12467,8 +12349,6 @@ namespace Aurora.ClientStack
                     }
                     else
                     {
-                        // UUID partId = part.UUID;
-
                         switch (block.Type)
                         {
                             case 1:
@@ -12511,7 +12391,7 @@ namespace Aurora.ClientStack
                                 UpdateVector handlerUpdatePrimScale = OnUpdatePrimScale;
                                 if (handlerUpdatePrimScale != null)
                                 {
-                                    //                                     MainConsole.Instance.Debug("new scale is " + scale4.X + " , " + scale4.Y + " , " + scale4.Z);
+                                    // MainConsole.Instance.Debug("new scale is " + scale4.X + " , " + scale4.Y + " , " + scale4.Z);
                                     handlerUpdatePrimScale(localId, scale4, this);
                                 }
                                 break;
@@ -12572,7 +12452,7 @@ namespace Aurora.ClientStack
                                 UpdateVector handlerUpdatePrimGroupScale = OnUpdatePrimGroupScale;
                                 if (handlerUpdatePrimGroupScale != null)
                                 {
-                                    //                                     MainConsole.Instance.Debug("new scale is " + scale7.X + " , " + scale7.Y + " , " + scale7.Z);
+                                    // MainConsole.Instance.Debug("new scale is " + scale7.X + " , " + scale7.Y + " , " + scale7.Z);
                                     handlerUpdatePrimGroupScale(localId, scale7, this);
                                 }
                                 break;
@@ -12879,7 +12759,6 @@ namespace Aurora.ClientStack
 
             Primitive.TextureEntry ntex = new Primitive.TextureEntry(new UUID("89556747-24cb-43ed-920b-47caed15465f"));
             shape.TextureEntry = ntex.GetBytes();
-            //shape.Textures = ntex;
             return shape;
         }
 
@@ -13142,7 +13021,6 @@ namespace Aurora.ClientStack
                 (RebakeAvatarTexturesPacket) PacketPool.Instance.GetPacket(PacketType.RebakeAvatarTextures);
 
             pack.TextureData = new RebakeAvatarTexturesPacket.TextureDataBlock {TextureID = textureID};
-            //            OutPacket(pack, ThrottleOutPacketType.Texture);
             OutPacket(pack, ThrottleOutPacketType.AvatarInfo);
         }
 
@@ -13284,9 +13162,6 @@ namespace Aurora.ClientStack
 
                 OutPacket(packet, ThrottleOutPacketType.Task, true);
             }
-
-            //ControllingClient.SendAvatarTerseUpdate(new SendAvatarTerseData(m_rootRegionHandle, (ushort)(m_scene.TimeDilation * ushort.MaxValue), LocalId,
-            //        AbsolutePosition, Velocity, Vector3.Zero, m_bodyRot, new Vector4(0,0,1,AbsolutePosition.Z - 0.5f), m_uuid, null, GetUpdatePriority(ControllingClient)));
         }
 
         public void ForceSendOnAgentUpdate(IClientAPI client, AgentUpdateArgs args)

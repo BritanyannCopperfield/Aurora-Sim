@@ -238,12 +238,6 @@ namespace Aurora.ClientStack
 
             content = Math.Min(content + dripAmount, maxBurst);
             lastDrip = now;
-/*
-                if (dripAmount < 0 || content < 0)
-                    // sim has been idle for too long, integer has overflown
-                    // previous calculation is meaningless, let's put it at correct max
-                    content = maxBurst;
-*/
             return true;
         }
     }

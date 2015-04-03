@@ -28,7 +28,6 @@
 using System;
 using Aurora.Framework.ClientInterfaces;
 using Nini.Config;
-using Aurora.Framework;
 
 namespace Aurora.ClientStack
 {
@@ -199,7 +198,6 @@ namespace Aurora.ClientStack
                     return State;
                 case ThrottleOutPacketType.AvatarInfo:
                     return AvatarInfo;
-//                case ThrottleOutPacketType.Unknown:
                 default:
                     return 0;
             }
@@ -227,7 +225,6 @@ namespace Aurora.ClientStack
                     return StateLimit;
                 case ThrottleOutPacketType.AvatarInfo:
                     return AvatarInfoLimit;
-//                case ThrottleOutPacketType.Unknown:
                 default:
                     return 0;
             }

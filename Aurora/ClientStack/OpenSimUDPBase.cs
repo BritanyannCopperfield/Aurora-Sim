@@ -173,7 +173,6 @@ namespace Aurora.ClientStack
         private void AsyncBeginReceive()
         {
             // allocate a packet buffer
-            //WrappedObject<UDPPacketBuffer> wrappedBuffer = Pool.CheckOut();
             UDPPacketBuffer buf = new UDPPacketBuffer();
 
             if (!m_shutdownFlag)
@@ -182,14 +181,12 @@ namespace Aurora.ClientStack
                 {
                     // kick off an async read
                     m_udpSocket.BeginReceiveFrom(
-                        //wrappedBuffer.Instance.Data,
                         buf.Data,
                         0,
                         UDPPacketBuffer.BUFFER_SIZE,
                         SocketFlags.None,
                         ref buf.RemoteEndPoint,
                         AsyncEndReceive,
-                        //wrappedBuffer);
                         buf);
                 }
                 catch (SocketException e)
@@ -205,14 +202,12 @@ namespace Aurora.ClientStack
                             try
                             {
                                 m_udpSocket.BeginReceiveFrom(
-                                    //wrappedBuffer.Instance.Data,
                                     buf.Data,
                                     0,
                                     UDPPacketBuffer.BUFFER_SIZE,
                                     SocketFlags.None,
                                     ref buf.RemoteEndPoint,
                                     AsyncEndReceive,
-                                    //wrappedBuffer);
                                     buf);
                                 salvaged = true;
                             }
@@ -247,8 +242,6 @@ namespace Aurora.ClientStack
 
                 // get the buffer that was created in AsyncBeginReceive
                 // this is the received data
-                //WrappedObject<UDPPacketBuffer> wrappedBuffer = (WrappedObject<UDPPacketBuffer>)iar.AsyncState;
-                //UDPPacketBuffer buffer = wrappedBuffer.Instance;
                 UDPPacketBuffer buffer = (UDPPacketBuffer) iar.AsyncState;
 
                 try
@@ -273,8 +266,6 @@ namespace Aurora.ClientStack
                 }
                 finally
                 {
-                    //wrappedBuffer.Dispose();
-
                     // Synchronous mode waits until the packet callback completes
                     // before starting the receive to fetch another packet
                     if (!m_asyncPacketHandling)
@@ -305,39 +296,5 @@ namespace Aurora.ClientStack
                 }
             }
         }
-
-/* not in use Send Sync now
-        public void AsyncBeginSend(UDPPacketBuffer buf)
-        {
-            if (!m_shutdownFlag)
-            {
-                try
-                {
-                    m_udpSocket.BeginSendTo(
-                        buf.Data,
-                        0,
-                        buf.DataLength,
-                        SocketFlags.None,
-                        buf.RemoteEndPoint,
-                        AsyncEndSend,
-                        buf);
- 
-                }
-                catch (SocketException) { }
-                catch (ObjectDisposedException) { }
-            }
-        }
-
-        void AsyncEndSend(IAsyncResult result)
-        {
-            try
-            {
-//                UDPPacketBuffer buf = (UDPPacketBuffer)result.AsyncState;
-                m_udpSocket.EndSendTo(result);
-            }
-            catch (SocketException) { }
-            catch (ObjectDisposedException) { }
-        }
- */
     }
 }

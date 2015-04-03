@@ -26,7 +26,6 @@
  */
 
 using Amib.Threading;
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -627,7 +626,6 @@ namespace Aurora.ClientStack
 
                     // Bump up the resend count on this packet
                     Interlocked.Increment(ref outgoingPacket.ResendCount);
-                    //Interlocked.Increment(ref Stats.ResentPackets);
 
                     // Requeue or resend the packet
                     if (!outgoingPacket.Client.EnqueueOutgoing(outgoingPacket))
@@ -712,11 +710,6 @@ namespace Aurora.ClientStack
 
             // Stats tracking
             Interlocked.Increment(ref udpClient.PacketsSent);
-//            if (isReliable)
-//                Interlocked.Add(ref udpClient.UnackedBytes, outgoingPacket.Buffer.DataLength);
-
-            // Put the UDP payload on the wire
-//            AsyncBeginSend(buffer);
 
             SyncSend(buffer);
 
@@ -733,9 +726,6 @@ namespace Aurora.ClientStack
         protected override void PacketReceived(UDPPacketBuffer buffer)
         {
             //MainConsole.Instance.Info("[llupdserver] PacketReceived");
-            // Debugging/Profiling
-            //try { Thread.CurrentThread.Name = "PacketReceived (" + m_scene.RegionInfo.RegionName + ")"; }
-            //catch (Exception) { }
 
             LLUDPClient udpClient = null;
             Packet packet = null;
@@ -881,7 +871,6 @@ namespace Aurora.ClientStack
                 //    MainConsole.Instance.Debug("[LLUDPSERVER]: Received a resend of already processed packet #" + packet.Header.Sequence + ", type: " + packet.Type);
                 //else
                 //    MainConsole.Instance.Warn("[LLUDPSERVER]: Received a duplicate (not marked as resend) of packet #" + packet.Header.Sequence + ", type: " + packet.Type);
-
                 // Avoid firing a callback twice for the same packet
                 return;
             }
@@ -965,8 +954,6 @@ namespace Aurora.ClientStack
             UDPPacketBuffer buffer = new UDPPacketBuffer(remoteEndpoint, length) {DataLength = length};
 
             Buffer.BlockCopy(packetData, 0, buffer.Data, 0, length);
-
-            //            AsyncBeginSend(buffer);
             SyncSend(buffer);
         }
 

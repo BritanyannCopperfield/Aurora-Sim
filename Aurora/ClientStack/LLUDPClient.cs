@@ -27,7 +27,6 @@
 
 //#define Debug
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -178,14 +177,12 @@ namespace Aurora.ClientStack
         /// </summary>
         public readonly IncomingPacketHistoryCollection PacketArchive = new IncomingPacketHistoryCollection(200);
 
-        //        private readonly TokenBucket[] m_throttleCategories;
         /// <summary>
         ///     Throttle buckets for each packet category
         /// </summary>
         /// <summary>
         ///     Outgoing queues for throttled packets
         /// </summary>
-//        private readonly Aurora.Framework.LocklessQueue<OutgoingPacket>[] m_packetOutboxes = new Aurora.Framework.LocklessQueue<OutgoingPacket>[(int)ThrottleOutPacketType.Count];
         private readonly int[] PacketsCounts = new int[(int) ThrottleOutPacketType.Count];
 
         /// <summary>
@@ -472,12 +469,8 @@ namespace Aurora.ClientStack
             int avatarinfo = (int) (state*AVATAR_INFO_STATE_PERCENTAGE);
             state -= avatarinfo;
 
-//            int total = resend + land + wind + cloud + task + texture + asset + state + avatarinfo;
-
             // Make sure none of the throttles are set below our packet MTU,
             // otherwise a throttle could become permanently clogged
-
-
             Rates[(int) ThrottleOutPacketType.Resend] = resend;
             Rates[(int) ThrottleOutPacketType.Land] = land;
             Rates[(int) ThrottleOutPacketType.Wind] = wind;
@@ -498,7 +491,6 @@ namespace Aurora.ClientStack
             //    AgentID, resend, land, wind, cloud, task, texture, asset, state, avatarinfo, transfer, task + state + avatarinfo, total);
 
             // Update the token buckets with new throttle values
-
             TokenBucket bucket = m_throttle;
             bucket.DripRate = total;
             bucket.MaxBurst = total;
@@ -731,8 +723,6 @@ namespace Aurora.ClientStack
             }
 
             m_nextOnQueueEmpty = start + MIN_CALLBACK_MS;
-//            if (m_nextOnQueueEmpty == 0)
-//                m_nextOnQueueEmpty = 1;
         }
     }
 }
