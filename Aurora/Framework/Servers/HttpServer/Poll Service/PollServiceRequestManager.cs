@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the Aurora-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -37,8 +37,6 @@ namespace Aurora.Framework.Servers.HttpServer
 {
     public class PollServiceRequestManager
     {
-        //        private static readonly ILog m_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static Queue m_requests = Queue.Synchronized(new Queue());
         private uint m_WorkerThreadCount = 0;
         private Thread[] m_workerThreads;
@@ -104,8 +102,6 @@ namespace Aurora.Framework.Servers.HttpServer
             {
                 if (!ProcessQueuedRequests())
                 {
-                    //lock(m_queueSync)
-                    //    Monitor.Wait(m_queueSync);
                     Thread.Sleep(1000);
                 }
             }
@@ -118,7 +114,7 @@ namespace Aurora.Framework.Servers.HttpServer
                 if (m_requests.Count == 0)
                     return false;
 
-                //                MainConsole.Instance.DebugFormat("[POLL SERVICE REQUEST MANAGER]: Processing {0} requests", m_requests.Count);
+                // MainConsole.Instance.DebugFormat("[POLL SERVICE REQUEST MANAGER]: Processing {0} requests", m_requests.Count);
 
                 int reqperthread = (int) (m_requests.Count/m_WorkerThreadCount) + 1;
 

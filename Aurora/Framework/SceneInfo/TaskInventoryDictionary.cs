@@ -45,8 +45,6 @@ namespace Aurora.Framework.SceneInfo
     public class TaskInventoryDictionary : Dictionary<UUID, TaskInventoryItem>,
                                            ICloneable, IXmlSerializable
     {
-        // private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private static readonly XmlSerializer tiiSerializer = new XmlSerializer(typeof (TaskInventoryItem));
 
         #region ICloneable Members
@@ -115,8 +113,6 @@ namespace Aurora.Framework.SceneInfo
                     tiiSerializer.Serialize(writer, item);
                 }
             }
-
-            //tiiSerializer.Serialize(writer, Values);
         }
 
         #endregion

@@ -64,19 +64,9 @@ namespace Aurora.Framework.Physics
         public void AddCollider(uint localID, ContactPoint contact)
         {
             Cleared = false;
-            /*ContactPoint oldCol;
-            if(!m_objCollisionList.TryGetValue(localID, out oldCol))
-            {
-                */
+
             lock (m_objCollisionList)
                 m_objCollisionList[localID] = contact;
-            /*}
-            else
-            {
-                if(oldCol.PenetrationDepth < contact.PenetrationDepth)
-                    lock(m_objCollisionList)
-                        m_objCollisionList[localID] = contact;
-            }*/
         }
 
         public int Count

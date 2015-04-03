@@ -69,7 +69,6 @@ namespace Aurora.Framework.Modules
         // is the UUID of a SOG, and the method acts on all contained
         // scripts. This is different from the suspend/resume that
         // can be issued by a client.
-        //
         void SuspendScript(UUID itemID);
         void ResumeScript(UUID itemID);
 

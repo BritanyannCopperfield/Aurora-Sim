@@ -52,10 +52,6 @@ namespace Aurora.Framework.Serialization.External
 
             StringReader reader = new StringReader(Encoding.ASCII.GetString(serialization, 0, serialization.Length));
             XmlReader xtr = XmlReader.Create(reader);
-            //Uses byte[] directly... should be used once issues with it are fixed
-            //MemoryStream mr = new MemoryStream (serialization);
-            //StreamReader sr = new StreamReader (mr, Encoding.ASCII);
-            //XmlReader xtr = XmlTextReader.Create (sr);
             xtr.ReadStartElement("InventoryItem");
 
             item.Name = xtr.ReadElementString("Name");

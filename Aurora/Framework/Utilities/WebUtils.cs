@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -379,7 +379,6 @@ namespace Aurora.Framework.Utilities
                     OSDMap args = (OSDMap) buffer;
                     return args;
                 }
-                // uh?
                 if (doLogMessages)
                     MainConsole.Instance.Warn(("[WebUtils]: Got OSD of unexpected type " + buffer.Type.ToString()));
                 return null;

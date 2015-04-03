@@ -40,13 +40,9 @@ namespace Aurora.Framework.ConsoleFramework
     /// </summary>
     public class LocalConsole : CommandConsole
     {
-//        private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        // private readonly object m_syncRoot = new object();
-
         private static readonly ConsoleColor[] Colors =
             {
-                // the dark colors don't seem to be visible on some black background terminals like putty :(
+                // the dark colors don't seem to be visible on some black background terminals like putty
                 //ConsoleColor.DarkBlue,
                 //ConsoleColor.DarkGreen,
                 //ConsoleColor.Gray, 
@@ -413,8 +409,7 @@ namespace Aurora.Framework.ConsoleFramework
 
             bool trailingSpace = cmdline.ToString().EndsWith(" ");
 
-            // Allow ? through while typing a URI
-            //
+            // Allow? through while typing a URI
             if (words.Length > 0 && words[words.Length - 1].StartsWith("http") && !trailingSpace)
                 return false;
 

@@ -268,8 +268,6 @@ namespace Aurora.Framework.ClientInterfaces
 
         #endregion SL / file extension / content-type conversions
 
-//        private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         ///     Parse a notecard in Linden format to a string of ordinary text.
         /// </summary>
@@ -279,8 +277,7 @@ namespace Aurora.Framework.ClientInterfaces
         {
             string[] output = ParseNotecardToList(rawInput).ToArray();
 
-//            foreach (string line in output)
-//                MainConsole.Instance.DebugFormat("[PARSE NOTECARD]: ParseNotecardToString got line {0}", line);
+            //MainConsole.Instance.DebugFormat("[PARSE NOTECARD]: ParseNotecardToString got line {0}", line);
 
             return string.Join("\n", output);
         }
@@ -358,7 +355,6 @@ namespace Aurora.Framework.ClientInterfaces
 
                             while (line < lines)
                             {
-                             //m_log.DebugFormat("[PARSE NOTECARD]: Adding line {0}", input[idx]);
                              output.Add(input[idx]);
                              idx++;
                              line++;

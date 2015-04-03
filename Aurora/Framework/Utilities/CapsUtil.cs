@@ -69,10 +69,6 @@ namespace Aurora.Framework.Utilities
         {
             UUID caps = UUID.Random();
             string capsPath = caps.ToString();
-            // I'm commenting this, rather than delete, to keep as historical record.
-            // The caps seed is now a full UUID string that gets added four more digits
-            // for producing certain CAPs URLs in OpenSim
-            //capsPath = capsPath.Remove(capsPath.Length - 4, 4);
             return capsPath;
         }
 

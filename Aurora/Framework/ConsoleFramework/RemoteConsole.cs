@@ -52,7 +52,6 @@ namespace Aurora.Framework.ConsoleFramework
     }
 
     // A console that uses REST interfaces
-    //
     public class RemoteConsole : CommandConsole
     {
         private readonly Dictionary<UUID, ConsoleConnection> m_Connections =

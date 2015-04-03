@@ -690,11 +690,6 @@ namespace Aurora.Framework.SceneInfo
             _scale.X = _scale.Y = radius*2f;
         }
 
-        /*void returns need to change of course
-        public virtual void GetMesh()
-        {
-        }*/
-
         public PrimitiveBaseShape Copy()
         {
             PrimitiveBaseShape copy = (PrimitiveBaseShape) MemberwiseClone();
@@ -792,9 +787,6 @@ namespace Aurora.Framework.SceneInfo
 
             byte[] returnbytes = new byte[TotalBytesLength];
 
-
-            // uint paramlength = ExtraParamsNum;
-
             // Stick in the number of parameters
             returnbytes[i++] = (byte) ExtraParamsNum;
 
@@ -804,8 +796,6 @@ namespace Aurora.Framework.SceneInfo
 
                 Utils.UInt16ToBytes(FlexiEP, returnbytes, i);
                 i += 2;
-                //returnbytes[i++] = (byte)(FlexiEP % 256);
-                //returnbytes[i++] = (byte)((FlexiEP >> 8) % 256);
 
                 Utils.UIntToBytes((uint) FlexiData.Length, returnbytes, i);
                 i += 4;
@@ -938,7 +928,6 @@ namespace Aurora.Framework.SceneInfo
                 ushort epType = Utils.BytesToUInt16(data, i);
 
                 i += 2;
-                // uint paramLength = Helpers.BytesToUIntBig(data, i);
 
                 i += 4;
                 switch (epType)

@@ -204,7 +204,7 @@ namespace Aurora.Framework.SceneInfo
                                 if (normalMapId != UUID.Zero)
                                 {
                                     assetUuids[normalMapId] = AssetType.Texture;
-                                    //m_log.Info("[UUID Gatherer]: found normal map ID: " + normalMapId.ToString());
+                                    //MaineConsole.Instance.Info("[UUID Gatherer]: found normal map ID: " + normalMapId.ToString());
                                 }
                             }
                             if (mat.ContainsKey("SpecMap"))
@@ -213,7 +213,7 @@ namespace Aurora.Framework.SceneInfo
                                 if (specularMapId != UUID.Zero)
                                 {
                                     assetUuids[specularMapId] = AssetType.Texture;
-                                    //m_log.Info("[UUID Gatherer]: found specular map ID: " + specularMapId.ToString());
+                                    //MainConsole.Instance.Info("[UUID Gatherer]: found specular map ID: " + specularMapId.ToString());
                                 }
                             }
                         }

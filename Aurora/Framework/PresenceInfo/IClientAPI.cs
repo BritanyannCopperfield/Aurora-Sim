@@ -927,7 +927,6 @@ namespace Aurora.Framework.PresenceInfo
 
         IPAddress EndPoint { get; }
 
-        // [Obsolete("LLClientView Specific - Replace with ???")]
         int NextAnimationSequenceNumber { get; }
 
         /// <summary>
@@ -947,7 +946,6 @@ namespace Aurora.Framework.PresenceInfo
 
         bool SendLogoutPacketWhenClosing { set; }
 
-        // [Obsolete("LLClientView Specific - Circuits are unique to LLClientView")]
         uint CircuitCode { get; }
 
         IPEndPoint RemoteEndPoint { get; }
@@ -956,20 +954,14 @@ namespace Aurora.Framework.PresenceInfo
 
         event GenericMessage OnGenericMessage;
 
-        // [Obsolete("LLClientView Specific - Replace with more bare-bones arguments.")]
         event ImprovedInstantMessage OnInstantMessage;
         event PreSendImprovedInstantMessage OnPreSendInstantMessage;
-        // [Obsolete("LLClientView Specific - Replace with more bare-bones arguments. Rename OnChat.")]
         event ChatMessage OnChatFromClient;
-        // [Obsolete("LLClientView Specific - Remove bitbuckets. Adam, can you be more specific here..  as I don't see any bit buckets.")]
         event RezObject OnRezObject;
-        // [Obsolete("LLClientView Specific - Replace with more suitable arguments.")]
         event ModifyTerrain OnModifyTerrain;
         event BakeTerrain OnBakeTerrain;
         event EstateChangeInfo OnEstateChangeInfo;
-        // [Obsolete("LLClientView Specific.")]
         event SetAppearance OnSetAppearance;
-        // [Obsolete("LLClientView Specific - Replace and rename OnAvatarUpdate. Difference from SetAppearance?")]
         event AvatarNowWearing OnAvatarNowWearing;
         event RezSingleAttachmentFromInv OnRezSingleAttachmentFromInv;
         event UUIDNameRequest OnDetachAttachmentIntoInv;
@@ -1229,8 +1221,6 @@ namespace Aurora.Framework.PresenceInfo
         void Close(bool forceClose);
         void Stop();
         void Kick(string message);
-
-        //     void ActivateGesture(UUID assetId, UUID gestureId);
 
         /// <summary>
         ///     Tell this client what items it should be wearing now

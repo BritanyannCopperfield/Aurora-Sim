@@ -36,7 +36,6 @@ namespace Aurora.Framework.SceneInfo
     {
         public static float MetersToSphericalStrength(float size)
         {
-            //return Math.Pow(2, size);
             return (size + 1)*1.35f; // MCP: a more useful brush size range
         }
 

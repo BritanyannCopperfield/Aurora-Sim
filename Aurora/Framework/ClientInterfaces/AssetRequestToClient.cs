@@ -46,7 +46,5 @@ namespace Aurora.Framework.ClientInterfaces
         public byte[] Params;
         public UUID RequestAssetID;
         public UUID TransferRequestID;
-        //public bool AssetInCache;
-        //public int TimeRequested;
     }
 }

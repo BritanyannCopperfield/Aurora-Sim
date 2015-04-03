@@ -26,7 +26,6 @@
  */
 
 // PriorityQueue.cs
-//
 // Jim Mischel
 
 using System;
@@ -209,10 +208,6 @@ namespace Aurora.Framework.Utilities
                 i = (i - 1)/2;
             }
             items[i] = newItem;
-            //if (!VerifyQueue())
-            //{
-            //    Console.WriteLine("ERROR: Queue out of order!");
-            //}
         }
 
         public void Enqueue(TValue value, TPriority priority)
@@ -240,7 +235,6 @@ namespace Aurora.Framework.Utilities
                     parent = (i - 1)/2;
                 }
 
-                // if i == index, then we didn't move the item up
                 if (i == index)
                 {
                     // bubble down ...
@@ -262,10 +256,6 @@ namespace Aurora.Framework.Utilities
                 // Be sure to store the item in its place.
                 items[i] = tmp;
             }
-            //if (!VerifyQueue())
-            //{
-            //    Console.WriteLine("ERROR: Queue out of order!");
-            //}
             return o;
         }
 

@@ -238,8 +238,6 @@ namespace Aurora.Framework.Configuration
             IConfigSource m_config = new IniConfigSource();
             IConfigSource m_fakeconfig = new IniConfigSource();
 
-            //Console.WriteLine(string.Format("[Config]: Reading configuration settings"));
-
             if (sources.Count == 0)
             {
                 Console.WriteLine(string.Format("[CONFIG]: Could not load any configuration"));

@@ -40,7 +40,6 @@ namespace Aurora.Framework.SceneInfo
     [Serializable, ProtoContract(UseProtoMembersOnly = false)]
     public class EstateSettings : IDataTransferable
     {
-        // private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Delegates
 
@@ -120,8 +119,6 @@ namespace Aurora.Framework.SceneInfo
         }
 
         // Used by the sim
-        //
-
         [ProtoMember(9)]
         public bool UseGlobalTime
         {
@@ -198,8 +195,6 @@ namespace Aurora.Framework.SceneInfo
         public bool DenyMinors { get; set; }
 
         // All those lists...
-        //
-
         [ProtoMember(26)]
         public List<UUID> EstateManagers
         {

@@ -393,7 +393,6 @@ namespace Aurora.Framework.Servers.HttpServer
                                     HttpServerHandlerHelpers.WriteChunked(stream, buffer);
                                 }
                             }
-                            //response.ContentLength64 = buffer.LongLength;
                             response.Close();
                         }
                         else
@@ -531,7 +530,6 @@ namespace Aurora.Framework.Servers.HttpServer
                 }
                 else
                 {
-                    //HandleLLSDRequests(request, response);
                     response.ContentType = "text/plain";
                     response.StatusCode = 404;
                     response.StatusDescription = "Not Found";
@@ -592,8 +590,6 @@ namespace Aurora.Framework.Servers.HttpServer
 
             try
             {
-                //m_httpListener = new HttpListener();
-
                 NotSocketErrors = 0;
                 m_internalServer = new HttpListenerManager(m_threadCount, Secure);
                 if (OnOverrideRequest != null)

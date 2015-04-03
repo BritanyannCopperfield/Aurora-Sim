@@ -35,8 +35,6 @@ namespace Aurora.Framework.ClientInterfaces
     {
         private List<Wearable> m_nowWearing = new List<Wearable>();
 
-        /// <summary>
-        /// </summary>
         public List<Wearable> NowWearing
         {
             get { return m_nowWearing; }

@@ -251,14 +251,6 @@ namespace Aurora.Framework.Physics
         {
         }
 
-        /*
-                    public override PhysicsActor AddPrim(Vector3 position, Vector3 size, Quaternion rotation)
-                    {
-                        MainConsole.Instance.InfoFormat("NullPhysicsScene : AddPrim({0},{1})", position, size);
-                        return PhysicsActor.Null;
-                    }
-        */
-
         public override PhysicsActor AddPrimShape(UUID primID, uint localID, string name, byte physicsType, PrimitiveBaseShape shape,
             Vector3 position, Vector3 size, Quaternion rotation, bool isPhysical, int material, float friction, float restitution, 
             float gravityMultiplier, float density)

@@ -82,7 +82,7 @@ namespace Aurora.Framework.ClientInterfaces
 
         public AvatarAppearance(UUID avatarID, OSDMap map)
         {
-            //            MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE]: create appearance for {0} from OSDMap",avatarID);
+            // MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE]: create appearance for {0} from OSDMap",avatarID);
 
             m_owner = avatarID;
             Unpack(map);
@@ -91,7 +91,7 @@ namespace Aurora.Framework.ClientInterfaces
         public AvatarAppearance(UUID avatarID, AvatarWearable[] wearables, Primitive.TextureEntry textureEntry,
                                 byte[] visualParams)
         {
-            //            MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE] create initialized appearance for {0}",avatarID);
+            // MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE] create initialized appearance for {0}",avatarID);
 
             m_serial = 1;
             m_owner = avatarID;
@@ -123,7 +123,7 @@ namespace Aurora.Framework.ClientInterfaces
 
         public AvatarAppearance(AvatarAppearance appearance, bool copyWearables)
         {
-            //            MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE] create from an existing appearance");
+            // MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE] create from an existing appearance");
 
             if (appearance == null)
             {
@@ -262,10 +262,6 @@ namespace Aurora.Framework.ClientInterfaces
                                      0, 127, 127, 150, 150, 150, 150, 150, 150, 150, 150, 0, 0, 150, 51, 132, 150, 150,
                                      150
                                  };
-            //            for (int i = 0; i < VISUALPARAM_COUNT; i++)
-            //            {
-            //                m_visualparams[i] = 150;
-            //            }
         }
 
         private void SetDefaultTexture()
@@ -312,8 +308,7 @@ namespace Aurora.Framework.ClientInterfaces
                         if (!ChangedTextures.Contains(oldface.TextureID))
                             ChangedTextures.Add(oldface.TextureID);
 
-                    //                if (newface != null)
-                    //                    MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE]: index {0}, new texture id {1}",i,newface.TextureID);
+                    // MainConsole.Instance.WarnFormat("[AVATAR APPEARANCE]: index {0}, new texture id {1}",i,newface.TextureID);
                 }
             }
 
@@ -340,8 +335,7 @@ namespace Aurora.Framework.ClientInterfaces
                 if (visualParams[i] != m_visualparams[i])
                 {
                     // DEBUG ON
-                    //                    MainConsole.Instance.WarnFormat("[AVATARAPPEARANCE] vparams changed [{0}] {1} ==> {2}",
-                    //                                     i,m_visualparams[i],visualParams[i]);
+                    // MainConsole.Instance.WarnFormat("[AVATARAPPEARANCE] vparams changed [{0}] {1} ==> {2}", i,m_visualparams[i],visualParams[i]);
                     // DEBUG OFF
                     m_visualparams[i] = visualParams[i];
                     changed = true;

@@ -80,15 +80,7 @@ namespace Aurora.Framework.ConsoleFramework
             // Set this culture for the thread 
             // to en-US to avoid number parsing issues
             Culture.SetCurrentCulture();
-            /*string line = */
             ReadLine(m_defaultPrompt + "# ", true, true);
-
-//            result.AsyncWaitHandle.WaitOne(-1);
-
-//            if (line != String.Empty && line.Replace(" ", "") != String.Empty) //If there is a space, its fine
-//            {
-//                MainConsole.Instance.Info("[GUICONSOLE] Invalid command");
-//            }
         }
 
         public void RunCommand(string cmd)
@@ -109,13 +101,7 @@ namespace Aurora.Framework.ConsoleFramework
         {
             string oldDefaultPrompt = m_defaultPrompt;
             m_defaultPrompt = p;
-//            System.Console.Write("{0}", p);
             string cmdinput = Console.ReadLine();
-
-//            while (cmdinput.Equals(null))
-//            {
-//                ;
-//            }
 
             if (isCommand)
             {

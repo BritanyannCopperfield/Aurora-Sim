@@ -223,7 +223,6 @@ namespace Aurora.Framework.ClientInterfaces
             }
             catch
             {
-                /* S%^t happens. Ignore. */
             }
             return theArray;
         }

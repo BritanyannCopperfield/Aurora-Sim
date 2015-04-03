@@ -996,15 +996,10 @@ namespace Aurora.Framework.Utilities
             return Regex.Replace(filename, regexInvalidFileChars, String.Empty);
         }
 
-        //
         // directory locations
-        //
-
         public static string homeDir()
         {
             string temp;
-            //            string personal=(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-            //            temp = Path.Combine(personal,".OpenSim");
             temp = ".";
             return temp;
         }
@@ -1591,8 +1586,6 @@ namespace Aurora.Framework.Utilities
         {
             byte[] hash = ComputeMD5Hash(data + salt);
 
-            //string s = BitConverter.ToString(hash);
-
             Guid guid = new Guid(hash);
 
             return guid;
@@ -1673,7 +1666,6 @@ namespace Aurora.Framework.Utilities
                 }
                 else
                 {
-                    // uh?
                     MainConsole.Instance.Debug(("[UTILS]: Got OSD of unexpected type " + buffer.Type.ToString()));
                     return null;
                 }
@@ -2529,14 +2521,11 @@ namespace Aurora.Framework.Utilities
     {
         private static bool m_noInternetConnection;
         private static int m_nextInternetConnectionCheck;
-        //private static bool useLocalhostLoopback=false;
         private static readonly ExpiringCache<string, IPAddress> m_dnsCache = new ExpiringCache<string, IPAddress>();
 
         public static IPEndPoint ResolveEndPoint(string hostName, int port)
         {
             IPEndPoint endpoint = null;
-            // Old one defaults to IPv6
-            //return new IPEndPoint(Dns.GetHostAddresses(m_externalHostName)[0], m_internalEndPoint.Port);
 
             IPAddress ia = null;
             // If it is already an IP, don't resolve it - just return directly
@@ -2666,33 +2655,6 @@ namespace Aurora.Framework.Utilities
         /// <returns></returns>
         public static IPAddress ResolveAddressForClient(IPAddress iPAddress, IPEndPoint clientIP)
         {
-            /*if (iPAddress == null)
-                return clientIP.Address;
-            if (iPAddress.Equals(clientIP.Address))
-            {
-                if (useLocalhostLoopback)
-                    return IPAddress.Loopback;
-                if (iPAddress == IPAddress.Loopback)
-                    return iPAddress; //Don't send something else if it is already on loopback
-                if (CheckInternetConnection())
-                {
-#pragma warning disable 618
-                    //The 'bad' way, only works for things on the same machine...
-                    try
-                    {
-                        string hostName = Dns.GetHostName();
-                        IPHostEntry ipEntry = Dns.GetHostByName(hostName);
-#pragma warning restore 618
-                        IPAddress[] addr = ipEntry.AddressList;
-                        return addr[0]; //Loopback around! They are on the same connection
-                    }
-                    catch
-                    {
-                        InternetFailure(); //Something went wrong
-                    }
-                }
-            }
-            return iPAddress;*/
             return iPAddress;
         }
 
@@ -3023,10 +2985,6 @@ namespace Aurora.Framework.Utilities
                 EmitBoxIfNeeded(il, method.ReturnType);
             il.Emit(OpCodes.Ret);
             return dynamicMethod.Invoke(null, new object[2] {invokeClass, invokeParameters});
-            /*FastInvokeHandler invoder =
-              (FastInvokeHandler)dynamicMethod.CreateDelegate(
-              typeof(FastInvokeHandler));
-            return invoder;*/
         }
 
         private static void EmitCastToReference(ILGenerator il, System.Type type)
