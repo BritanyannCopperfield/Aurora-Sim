@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,8 +62,6 @@ namespace Aurora.CoreApplicationPlugins.RegionModulesController
         // This is where we handle adding the modules to scenes when they
         // load. This means that here we deal with replaceable interfaces,
         // nonshared modules, etc.
-        //
-
         protected Dictionary<IScene, Dictionary<string, IRegionModuleBase>> RegionModules =
             new Dictionary<IScene, Dictionary<string, IRegionModuleBase>>();
 
@@ -100,8 +98,7 @@ namespace Aurora.CoreApplicationPlugins.RegionModulesController
                     continue;
                 }
 
-                //MainConsole.Instance.DebugFormat("[REGIONMODULE]: Adding scene {0} to non-shared module {1}",
-                //                  scene.RegionInfo.RegionName, module.Name);
+                //MainConsole.Instance.DebugFormat("[REGIONMODULE]: Adding scene {0} to non-shared module {1}", scene.RegionInfo.RegionName, module.Name);
 
                 // Initialise the module
                 module.Initialise(m_openSim.ConfigSource);
@@ -187,7 +184,6 @@ namespace Aurora.CoreApplicationPlugins.RegionModulesController
             // to ugly kludges to attempt to request interfaces when needed
             // and unneccessary caching logic repeated in all modules.
             // The extra function stub is just that much cleaner
-            //
             foreach (INonSharedRegionModule module in list)
             {
                 try
