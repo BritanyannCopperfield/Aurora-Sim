@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,11 +40,8 @@ namespace Aurora.DataManager.Migration.Migrators.GridRegion
 
             schema = new List<SchemaDefinition>();
 
-            //
             // Change summery:
-            //
             //   Add the new 'gridregions' table to replace the old 'regions' table
-            //
             AddSchema("gridregions", ColDefs(
                 ColDef("ScopeID", ColumnTypes.String45),
                 ColDef("RegionUUID", ColumnTypes.String45),

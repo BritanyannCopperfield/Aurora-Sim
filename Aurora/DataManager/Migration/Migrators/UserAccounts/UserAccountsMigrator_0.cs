@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,13 +40,10 @@ namespace Aurora.DataManager.Migration.Migrators.UserAccounts
 
             schema = new List<SchemaDefinition>();
 
-            //
             // Change summery:
-            //
             //   Force 'UserAccounts' to 'useraccounts'
             //     Note: we do multiple renames here as it doesn't 
             //     always like just switching to lowercase (as in SQLite)
-            //
             this.RenameSchema("UserAccounts", "useraccountslower");
             this.RenameSchema("useraccountslower", "useraccounts");
 

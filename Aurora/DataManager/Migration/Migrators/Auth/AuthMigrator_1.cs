@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,12 +40,8 @@ namespace Aurora.DataManager.Migration.Migrators.Auth
 
             schema = new List<SchemaDefinition>();
 
-            //
             // Change summery:
-            //
             //   Remove the webLoginKey pieces (as it shouldn't be used in this way)
-            //
-
             AddSchema("auth", ColDefs(
                 ColDef("UUID", ColumnTypes.Char36),
                 ColDef("passwordHash", ColumnTypes.Char32),
