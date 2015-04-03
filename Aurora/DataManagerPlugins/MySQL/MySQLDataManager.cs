@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,18 +78,12 @@ namespace Aurora.DataManager.MySQL
 
         public void CloseDatabase(MySqlConnection connection)
         {
-            //Interlocked.Decrement (ref m_locked);
-            //connection.Close();
-            //connection.Dispose();
         }
 
         public override void CloseDatabase(DataReaderConnection conn)
         {
             if (conn != null && conn.DataReader != null)
                 conn.DataReader.Close();
-            //Interlocked.Decrement (ref m_locked);
-            //m_connection.Close();
-            //m_connection.Dispose();
         }
 
         #endregion
@@ -271,10 +265,6 @@ namespace Aurora.DataManager.MySQL
                 return null;
             }
         }
-
-        /*public override Dictionary<string, List<string>> QueryNames(string[] wantedValue, string table, QueryFilter queryFilter, Dictionary<string, bool> sort, uint? start, uint? count)
-        {
-        }*/
 
         public override Dictionary<string, List<string>> QueryNames(string[] keyRow, object[] keyValue, string table,
                                                                     string wantedValue)
@@ -1033,9 +1023,7 @@ namespace Aurora.DataManager.MySQL
                 while (rdr.Read())
                 {
                     var name = rdr["Field"];
-                    //var pk = rdr["Key"];
                     var type = rdr["Type"];
-                    //var extra = rdr["Extra"];
                     object defaultValue = rdr["Default"];
 
                     ColumnTypeDef typeDef = ConvertTypeToColumnType(type.ToString());
@@ -1062,7 +1050,6 @@ namespace Aurora.DataManager.MySQL
                     if (rdr != null)
                     {
                         rdr.Close();
-                        //rdr.Dispose ();
                     }
                 }
                 catch (Exception e)

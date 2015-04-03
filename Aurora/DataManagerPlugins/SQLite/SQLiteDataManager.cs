@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,6 @@ namespace Aurora.DataManager.SQLite
                 MainConsole.Instance.WarnFormat("[SqliteDataManager]: Exception processing command: {0}, Exception: {1}",
                                         cmd.CommandText,
                                         ex.ToString());
-                //throw ex;
             }
             catch (Exception ex)
             {
@@ -145,7 +144,6 @@ namespace Aurora.DataManager.SQLite
             }
             catch (SqliteException)
             {
-                //throw ex;
             }
             catch (Exception ex)
             {
@@ -218,7 +216,6 @@ namespace Aurora.DataManager.SQLite
         {
             cmd.Connection.Close();
             cmd.Parameters.Clear();
-            //cmd.Dispose ();
         }
 
         private void AddParams(ref SqliteCommand cmd, Dictionary<string, object> ps)
@@ -276,7 +273,6 @@ namespace Aurora.DataManager.SQLite
                             }
                         }
                     }
-                    //reader.Close();
                     CloseReaderCommand(cmd);
 
                     return RetVal;
@@ -373,7 +369,6 @@ namespace Aurora.DataManager.SQLite
                                 RetVal.Add(reader[i] == null ? null : reader[i].ToString());
                         }
                     }
-                    //reader.Close();
                     CloseReaderCommand(cmd);
 
                     return RetVal;
@@ -427,7 +422,6 @@ namespace Aurora.DataManager.SQLite
                             }
                         }
                     }
-                    //reader.Close();
                     CloseReaderCommand(cmd);
 
                     return RetVal;
@@ -1276,7 +1270,7 @@ namespace Aurora.DataManager.SQLite
                     }
                     if (isPrimary)
                     {
-//                        MainConsole.Instance.Warn("[" + Identifier + "]: Primary Key found (" + string.Join(", ", defs[index.Key].Fields) + ")");
+                       //MainConsole.Instance.Warn("[" + Identifier + "]: Primary Key found (" + string.Join(", ", defs[index.Key].Fields) + ")");
                         defs[index.Key].Type = IndexType.Primary;
                         checkForPrimary = false;
                     }
