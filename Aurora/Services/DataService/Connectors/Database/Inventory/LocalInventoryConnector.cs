@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -179,12 +179,10 @@ namespace Aurora.Services.DataService
                 contents.WriteStartMap("internalContents"); //Start internalContents kvp
                 OSDMap invFetch = (OSDMap) m;
 
-                //UUID agent_id = invFetch["agent_id"].AsUUID();
                 UUID owner_id = invFetch["owner_id"].AsUUID();
                 UUID folder_id = invFetch["folder_id"].AsUUID();
                 bool fetch_folders = invFetch["fetch_folders"].AsBoolean();
                 bool fetch_items = invFetch["fetch_items"].AsBoolean();
-                //int sort_order = invFetch["sort_order"].AsInteger();
 
                 //Set the normal stuff
                 contents["agent_id"] = AgentID;
@@ -238,7 +236,7 @@ namespace Aurora.Services.DataService
                                     uint.Parse(retVal.DataReader["inventoryBasePermissions"].ToString());
                                 contents["everyone_mask"] =
                                     uint.Parse(retVal.DataReader["inventoryEveryOnePermissions"].ToString());
-                                contents.WriteEndMap( /*Permissions*/);
+                                contents.WriteEndMap(); // Permissions
 
                                 contents.WriteKey("sale_info"); //Start permissions kvp
                                 contents.WriteStartMap("sale_info"); //Start sale_info kvp
@@ -258,7 +256,7 @@ namespace Aurora.Services.DataService
                                         contents["sale_type"] = "contents";
                                         break;
                                 }
-                                contents.WriteEndMap( /*sale_info*/);
+                                contents.WriteEndMap(); // sale_info
 
 
                                 contents["created_at"] = int.Parse(retVal.DataReader["creationDate"].ToString());
@@ -298,7 +296,7 @@ namespace Aurora.Services.DataService
 
                                 if (addToCount)
                                     count++;
-                                contents.WriteEndMap( /*"item"*/); //end array items
+                                contents.WriteEndMap(); //end array items
                             }
                         }
                         catch
@@ -323,7 +321,7 @@ namespace Aurora.Services.DataService
                         moreLinkedItems.Clear();
                         goto redoQuery;
                     }
-                    contents.WriteEndArray( /*"items"*/); //end array items
+                    contents.WriteEndArray(); //end array items
                 }
                 contents.WriteStartArray("categories"); //We don't send any folders
                 int version = 0;
@@ -364,7 +362,7 @@ namespace Aurora.Services.DataService
                                         contents["preferred_type"] = type;
 
                                         count++;
-                                        contents.WriteEndMap( /*"folder"*/); //end array items
+                                        contents.WriteEndMap(); //end array items
                                     }
                                 }
                                 catch
@@ -379,7 +377,7 @@ namespace Aurora.Services.DataService
                     }
                 }
 
-                contents.WriteEndArray( /*"categories"*/);
+                contents.WriteEndArray();
                 contents["descendents"] = count;
                 contents["version"] = version;
 
@@ -388,7 +386,7 @@ namespace Aurora.Services.DataService
             }
 
             contents.WriteEndArray(); //end array folders
-            contents.WriteEndMap( /*"llsd"*/); //end llsd
+            contents.WriteEndMap(); //end llsd
 
             try
             {
@@ -592,7 +590,6 @@ namespace Aurora.Services.DataService
 
                 array.Add(item);
             }
-            //retVal.Close();
 
             return array;
         }
@@ -615,7 +612,7 @@ namespace Aurora.Services.DataService
                                                  };
                 folders.Add(folder);
             }
-            //retVal.Clear();
+
             return folders;
         }
 
@@ -853,11 +850,7 @@ namespace Aurora.Services.DataService
                 writer.Close();
 
                 byte[] array = sw.ToArray();
-                /*byte[] newarr = new byte[array.Length - 3];
-                Array.Copy(array, 3, newarr, 0, newarr.Length);
-                writer = null;
-                sw = null;
-                array = null;*/
+
                 return array;
             }
 

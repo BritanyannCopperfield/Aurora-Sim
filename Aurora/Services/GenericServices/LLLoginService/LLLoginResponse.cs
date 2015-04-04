@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.Services;
@@ -229,7 +228,6 @@ namespace Aurora.Services
         {
             IPEndPoint endPoint = destination.ExternalEndPoint;
             //We don't need this anymore, we set this from what we get from the region
-            //endPoint = Util.ResolveAddressForClient (endPoint, circuitData.ClientIPEndPoint);
             SimAddress = endPoint.Address.ToString();
             SimPort = (uint) circuitData.RegionUDPPort;
             RegionX = (uint) destination.RegionLocX;
@@ -541,9 +539,7 @@ namespace Aurora.Services
                     TempHash["parent_id"] = library.LibraryRootFolderID.ToString();
                 else
                     TempHash["parent_id"] = folder.ParentID.ToString();
-                //TempHash["version"] = (Int32)folder.Version;
                 TempHash["version"] = 1;
-                //TempHash["type_default"] = (Int32) folder.Type;
                 TempHash["type_default"] = 9;
                 TempHash["folder_id"] = folder.ID.ToString();
                 table.Add(TempHash);

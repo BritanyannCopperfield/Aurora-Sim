@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -125,7 +124,6 @@ namespace Aurora.Services
             {
                 //Log out all the agents first, then add any child agents that should be in this region
                 //Don't do this, we don't need to kill all the clients right now
-                //LogOutAllAgentsForRegion(requestingRegion);
                 IGridService GridService = m_registry.RequestModuleInterface<IGridService>();
                 if (GridService != null)
                 {
@@ -444,12 +442,7 @@ namespace Aurora.Services
                 reason = "Could not find neighbor to inform";
                 return false;
             }
-            /*if ((neighbor.Flags & (int)Aurora.Framework.RegionFlags.RegionOnline) == 0 &&
-                (neighbor.Flags & (int)(Aurora.Framework.RegionFlags.Foreign | Aurora.Framework.RegionFlags.Hyperlink)) == 0)
-            {
-                reason = "The region you are attempting to teleport to is offline";
-                return false;
-            }*/
+
             MainConsole.Instance.Info("[AgentProcessing]: Starting to inform client about neighbor " +
                                       neighbor.RegionName);
 
@@ -656,8 +649,6 @@ namespace Aurora.Services
                         }
                         //Close the agent at the place we just created if it isn't a neighbor
                         // 7/22 -- Kill the agent no matter what, it obviously is having issues getting there
-                        //if (IsOutsideView (regionCaps.RegionX, destination.RegionLocX, regionCaps.Region.RegionSizeX, destination.RegionSizeX,
-                        //    regionCaps.RegionY, destination.RegionLocY, regionCaps.Region.RegionSizeY, destination.RegionSizeY))
                         {
                             SimulationService.CloseAgent(destination, AgentID);
                             clientCaps.RemoveCAPS(destination.RegionID);

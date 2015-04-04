@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -147,13 +146,8 @@ namespace Aurora.Services.SQLServices.InventoryService
 
         #region IInventoryService Members
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual bool CreateUserInventory(UUID principalID, bool createDefaultItems)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", principalID, createDefaultItems);
-            if (remoteValue != null || m_doRemoteOnly)
-                return remoteValue == null ? false : (bool)remoteValue;*/
-
             List<InventoryItemBase> items;
             return CreateUserInventory(principalID, createDefaultItems, out items);
         }
@@ -164,7 +158,6 @@ namespace Aurora.Services.SQLServices.InventoryService
             // This is braindeaad. We can't ever communicate that we fixed
             // an existing inventory. Well, just return root folder status,
             // but check sanity anyway.
-            //
             bool result = false;
 
             InventoryFolderBase rootFolder = GetRootFolder(principalID);
@@ -523,13 +516,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return result;
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual List<InventoryFolderBase> GetInventorySkeleton(UUID principalID)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", principalID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return (List<InventoryFolderBase>)remoteValue;*/
-
             List<InventoryFolderBase> allFolders = m_Database.GetFolders(
                 new[] {"agentID"},
                 new[] {principalID.ToString()});
@@ -539,13 +527,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return allFolders;
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual List<InventoryFolderBase> GetRootFolders(UUID principalID)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", principalID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return (List<InventoryFolderBase>)remoteValue;*/
-
             return m_Database.GetFolders(
                 new[] {"agentID", "parentFolderID"},
                 new[] {principalID.ToString(), UUID.Zero.ToString()});
@@ -593,13 +576,12 @@ namespace Aurora.Services.SQLServices.InventoryService
 
             if (folders.Count == 0)
             {
-                //                MainConsole.Instance.WarnFormat("[XINVENTORY SERVICE]: Found no folder for type {0} for user {1}", type, principalID);
+                // MainConsole.Instance.WarnFormat("[XINVENTORY SERVICE]: Found no folder for type {0} for user {1}", type, principalID);
                 return null;
             }
 
-            //            MainConsole.Instance.DebugFormat(
-            //                "[XINVENTORY SERVICE]: Found folder {0} {1} for type {2} for user {3}", 
-            //                folders[0].folderName, folders[0].folderID, type, principalID);
+            // MainConsole.Instance.DebugFormat(
+            //     "[XINVENTORY SERVICE]: Found folder {0} {1} for type {2} for user {3}", folders[0].folderName, folders[0].folderID, type, principalID);
 
             return folders[0];
         }
@@ -614,7 +596,6 @@ namespace Aurora.Services.SQLServices.InventoryService
             // This method doesn't receive a valud principal id from the
             // connector. So we disregard the principal and look
             // by ID.
-            //
             MainConsole.Instance.DebugFormat("[XINVENTORY SERVICE]: Fetch contents for folder {0}", folderID.ToString());
             InventoryCollection inventory = new InventoryCollection
                                                 {
@@ -632,13 +613,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return inventory;
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual List<InventoryItemBase> GetFolderItems(UUID principalID, UUID folderID)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", principalID, folderID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return (List<InventoryItemBase>)remoteValue;*/
-
             if (principalID != UUID.Zero)
                 return m_Database.GetItems(principalID,
                                            new[] {"parentFolderID", "avatarID"},
@@ -657,7 +633,6 @@ namespace Aurora.Services.SQLServices.InventoryService
                 return (List<InventoryFolderBase>) remoteValue;
 
             // Since we probably don't get a valid principal here, either ...
-            //
             List<InventoryFolderBase> invItems = m_Database.GetFolders(
                 new[] {"parentFolderID"},
                 new[] {folderID.ToString()});
@@ -732,7 +707,6 @@ namespace Aurora.Services.SQLServices.InventoryService
         }
 
         // We don't check the principal's ID here
-        //
         [CanBeReflected(ThreatLevel = ThreatLevel.High)]
         public virtual bool DeleteFolders(UUID principalID, List<UUID> folderIDs)
         {
@@ -754,7 +728,6 @@ namespace Aurora.Services.SQLServices.InventoryService
             }
 
             // Ignore principal ID, it's bogus at connector level
-            //
             foreach (UUID id in folderIDs)
             {
                 if (!ParentIsTrash(id))
@@ -795,13 +768,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return true;
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual bool ForcePurgeFolder(InventoryFolderBase folder)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", folder);
-            if (remoteValue != null || m_doRemoteOnly)
-                return remoteValue == null ? false : (bool)remoteValue;*/
-
             List<InventoryFolderBase> subFolders = m_Database.GetFolders(
                 new[] {"parentFolderID"},
                 new[] {folder.ID.ToString()});
@@ -903,8 +871,7 @@ namespace Aurora.Services.SQLServices.InventoryService
                 return true;
             }
 
-            // Just use the ID... *facepalms*
-            //
+            // Just use the ID
             foreach (UUID id in itemIDs)
             {
                 m_Database.DeleteItems("inventoryID", id.ToString());
@@ -962,12 +929,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return items[0];
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual OSDArray GetOSDItem(UUID avatarID, UUID itemID)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", avatarID, itemID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return (OSDArray)remoteValue;*/
             if (avatarID != UUID.Zero)
             {
                 return m_Database.GetLLSDItems(
@@ -1013,13 +976,8 @@ namespace Aurora.Services.SQLServices.InventoryService
             return folders[0];
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual List<InventoryItemBase> GetActiveGestures(UUID principalID)
         {
-            /*object remoteValue = DoRemoteByURL("InventoryServerURI", principalID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return (List<InventoryItemBase>)remoteValue;*/
-
             return new List<InventoryItemBase>(m_Database.GetActiveGestures(principalID));
         }
 
@@ -1533,7 +1491,7 @@ namespace Aurora.Services.SQLServices.InventoryService
 
         protected virtual InventoryFolderBase[] GetSystemFolders(UUID principalID)
         {
-            //            MainConsole.Instance.DebugFormat("[XINVENTORY SERVICE]: Getting system folders for {0}", principalID);
+            // MainConsole.Instance.DebugFormat("[XINVENTORY SERVICE]: Getting system folders for {0}", principalID);
 
             InventoryFolderBase[] allFolders = m_Database.GetFolders(
                 new[] {"agentID"},
@@ -1548,8 +1506,7 @@ namespace Aurora.Services.SQLServices.InventoryService
                         return false;
                     });
 
-            //            MainConsole.Instance.DebugFormat(
-            //                "[XINVENTORY SERVICE]: Found {0} system folders for {1}", sysFolders.Length, principalID);
+            // MainConsole.Instance.DebugFormat("[XINVENTORY SERVICE]: Found {0} system folders for {1}", sysFolders.Length, principalID);
 
             return sysFolders;
         }

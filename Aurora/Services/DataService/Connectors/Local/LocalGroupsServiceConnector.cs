@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -194,13 +194,8 @@ namespace Aurora.Services.DataService
             SetAgentActiveGroup(founderID, groupID);
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public void UpdateGroupFounder(UUID groupID, UUID newOwner, bool keepOldOwnerInGroup)
         {
-            /*object remoteValue = DoRemote(groupID, newOwner, keepOldOwnerInGroup);
-            if (remoteValue != null || m_doRemoteOnly)
-                return;*/
-
             GroupRecord record = GetGroupRecord(UUID.Zero, groupID, "");
             bool newUserExists = GetAgentGroupMemberData(newOwner, groupID, newOwner) != null;
 
@@ -760,10 +755,6 @@ namespace Aurora.Services.DataService
                 }
                 if (yes + no < p.Quorum)
                     p.Result = false;
-                /*if (yes > no)
-                    p.Result = true;
-                else
-                    p.Result = false;*/
                 p.HasCalculatedResult = true;
                 GenericUtils.AddGeneric(p.GroupID, "Proposal", p.VoteID.ToString(), p.ToOSD(), data);
             }
@@ -926,8 +917,6 @@ namespace Aurora.Services.DataService
         public List<GroupRecord> GetGroupRecords(UUID requestingAgentID, uint start, uint count,
                                                  Dictionary<string, bool> sort, Dictionary<string, bool> boolFields)
         {
-            //            List<string> filter = new List<string>();
-
             object remoteValue = DoRemote(requestingAgentID, start, count, boolFields);
             if (remoteValue != null || m_doRemoteOnly)
                 return (List<GroupRecord>) remoteValue;

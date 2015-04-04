@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -92,10 +91,7 @@ namespace Aurora.Services
 
         #region IImprovedAssetCache
 
-        ////////////////////////////////////////////////////////////
         // IImprovedAssetCache
-        //
-
         public void Cache(string assetID, AssetBase asset)
         {
             if (asset != null)

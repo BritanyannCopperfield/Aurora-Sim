@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
@@ -237,13 +236,8 @@ namespace Aurora.Services.SQLServices.UserAccountService
             return d[0];
         }
 
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public bool StoreUserAccount(UserAccount data)
         {
-            /*object remoteValue = DoRemoteByURL("UserAccountServerURI", data);
-            if (remoteValue != null || m_doRemoteOnly)
-                return remoteValue == null ? false : (bool)remoteValue;*/
-
             m_registry.RequestModuleInterface<ISimulationBase>()
                       .EventManager.FireGenericEventHandler("UpdateUserInformation", data.PrincipalID);
             return m_Database.Store(data);
@@ -330,13 +324,8 @@ namespace Aurora.Services.SQLServices.UserAccountService
         /// </summary>
         /// <param name="newAccount"></param>
         /// <param name="password"></param>
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public string CreateUser(UserAccount newAccount, string password)
         {
-            /*object remoteValue = DoRemoteByURL("UserAccountServerURI", newAcc, password);
-            if (remoteValue != null || m_doRemoteOnly)
-                return remoteValue == null ? "" : remoteValue.ToString();*/
-
             UserAccount account = GetUserAccount(null, newAccount.PrincipalID);
             UserAccount nameaccount = GetUserAccount(null, newAccount.Name);
             if (null == account && nameaccount == null)
@@ -381,9 +370,6 @@ namespace Aurora.Services.SQLServices.UserAccountService
 
         public void DeleteUser(UUID userID, string name, string password, bool archiveInformation, bool wipeFromDatabase)
         {
-            //if (password != "" && m_AuthenticationService.Authenticate(userID, "UserAccount", password, 0) == "")
-            //    return; //Not authed
-
             if (!m_Database.DeleteAccount(userID, archiveInformation))
             {
                 MainConsole.Instance.WarnFormat(

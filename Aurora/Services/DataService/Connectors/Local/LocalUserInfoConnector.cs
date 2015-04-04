@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -231,7 +230,6 @@ namespace Aurora.Services.DataService
             filter.orGreaterThanEqFilters["LastSeen"] = now;
             if (stillOnline)
             {
-//                filter.andGreaterThanFilters["LastLogout"] = now;
                 filter.andFilters["IsOnline"] = "1";
             }
 
@@ -248,7 +246,6 @@ namespace Aurora.Services.DataService
             filter.orGreaterThanEqFilters["LastSeen"] = now;
             if (stillOnline)
             {
-//                filter.andGreaterThanFilters["LastLogout"] = now;
                 filter.andFilters["IsOnline"] = "1";
             }
 

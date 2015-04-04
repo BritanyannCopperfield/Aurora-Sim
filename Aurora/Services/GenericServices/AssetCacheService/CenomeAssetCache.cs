@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -170,7 +169,7 @@ namespace Aurora.Services
         {
             if (asset != null)
             {
-//                MainConsole.Instance.DebugFormat("[CENOME ASSET CACHE]: Caching asset {0}", asset.IDString);
+                // MainConsole.Instance.DebugFormat("[CENOME ASSET CACHE]: Caching asset {0}", asset.IDString);
 
                 long size = asset.Data != null ? asset.Data.Length : 1;
                 m_cache.Set(asset.IDString, asset, size);
@@ -258,8 +257,7 @@ namespace Aurora.Services
                 m_cachedCount = 0;
             }
 
-//            if (null == assetBase)
-//                MainConsole.Instance.DebugFormat("[CENOME ASSET CACHE]: Asset {0} not in cache", id);
+                // MainConsole.Instance.DebugFormat("[CENOME ASSET CACHE]: Asset {0} not in cache", id);
 
             return assetBase;
         }

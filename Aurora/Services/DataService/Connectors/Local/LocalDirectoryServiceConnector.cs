@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -695,8 +695,6 @@ namespace Aurora.Services.DataService
                 sort["Area"] = false;
             if ((Flags & (uint) DirectoryManager.DirFindFlags.NameSort) == (uint) DirectoryManager.DirFindFlags.NameSort)
                 sort["Name"] = false;
-            //if ((queryFlags & (uint)DirectoryManager.DirFindFlags.PerMeterSort) == (uint)DirectoryManager.DirFindFlags.PerMeterSort)
-            //    sort["Area"] = (queryFlags & (uint)DirectoryManager.DirFindFlags.SortAsc) == (uint)DirectoryManager.DirFindFlags.SortAsc);
             if ((Flags & (uint) DirectoryManager.DirFindFlags.PricesSort) ==
                 (uint) DirectoryManager.DirFindFlags.PricesSort)
                 sort["SalePrice"] = (Flags & (uint) DirectoryManager.DirFindFlags.SortAsc) ==
@@ -771,10 +769,6 @@ namespace Aurora.Services.DataService
             else if ((queryFlags & (uint) DirectoryManager.DirFindFlags.NameSort) ==
                      (uint) DirectoryManager.DirFindFlags.NameSort)
                 sort["Name"] = false;
-                //else if ((queryFlags & (uint)DirectoryManager.DirFindFlags.PerMeterSort) == (uint)DirectoryManager.DirFindFlags.PerMeterSort)
-                //    sort["Area"] = (queryFlags & (uint)DirectoryManager.DirFindFlags.SortAsc) == (uint)DirectoryManager.DirFindFlags.SortAsc);
-                //else if ((queryFlags & (uint)DirectoryManager.DirFindFlags.PricesSort) == (uint)DirectoryManager.DirFindFlags.PricesSort)
-                //    sort["SalePrice"] = (queryFlags & (uint)DirectoryManager.DirFindFlags.SortAsc) == (uint)DirectoryManager.DirFindFlags.SortAsc;
             else
                 sort["Dwell"] = false;
 

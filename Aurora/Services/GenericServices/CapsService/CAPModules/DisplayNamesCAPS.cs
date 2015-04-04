@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Servers;
@@ -129,7 +128,6 @@ namespace Aurora.Services
                 IUserProfileInfo info = m_profileConnector.GetUserProfile(m_service.AgentID);
                 if (info == null)
                 {
-                    //m_avatar.ControllingClient.SendAlertMessage ("You cannot update your display name currently as your profile cannot be found.");
                 }
                 else
                 {
@@ -196,8 +194,6 @@ namespace Aurora.Services
                             PackUserInfo(info, account, ref agents);
                         else
                             PackUserInfo(info, account, ref agents);
-                        //else //Technically is right, but needs to be packed no matter what for OS based grids
-                        //    bad_ids.Add (id);
                     }
                 }
             }

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -285,13 +284,8 @@ namespace Aurora.Services.SQLServices.GridService
         ///     This updates the down flag in the map and blocks it from becoming a 'safe' region fallback
         ///     Only called by LLLoginService
         /// </summary>
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual void SetRegionUnsafe(UUID id)
         {
-            /*object remoteValue = DoRemoteByURL("GridServerURI", id);
-            if (remoteValue != null || m_doRemoteOnly)
-                return;*/
-
             GridRegion data = m_Database.Get(id, null);
             if (data == null)
                 return;
@@ -307,13 +301,8 @@ namespace Aurora.Services.SQLServices.GridService
         ///     This updates the down flag in the map and allows it to become a 'safe' region fallback
         ///     Only called by LLLoginService
         /// </summary>
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public virtual void SetRegionSafe(UUID id)
         {
-            /*object remoteValue = DoRemoteByURL("GridServerURI", id);
-            if (remoteValue != null || m_doRemoteOnly)
-                return;*/
-
             GridRegion data = m_Database.Get(id, null);
             if (data == null)
                 return;
@@ -493,13 +482,10 @@ namespace Aurora.Services.SQLServices.GridService
             if (region != null)
             {
                 // There is a preexisting record
-                //
                 // Get it's flags
-                //
                 RegionFlags rflags = (RegionFlags) region.Flags;
 
                 // Is this a reservation?
-                //
                 if ((rflags & RegionFlags.Reservation) != 0)
                 {
                     // Regions reserved for the null key cannot be taken.
@@ -507,7 +493,6 @@ namespace Aurora.Services.SQLServices.GridService
                         return new RegisterRegion {Error = "Region location is reserved"};
 
                     // Treat it as an auth request
-                    //
                     // NOTE: Fudging the flags value here, so these flags
                     //       should not be used elsewhere. Don't optimize
                     //       this with the later retrieval of the same flags!
@@ -802,9 +787,7 @@ namespace Aurora.Services.SQLServices.GridService
                 return (List<GridRegion>) remoteValue;
 
             NeighborLocation currentLoc = BuildNeighborLocation(region);
-            //List<GridRegion> neighbors = m_KnownNeighbors.FirstOrDefault((loc)=>loc.Key == currentLoc).Value;
             List<GridRegion> neighbors;
-            //if (neighbors == null)
             if (!m_KnownNeighbors.TryGetValue(currentLoc, out neighbors))
             {
                 neighbors = FindNewNeighbors(region);

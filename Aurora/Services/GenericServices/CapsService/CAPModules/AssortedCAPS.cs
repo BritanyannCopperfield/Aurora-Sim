@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.PresenceInfo;
@@ -123,7 +122,6 @@ namespace Aurora.Services
                 Vector3 lookAt = new Vector3((float) lookat["X"].AsReal(),
                                              (float) lookat["Y"].AsReal(),
                                              (float) lookat["Z"].AsReal());
-                //int locationID = HomeLocation["LocationId"].AsInteger();
 
                 m_agentInfoService.SetHomePosition(agentID.ToString(), m_service.Region.RegionID, position, lookAt);
             }
@@ -226,10 +224,7 @@ namespace Aurora.Services
             Vector3 position = new Vector3((float) pos["X"].AsReal(),
                                            (float) pos["Y"].AsReal(),
                                            (float) pos["Z"].AsReal());
-            /*OSDMap lookat = rm["LocationLookAt"] as OSDMap;
-            Vector3 lookAt = new Vector3((float)lookat["X"].AsReal(),
-                (float)lookat["Y"].AsReal(),
-                (float)lookat["Z"].AsReal());*/
+
             ulong RegionHandle = rm["RegionHandle"].AsULong();
             const uint tpFlags = 16;
 

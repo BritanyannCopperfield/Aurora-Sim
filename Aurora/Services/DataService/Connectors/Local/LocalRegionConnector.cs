@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
  */
 
 using System.Collections.Generic;
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
@@ -135,7 +134,6 @@ namespace Aurora.Services.DataService
                 return;
 
             //Look for a telehub first.
-            // Why? ~ SignpostMarv
             if (FindTelehub(regionID, 0) != null)
             {
                 QueryFilter filter = new QueryFilter();

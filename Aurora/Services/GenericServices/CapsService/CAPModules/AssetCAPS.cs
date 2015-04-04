@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -421,8 +420,7 @@ namespace Aurora.Services
         {
             try
             {
-                //MainConsole.Instance.Debug("[CAPS]: UploadBakedTexture Request in region: " +
-                //        m_regionName);
+                //MainConsole.Instance.Debug("[CAPS]: UploadBakedTexture Request in region: " + m_regionName);
 
                 string uploadpath = "/CAPS/Upload/" + UUID.Random() + "/";
                 BakedTextureUploader uploader = new BakedTextureUploader(uploadpath);

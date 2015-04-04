@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -41,7 +40,6 @@ namespace Aurora.Services
     // Principals may be clients acting on users' behalf,
     // or any other components that need 
     // verifiable identification.
-    //
     public class PasswordAuthenticationService :
         AuthenticationServiceBase, IAuthenticationService, IService
     {
@@ -114,9 +112,7 @@ namespace Aurora.Services
             if (handlerConfig.GetString("AuthenticationHandler", "") != Name)
                 return;
 
-            //
             // Try reading the [AuthenticationService] section first, if it exists
-            //
             IConfig authConfig = config.Configs["AuthenticationService"];
             if (authConfig != null)
             {

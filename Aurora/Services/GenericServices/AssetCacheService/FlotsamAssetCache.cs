@@ -28,7 +28,6 @@
 // Uncomment to make asset Get requests for existing 
 // #define WAIT_ON_INPROGRESS_REQUESTS
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -265,10 +264,7 @@ namespace Aurora.Services
 
         #region IImprovedAssetCache
 
-        ////////////////////////////////////////////////////////////
         // IImprovedAssetCache
-        //
-
         private void UpdateMemoryCache(string key, AssetBase asset)
         {
             UpdateMemoryCache(key, asset, false);
@@ -576,7 +572,6 @@ namespace Aurora.Services
             Stream s = File.Open(tempname, FileMode.OpenOrCreate);
             ProtoBuf.Serializer.Serialize<AssetBase>(s, asset);
             s.Close();
-            //File.WriteAllText(tempname, OpenMetaverse.StructuredData.OSDParser.SerializeJsonString(asset.ToOSD()));
 
             // Now that it's written, rename it so that it can be found.
             if (File.Exists(filename))

@@ -28,7 +28,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
 using Aurora.Framework.Utilities;

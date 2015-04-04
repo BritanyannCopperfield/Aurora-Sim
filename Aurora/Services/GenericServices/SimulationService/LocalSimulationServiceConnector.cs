@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -140,10 +139,7 @@ namespace Aurora.Services
             return null;
         }
 
-        /**
-         * Agent-related communications
-         */
-
+         // Agent-related communications
         public bool CreateAgent(GridRegion destination, AgentCircuitData aCircuit, uint teleportFlags, out CreateAgentResponse response)
         {
             response = new CreateAgentResponse();
@@ -181,7 +177,7 @@ namespace Aurora.Services
             if (transferModule != null)
                 retVal = transferModule.IncomingChildAgentDataUpdate(Scene, agentData);
 
-            //            MainConsole.Instance.DebugFormat("[LOCAL COMMS]: Did not find region {0} for ChildAgentUpdate", regionHandle);
+            // MainConsole.Instance.DebugFormat("[LOCAL COMMS]: Did not find region {0} for ChildAgentUpdate", regionHandle);
             return retVal;
         }
 
@@ -267,10 +263,8 @@ namespace Aurora.Services
             return false;
         }
 
-        /**
-         * Object-related communications
-         */
 
+         // Object-related communications
         public bool CreateObject(GridRegion destination, ISceneEntity sog)
         {
             IScene Scene = destination == null ? null : GetScene(destination.RegionID);

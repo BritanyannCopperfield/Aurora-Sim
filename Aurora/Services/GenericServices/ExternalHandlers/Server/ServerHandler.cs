@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Servers.HttpServer;
 using Aurora.Framework.Servers.HttpServer.Interfaces;
@@ -68,22 +67,8 @@ namespace Aurora.Services
                 IHttpServer server = m_registry.RequestModuleInterface<ISimulationBase>().GetHttpServer(port);
 
                 server.AddStreamHandler(new ServerHandler("/server/", m_registry, null));
-                //AddUDPConector(8008);
             }
         }
-
-        /*private void AddUDPConector(int port)
-        {
-            Thread thread = new Thread(delegate()
-                {
-                    UdpClient server = new UdpClient("127.0.0.1", port);
-                    IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] data = server.Receive(ref sender);
-                    OSDMap map = (OSDMap)OSDParser.DeserializeJson(new MemoryStream(data));
-                    ServerHandler handler = new ServerHandler("", "", m_registry);
-                    byte[] Data = handler.HandleMap(map);
-                });
-        }*/
 
         #endregion
     }

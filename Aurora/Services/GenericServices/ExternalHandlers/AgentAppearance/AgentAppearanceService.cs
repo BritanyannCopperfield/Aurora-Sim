@@ -1,4 +1,31 @@
-﻿using Aurora.Framework.ClientInterfaces;
+﻿/*
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Aurora-Sim Project nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -73,13 +100,8 @@ namespace Aurora.Services
         {
             string[] req = path.Split('/');
             UUID avID = UUID.Parse(req[2]);
-            //string type = req[3];
             UUID textureID = UUID.Parse(req[4]);
 
-            //IAvatarService avService = m_registry.RequestModuleInterface<IAvatarService>();
-            //Aurora.Framework.ClientInterfaces.AvatarAppearance appearance = avService.GetAppearance(avID);
-            //AvatarTextureIndex textureIndex = AppearanceManager.BakeTypeToAgentTextureIndex((BakeType)Enum.Parse(typeof(BakeType), type, true));
-            //AssetBase texture = m_assetService.Get(appearance.Texture.FaceTextures[(int)textureIndex].TextureID.ToString());
             AssetBase texture = m_assetService.Get(textureID.ToString());
             if (texture == null)
             {
@@ -94,7 +116,6 @@ namespace Aurora.Services
         }
 
         private TextureData[] Textures = new TextureData[(int)AvatarTextureIndex.NumberOfEntries];
-        //private List<UUID> m_lastInventoryItemIDs = new List<UUID>();
 
         private void BakeAvatar(IScene scene, string[] cmd)
         {
@@ -144,8 +165,6 @@ namespace Aurora.Services
                     if (appearance.Wearables.Any((w) => w.GetItem(assetID) != UUID.Zero))
                     {
                         currentItemIDs.Add(assetID);
-                        //if (m_lastInventoryItemIDs.Contains(assetID))
-                        //    continue;
                         WearableData wearable = new WearableData();
                         AssetBase asset = m_assetService.Get(assetID.ToString());
                         if (asset != null && asset.TypeAsset != AssetType.Object)
@@ -171,35 +190,9 @@ namespace Aurora.Services
                     }
                 }
             }
-            /*foreach (UUID id in m_lastInventoryItemIDs)
-            {
-                if (!currentItemIDs.Contains(id))
-                {
-                    OpenMetaverse.AppearanceManager.WearableData wearable = new OpenMetaverse.AppearanceManager.WearableData();
-                    AssetBase asset = m_assetService.Get(id.ToString());
-                    if (asset != null && asset.TypeAsset != AssetType.Object)
-                    {
-                        wearable.Asset = new AssetClothing(id, asset.Data);
-                        if (wearable.Asset.Decode())
-                        {
-                            foreach (KeyValuePair<AvatarTextureIndex, UUID> entry in wearable.Asset.Textures)
-                            {
-                                int i = (int)entry.Key;
 
-                                Textures[i].Texture = null;
-                                Textures[i].TextureID = UUID.Zero;
-                            }
-                        }
-                    }
-                }
-            }*/
-            //m_lastInventoryItemIDs = currentItemIDs;
             for (int i = 0; i < Textures.Length; i++)
             {
-                /*if (Textures[i].TextureID == UUID.Zero)
-                    continue;
-                if (Textures[i].Texture != null)
-                    continue;*/
                 AssetBase asset = m_assetService.Get(Textures[i].TextureID.ToString());
                 if (asset != null)
                 {

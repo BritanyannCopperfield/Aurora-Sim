@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -452,7 +451,6 @@ namespace Aurora.Services
                         UPI = profileData.GetUserProfile(account.PrincipalID);
                         UPI.AArchiveName = m_DefaultUserAvatarArchive;
                         UPI.IsNewUser = true;
-                        //profileData.UpdateUserProfile(UPI); //It gets hit later by the next thing
                     }
                     //Find which is set, if any
                     string archiveName = (UPI.AArchiveName != "" && UPI.AArchiveName != " ")
@@ -485,9 +483,8 @@ namespace Aurora.Services
 
                 //Now get the logged in status, then below make sure to kill the previous agent if we crashed before
                 UserInfo guinfo = m_agentInfoService.GetUserInfo(account.PrincipalID.ToString());
-                //
+
                 // Clear out any existing CAPS the user may have
-                //
                 if (m_CapsService != null)
                 {
                     IAgentProcessing agentProcessor = m_registry.RequestModuleInterface<IAgentProcessing>();
@@ -505,9 +502,8 @@ namespace Aurora.Services
                         m_CapsService.RemoveCAPS(account.PrincipalID);
                 }
 
-                //
+
                 // Change Online status and get the home region
-                //
                 GridRegion home = null;
                 if (guinfo != null && (guinfo.HomeRegionID != UUID.Zero) && m_GridService != null)
                     home = m_GridService.GetRegionByUUID(account.AllScopeIDs, guinfo.HomeRegionID);
@@ -567,9 +563,8 @@ namespace Aurora.Services
                                               (guinfo.HomeRegionID == UUID.Zero ? "(no region found)" : guinfo.HomeRegionID.ToString()));
                 }
 
-                //
+
                 // Find the destination region/grid
-                //
                 string where = string.Empty;
                 Vector3 position = Vector3.Zero;
                 Vector3 lookAt = Vector3.Zero;
@@ -585,9 +580,8 @@ namespace Aurora.Services
 
                 #region Appearance
 
-                //
+
                 // Get the avatar
-                //
                 if (m_AvatarService != null)
                 {
                     bool loadedArchive;
@@ -617,9 +611,8 @@ namespace Aurora.Services
                 if (m_FriendsService != null)
                     friendsToInform = m_FriendsService.GetFriendOnlineStatuses(account.PrincipalID, true);
 
-                //
+
                 // Instantiate/get the simulation interface and launch an agent at the destination
-                //
                 string reason = "", seedCap = "";
                 AgentCircuitData aCircuit = LaunchAgentAtGrid(destination, tpFlags, account, session,
                                                               secureSession, position, where,
@@ -645,9 +638,8 @@ namespace Aurora.Services
                                                destination.ServerURI);
                 m_agentInfoService.FireUserStatusChangeEvent(account.PrincipalID.ToString(), true, destination.RegionID);
 
-                //
+
                 // Finally, fill out the response and return it
-                //
                 string MaturityRating = "A";
                 string MaxMaturity = "A";
                 if (agent != null)
@@ -1129,7 +1121,6 @@ namespace Aurora.Services
                     // Set the minimum level to allow login 
                     // Useful to allow grid update without worrying about users.
                     // or fixing critical issues
-                    //
                     if (cmd.Length > 2)
                         Int32.TryParse(cmd[2], out m_MinLoginLevel);
                     break;

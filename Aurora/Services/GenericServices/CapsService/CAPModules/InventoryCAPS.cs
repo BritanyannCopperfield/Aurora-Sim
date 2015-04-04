@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -340,7 +339,6 @@ namespace Aurora.Services
                          asset_type == "object")
                 {
                     OSDMap meshMap = (OSDMap) map["asset_resources"];
-                    //OSDArray instance_list = (OSDArray)meshMap["instance_list"];
                     int mesh_list = meshMap.ContainsKey("mesh_list") ? ((OSDArray) meshMap["mesh_list"]).Count : 1;
                     int texture_list = meshMap.ContainsKey("texture_list")
                                            ? ((OSDArray) meshMap["texture_list"]).Count
@@ -605,7 +603,6 @@ namespace Aurora.Services
                             Vector3 offset = positions[i] - rootPos;
                             grp.ChildrenList[i].SetOffsetPosition(offset);
                         }
-                        //grp.Rotation = rotations[0];
                         for (int i = 0; i < rotations.Count; i++)
                         {
                             if (i != 0)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
  */
 
 using System.Collections.Generic;
-using Aurora.Framework;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -166,13 +165,8 @@ namespace Aurora.Services.DataService
         ///     Create a new profile for a user
         /// </summary>
         /// <param name="AgentID"></param>
-        //[CanBeReflected(ThreatLevel = ThreatLevel.Full)]
         public void CreateNewProfile(UUID AgentID)
         {
-            /*object remoteValue = DoRemote(AgentID);
-            if (remoteValue != null || m_doRemoteOnly)
-                return;*/
-
             List<object> values = new List<object> {AgentID.ToString(), "LLProfile"};
 
             //Create a new basic profile for them

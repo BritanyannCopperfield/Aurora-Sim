@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Services;
 using Aurora.Framework.Utilities;
@@ -39,7 +38,6 @@ namespace Aurora.Services
     // Principals may be clients acting on users' behalf,
     // or any other components that need 
     // verifiable identification.
-    //
     public class AuthenticationServiceBase
     {
         protected IAuthenticationData m_Database;
