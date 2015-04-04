@@ -166,6 +166,9 @@ namespace Aurora.Framework.Modules
         void Info(object message);
         void InfoFormat(string format, params object[] args);
         void Log(Level level, object message);
+        void CleanInfo(object message);
+        void CleanInfoFormat(string format, params object[], args);
+        void Ticker();
         void Trace(object message);
         void TraceFormat(string format, params object[] args);
         void Warn(object message);

@@ -714,6 +714,19 @@ namespace Aurora.Framework.ConsoleFramework
             }
         }
 
+        public virtual void OutputNoTime(string text, level level)
+        {
+            if (Threshold <= level)
+            {
+                MainConsole.Triggering(level.ToString(), text);
+                Console.WriteLine(text);
+                if (m_logFile != null)
+                {
+                    m_logFile.WriteLine(text);
+                    m_logFile.Flush();
+                }
+            }
+        }
         public virtual void LockOutput()
         {
         }
@@ -855,7 +868,22 @@ namespace Aurora.Framework.ConsoleFramework
             Output(message.ToString(), Level.Info);
         }
 
-        public void InfoFormat(string format, params object[] args)
+        public void CleanInfo(object message)
+        {
+            OutputNoTime(message.ToString(), Level.Info);
+        }
+
+        public void CleanInfoFormat(string format, params object[], args)
+        {
+            OutputNoTime(string.Format(format, args), Level.Error);
+        }
+
+        public void Ticker()
+        {
+            Console.Write(".");
+        }
+
+        public void InfoFormat(string format, params object[], args)
         {
             Output(string.Format(format, args), Level.Info);
         }

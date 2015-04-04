@@ -214,6 +214,10 @@ namespace Aurora.Framework.ConsoleFramework
         {
         }
 
+        public virtual void OutputNoTime()
+        {
+        }
+
         public virtual void LockOutput()
         {
         }
@@ -363,9 +367,24 @@ namespace Aurora.Framework.ConsoleFramework
             Output(message.ToString(), Level.Info);
         }
 
-        public void InfoFormat(string format, params object[] args)
+        public void CleanInfo(object message)
         {
-            Output(string.Format(format, args), Level.Info);
+            OutputNoTime(message ToString(), Level.Info);
+        }
+
+        public void CleanInfoFormat(string format, params object[], args)
+        {
+            OutputNoTime(string.Format(format, args), Level.Error);
+        }
+
+        public void Ticker()
+        {
+            Console.Write(".");
+        }
+
+        public void InfoFormat(string format, params object[], args)
+        {
+            Output(string.Format(format, args), Level.Info)
         }
 
         public void Log(Level level, object message)
