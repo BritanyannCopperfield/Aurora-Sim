@@ -27,7 +27,6 @@
 //#define UseRemovingEntityUpdates
 
 #define UseDictionaryForEntityUpdates
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -78,13 +77,13 @@ namespace Aurora.Region
 #endif
 
         private readonly Queue<AnimationGroup> m_presenceAnimationsToSend =
-            new Queue<AnimationGroup> /*<UUID, AnimationGroup>*/();
+            new Queue<AnimationGroup>();
 
         private readonly OrderedDictionary /*<UUID, EntityUpdate>*/
-            m_objectUpdatesToSend = new OrderedDictionary /*<UUID, EntityUpdate>*/();
+            m_objectUpdatesToSend = new OrderedDictionary();
 
         private readonly OrderedDictionary /*<UUID, ISceneChildEntity>*/
-            m_objectPropertiesToSend = new OrderedDictionary /*<UUID, ISceneChildEntity>*/();
+            m_objectPropertiesToSend = new OrderedDictionary();
 
         private HashSet<ISceneEntity> lastGrpsInView = new HashSet<ISceneEntity>();
         private readonly Dictionary<UUID, IScenePresence> lastPresencesDInView = new Dictionary<UUID, IScenePresence>();
@@ -159,7 +158,6 @@ namespace Aurora.Region
                     m_drawDistanceChangedTimer.Elapsed += m_drawDistanceChangedTimer_Elapsed;
                     m_drawDistanceChangedTimer.Start();
                 }
-                //SignificantClientMovement (m_presence.ControllingClient);
             }
             else if (FunctionName == "SignficantCameraMovement")
             {
@@ -588,13 +586,6 @@ namespace Aurora.Region
                         {
 #if UseRemovingEntityUpdates
                             EntityUpdate update = ((EntityUpdate)m_presenceUpdatesToSend[0]);
-                            /*if (m_EntitiesInPacketQueue.Contains (update.Entity.UUID))
-                            {
-                                m_presenceUpdatesToSend.RemoveAt (0);
-                                m_presenceUpdatesToSend.Insert (m_presenceUpdatesToSend.Count, update.Entity.UUID, update);
-                                continue;
-                            }
-                            m_EntitiesInPacketQueue.Add (update.Entity.UUID);*/
                             m_presenceUpdatesToSend.RemoveAt (0);
                             if (update.Flags == PrimUpdateFlags.ForcedFullUpdate)
                                 SendFullUpdateForPresence ((IScenePresence)update.Entity);
@@ -651,13 +642,7 @@ namespace Aurora.Region
                         for (int i = 0; i < count; i++)
                         {
                             AnimationGroup update = m_presenceAnimationsToSend.Dequeue();
-                            /*if (m_AnimationsInPacketQueue.Contains (update.AvatarID))
-                            {
-                                m_presenceAnimationsToSend.RemoveAt (0);
-                                m_presenceAnimationsToSend.Insert (m_presenceAnimationsToSend.Count, update.AvatarID, update);
-                                continue;
-                            }
-                            m_AnimationsInPacketQueue.Add (update.AvatarID);*/
+
                             animationsToSend.Add(update);
                         }
                     }
@@ -690,13 +675,7 @@ namespace Aurora.Region
                         for (int i = 0; i < count; i++)
                         {
                             ISceneChildEntity entity = ((ISceneChildEntity) m_objectPropertiesToSend[0]);
-                            /*if (m_PropertiesInPacketQueue.Contains (entity.UUID))
-                            {
-                                m_objectPropertiesToSend.RemoveAt (0);
-                                m_objectPropertiesToSend.Insert (m_objectPropertiesToSend.Count, entity.UUID, entity);
-                                continue;
-                            }
-                            m_PropertiesInPacketQueue.Add (entity.UUID);*/
+
                             m_objectPropertiesToSend.RemoveAt(0);
                             entities.Add(entity);
                         }
@@ -799,10 +778,6 @@ namespace Aurora.Region
         /// <param name="updates"></param>
         public void FinishedEntityPacketSend(IEnumerable<EntityUpdate> updates)
         {
-            /*foreach (EntityUpdate update in updates)
-            {
-                m_EntitiesInPacketQueue.Remove(update.Entity.UUID);
-            }*/
         }
 
         /// <summary>
@@ -811,10 +786,6 @@ namespace Aurora.Region
         /// <param name="updates"></param>
         public void FinishedPropertyPacketSend(IEnumerable<IEntity> updates)
         {
-            /*foreach (IEntity update in updates)
-            {
-                m_PropertiesInPacketQueue.Remove(update.UUID);
-            }*/
         }
 
         /// <summary>
@@ -823,7 +794,6 @@ namespace Aurora.Region
         /// <param name="update"></param>
         public void FinishedAnimationPacketSend(AnimationGroup update)
         {
-            //m_AnimationsInPacketQueue.Remove(update.AvatarID);
         }
 
         private void SendQueued(HashSet<ISceneEntity> entsqueue)

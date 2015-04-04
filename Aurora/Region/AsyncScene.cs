@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -143,8 +142,7 @@ namespace Aurora.Region
         private const int m_update_entities = 5; // Send prim updates for clients
         private const int m_update_events = 1; //Trigger the OnFrame event and tell any modules about the new frame
 
-        private const int m_update_coarse_locations = 30;
-                          //Trigger the sending of coarse location updates (minimap updates)
+        private const int m_update_coarse_locations = 30; //Trigger the sending of coarse location updates (minimap updates)
 
         private volatile bool shuttingdown = false;
 
@@ -343,7 +341,6 @@ namespace Aurora.Region
 
             EventManager.OnAddToStartupQueue += AddToStartupQueue;
             EventManager.OnModuleFinishedStartup += FinishedStartup;
-            //EventManager.OnStartupComplete += StartupComplete;
 
             AddToStartupQueue("Startup");
 
@@ -674,7 +671,6 @@ namespace Aurora.Region
                 if (avgHeartBeat > normalHeartBeatSleepTime) //Fudge a bit
                     return 0; //It doesn't get any sleep
                 int newAvgSleepTime = normalHeartBeatSleepTime - avgHeartBeat;
-                //Console.WriteLine (newAvgSleepTime);
                 return newAvgSleepTime;
             }
         }

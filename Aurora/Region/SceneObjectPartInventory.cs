@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -144,26 +143,8 @@ namespace Aurora.Region
 
                 foreach (TaskInventoryItem item in items)
                 {
-                    //UUID oldItemID = item.ItemID;
                     item.ResetIDs(m_part.UUID);
                     m_items.Add(item.ItemID, item);
-                    //LEAVE THIS COMMENTED!!!
-                    // When an object is duplicated, this will be called and it will destroy the original prims scripts!!
-                    // This needs to be moved to a place that is safer later
-                    //  This was *originally* intended to be used on scripts that were crossing region borders
-                    /*if (m_part.ParentGroup != null)
-                    {
-                        lock (m_part.ParentGroup)
-                        {
-                            if (m_part.ParentGroup.Scene != null)
-                            {
-                                foreach (IScriptModule engine in m_part.ParentGroup.Scene.RequestModuleInterfaces<IScriptModule>())
-                                {
-                                    engine.UpdateScriptToNewObject(oldItemID, item, m_part);
-                                }
-                            }
-                        }
-                    }*/
                 }
                 HasInventoryChanged = true;
             }
@@ -189,26 +170,8 @@ namespace Aurora.Region
 
                 foreach (TaskInventoryItem item in items)
                 {
-                    //UUID oldItemID = item.ItemID;
                     item.ResetIDs(m_part.UUID);
 
-                    //LEAVE THIS COMMENTED!!!
-                    // When an object is duplicated, this will be called and it will destroy the original prims scripts!!
-                    // This needs to be moved to a place that is safer later
-                    //  This was *originally* intended to be used on scripts that were crossing region borders
-                    /*if (m_part.ParentGroup != null)
-                    {
-                        lock (m_part.ParentGroup)
-                        {
-                            if (m_part.ParentGroup.Scene != null)
-                            {
-                                foreach (IScriptModule engine in m_part.ParentGroup.Scene.RequestModuleInterfaces<IScriptModule>())
-                                {
-                                    engine.UpdateScriptToNewObject(oldItemID, item, m_part);
-                                }
-                            }
-                        }
-                    }*/
                     Items.Add(item.ItemID, item);
                 }
             }
@@ -337,9 +300,7 @@ namespace Aurora.Region
         public void CreateScriptInstance(TaskInventoryItem item, int startParam, bool postOnRez, StateSource stateSource)
         {
             // MainConsole.Instance.InfoFormat(
-            //     "[PRIM INVENTORY]: " +
-            //     "Starting script {0}, {1} in prim {2}, {3}",
-            //     item.Name, item.ItemID, Name, UUID);
+            //     "[PRIM INVENTORY]: " + "Starting script {0}, {1} in prim {2}, {3}", item.Name, item.ItemID, Name, UUID);
 
             if (!m_part.ParentGroup.Scene.Permissions.CanRunScript(item.ItemID, m_part.UUID, item.OwnerID))
                 return;
@@ -560,7 +521,6 @@ namespace Aurora.Region
             m_part.TriggerScriptChangedEvent(allowedDrop ? Changed.ALLOWED_DROP : Changed.INVENTORY);
 
             m_inventorySerial++;
-            //m_inventorySerial += 2;
             HasInventoryChanged = true;
         }
 
@@ -578,7 +538,6 @@ namespace Aurora.Region
                 foreach (TaskInventoryItem item in items)
                 {
                     m_items.Add(item.ItemID, item);
-                    //                    m_part.TriggerScriptChangedEvent(Changed.INVENTORY);
                 }
                 m_inventorySerial++;
             }

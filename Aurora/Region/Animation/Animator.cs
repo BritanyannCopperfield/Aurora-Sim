@@ -34,7 +34,6 @@ using Aurora.Framework.SceneInfo;
 using Aurora.Framework.Utilities;
 using Nini.Config;
 using OpenMetaverse;
-using Aurora.Framework;
 
 namespace Aurora.Region.Animation
 {
@@ -251,8 +250,6 @@ namespace Aurora.Region.Animation
                           AgentManager.ControlFlags.AGENT_CONTROL_UP_POS;
             bool heldDown = (controlFlags & AgentManager.ControlFlags.AGENT_CONTROL_UP_NEG) ==
                             AgentManager.ControlFlags.AGENT_CONTROL_UP_NEG;
-            //bool flying = (controlFlags & AgentManager.ControlFlags.AGENT_CONTROL_FLY) == AgentManager.ControlFlags.AGENT_CONTROL_FLY;
-            //bool mouselook = (controlFlags & AgentManager.ControlFlags.AGENT_CONTROL_MOUSELOOK) == AgentManager.ControlFlags.AGENT_CONTROL_MOUSELOOK;
 
             // Direction in which the avatar is trying to move
             Vector3 move = Vector3.Zero;
@@ -302,9 +299,6 @@ namespace Aurora.Region.Animation
             {
                 return "TURNRIGHT";
             }
-
-            // Is the avatar trying to move?
-            //            bool moving = (move != Vector3.Zero);
 
             #endregion Inputs
 
@@ -490,7 +484,6 @@ namespace Aurora.Region.Animation
                         return "LAND";
                     return "SOFT_LAND";
                 }
-                //return "LAND";
             }
 
             m_animTickFall = 0;

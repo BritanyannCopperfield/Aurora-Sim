@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -87,7 +86,6 @@ namespace Aurora.Region.Serialization
                                                   IRegistryCore scene)
         {
             //MainConsole.Instance.DebugFormat("[SOG]: Starting deserialization of SOG");
-            //int time = Util.EnvironmentTickCount();
 
             try
             {
@@ -171,7 +169,6 @@ namespace Aurora.Region.Serialization
         protected void ToOriginalXmlFormat(SceneObjectGroup sceneObject, XmlTextWriter writer)
         {
             //MainConsole.Instance.DebugFormat("[SERIALIZER]: Starting serialization of {0}", Name);
-            //int time = Util.EnvironmentTickCount();
 
             writer.WriteStartElement(String.Empty, "SceneObjectGroup", String.Empty);
             writer.WriteStartElement(String.Empty, "RootPart", String.Empty);
@@ -203,7 +200,6 @@ namespace Aurora.Region.Serialization
         public ISceneEntity FromXml2Format(string xmlData, IScene scene)
         {
             //MainConsole.Instance.DebugFormat("[SOG]: Starting deserialization of SOG");
-            //int time = Util.EnvironmentTickCount();
 
             XmlDocument doc = new XmlDocument();
             try
@@ -229,7 +225,6 @@ namespace Aurora.Region.Serialization
         public ISceneEntity FromXml2Format(ref MemoryStream ms, IScene scene)
         {
             //MainConsole.Instance.DebugFormat("[SOG]: Starting deserialization of SOG");
-            //int time = Util.EnvironmentTickCount();
 
             XmlDocument doc = new XmlDocument();
             SceneObjectGroup grp = null;
@@ -256,7 +251,6 @@ namespace Aurora.Region.Serialization
         private SceneObjectGroup InternalFromXml2Format(XmlDocument doc, IScene scene)
         {
             //MainConsole.Instance.DebugFormat("[SOG]: Starting deserialization of SOG");
-            //int time = Util.EnvironmentTickCount();
 
             try
             {
@@ -378,7 +372,6 @@ namespace Aurora.Region.Serialization
             m_SOPXmlProcessors.Add("OffsetPosition", ProcessOffsetPosition);
             m_SOPXmlProcessors.Add("RotationOffset", ProcessRotationOffset);
             m_SOPXmlProcessors.Add("Velocity", ProcessVelocity);
-            //m_SOPXmlProcessors.Add("AngularVelocity", ProcessAngularVelocity);
             m_SOPXmlProcessors.Add("Acceleration", ProcessAcceleration);
             m_SOPXmlProcessors.Add("Description", ProcessDescription);
             m_SOPXmlProcessors.Add("Color", ProcessColor);
@@ -907,10 +900,7 @@ namespace Aurora.Region.Serialization
                 writer.WriteElementString("SculptType", shp.SculptType.ToString());
                 writer.WriteStartElement("SculptData");
                 byte[] sd;
-                //if (shp.SculptData != null)
                 sd = shp.ExtraParams;
-                //else
-                //    sd = Utils.EmptyBytes;
                 if (sd != null) writer.WriteBase64(sd, 0, sd.Length);
                 writer.WriteEndElement(); // SculptData
 
@@ -974,7 +964,6 @@ namespace Aurora.Region.Serialization
                         }
                         else
                         {
-                            //Logger.Log("Found unexpected prim XML element " + reader.Name, Helpers.LogLevel.Debug);
                             reader.Read();
                         }
                         break;
@@ -1015,16 +1004,14 @@ namespace Aurora.Region.Serialization
                 }
                 else
                 {
-                    //                    MainConsole.Instance.DebugFormat("[SceneObjectSerializer]: caught unknown element {0}", nodeName);
+                    // MainConsole.Instance.DebugFormat("[SceneObjectSerializer]: caught unknown element {0}", nodeName);
                     reader.ReadOuterXml(); // ignore
                 }
             }
 
             reader.ReadEndElement(); // SceneObjectPart
 
-            //SceneObjectPart copy = ProtoBuf.Serializer.DeepClone<SceneObjectPart>(obj);
             //MainConsole.Instance.DebugFormat("[XXX]: parsed SOP {0} - {1}", obj.Name, obj.UUID);
-            //bool success = AreMatch(obj, copy);
             return obj;
         }
 
@@ -1070,7 +1057,6 @@ namespace Aurora.Region.Serialization
                     }
                     else if (!object.Equals(initialPropValue, resultPropValue))
                     {
-                        //if(property.Name != "Color")
                         MainConsole.Instance.WarnFormat("Failed to verify {0}, {1} != {2}", property.Name,
                                                         initialPropValue, resultPropValue);
                     }
@@ -1382,7 +1368,6 @@ namespace Aurora.Region.Serialization
         private void ProcessUpdateFlag(SceneObjectPart obj, XmlTextReader reader)
         {
             reader.Read();
-            //InternalUpdateFlags flags = (InternalUpdateFlags)(byte)reader.ReadElementContentAsInt("UpdateFlag", String.Empty);
         }
 
         private void ProcessSitTargetOrientation(SceneObjectPart obj, XmlTextReader reader)
@@ -1743,7 +1728,6 @@ namespace Aurora.Region.Serialization
         private void ProcessTIOldItemID(TaskInventoryItem item, XmlTextReader reader)
         {
             //Disable this, if we are rezzing from inventory, we want to get a new ItemID for next time
-            //item.OldItemID = ReadUUID (reader, "OldItemID");
             ReadUUID(reader, "OldItemID");
         }
 

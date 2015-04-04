@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -186,7 +185,7 @@ namespace Aurora.Region
 
         protected string m_nextSitAnimation = String.Empty;
 
-        //PauPaw:Proper PID Controler for autopilot************
+        //PauPaw:Proper PID Controler for autopilot
         protected bool m_moveToPositionInProgress;
         protected Vector3 m_moveToPositionTarget;
 
@@ -197,8 +196,6 @@ namespace Aurora.Region
         protected const int NumMovementsBetweenRayCast = 5;
 
         protected bool CameraConstraintActive;
-        //private int m_moveToPositionStateStatus;
-        //*****************************************************
 
         // Agent's Draw distance.
         protected float m_DrawDistance;
@@ -676,17 +673,6 @@ namespace Aurora.Region
 
             AbsolutePosition = posLastSignificantMove = m_CameraCenter = m_controllingClient.StartPos;
 
-            // This won't send anything, as we are still a child here...
-            //Animator.TrySetMovementAnimation("STAND"); 
-
-            // we created a new ScenePresence (a new child agent) in a fresh region.
-            // Request info about all the (root) agents in this region
-            // Note: This won't send data *to* other clients in that region (children don't send)
-            //SendInitialFullUpdateToAllClients();
-            //SendOtherAgentsAvatarDataToMe();
-            //Comment this out for now, just to see what happens
-            //SendOtherAgentsAppearanceToMe();
-
             RegisterToEvents();
             SetDirectionVectors();
         }
@@ -773,13 +759,11 @@ namespace Aurora.Region
                 Name, m_scene.RegionInfo.RegionName);
 
             // On the next prim update, all objects will be sent
-            //
             m_sceneViewer.Reset();
 
             if (makePhysicalActor)
             {
                 AddToPhysicalScene(isFlying, false);
-                //m_physicsActor.Position += m_savedVelocity * 0.25f;
                 m_physicsActor.Velocity = m_savedVelocity*0.25f;
 
                 if (m_forceFly)
@@ -794,8 +778,6 @@ namespace Aurora.Region
             // Don't send an animation pack here, since on a region crossing this will sometimes cause a flying 
             // avatar to return to the standing position in mid-air.  On login it looks like this is being sent
             // elsewhere anyway
-            // Animator.SendAnimPack();
-
             SendScriptEventToAllAttachments(Changed.TELEPORT);
 
             m_scene.EventManager.TriggerOnMakeRootAgent(this);
@@ -958,33 +940,19 @@ namespace Aurora.Region
             {
                 // If we're at the max roll and pressing up, we want to swing BACK a bit
                 // Automatically adds noise
-                //if (PressingUp)
                 {
                     if (m_AngularVelocity.Z >= FLY_ROLL_MAX_RADIANS - 0.04f)
                         m_AngularVelocity.Z -= 0.2f;
                 }
-                // If we're at the max roll and pressing down, we want to swing MORE a bit
-                /*if (PressingDown)
-                {
-                    if (m_AngularVelocity.Z >= FLY_ROLL_MAX_RADIANS && m_AngularVelocity.Z < FLY_ROLL_MAX_RADIANS + 0.6f)
-                        m_AngularVelocity.Z += 0.6f;
-                }*/
             }
             else // we're turning right.
             {
                 // If we're at the max roll and pressing up, we want to swing BACK a bit
                 // Automatically adds noise
-                //if (PressingUp)
                 {
                     if (m_AngularVelocity.Z <= (-FLY_ROLL_MAX_RADIANS))
                         m_AngularVelocity.Z += 0.2f;
                 }
-                // If we're at the max roll and pressing down, we want to swing MORE a bit
-                /*if (PressingDown)
-                {
-                    if (m_AngularVelocity.Z >= (-FLY_ROLL_MAX_RADIANS))
-                        m_AngularVelocity.Z -= 0.6f;
-                }*/
             }
         }
 
@@ -1323,7 +1291,6 @@ namespace Aurora.Region
                                     if (DCF == Dir_ControlFlags.DIR_CONTROL_FLAG_FORWARD_NUDGE ||
                                         DCF == Dir_ControlFlags.DIR_CONTROL_FLAG_BACKWARD_NUDGE)
                                     {
-                                        //                                        m_movementflag |= (byte)nudgehack;
                                         m_movementflag |= nudgehack;
                                     }
                                     m_movementflag += (uint) DCF;
@@ -1341,13 +1308,6 @@ namespace Aurora.Region
                                     m_movementflag -= ((uint) DCF);
 
                                     update_movementflag = true;
-                                    /*
-                                        if ((DCF == Dir_ControlFlags.DIR_CONTROL_FLAG_FORWARD_NUDGE || DCF == Dir_ControlFlags.DIR_CONTROL_FLAG_BACKWARD_NUDGE)
-                                        && ((m_movementflag & (byte)nudgehack) == nudgehack))
-                                        {
-                                            MainConsole.Instance.Debug("Removed Hack flag");
-                                        }
-                                    */
                                 }
                                 else
                                 {
@@ -1389,7 +1349,6 @@ namespace Aurora.Region
                                 Vector3 LocalVectorToTarget3D =
                                     (m_moveToPositionTarget - AbsolutePosition)
                                     // vector from cur. pos to target in global coords
-                                    //                                    * Matrix4.CreateFromQuaternion(Quaternion.Inverse(bodyRotation)); // change to avatar coords
                                     *Quaternion.Inverse(bodyRotation);
                                     // mult by matix is faster but with creation, use *quarternion
                                 // Ignore z component of vector
@@ -1511,9 +1470,9 @@ namespace Aurora.Region
                 // which occurs later in the main scene loop
                 if (update_movementflag || (update_rotation && DCFlagKeyPressed))
                 {
-                    //                    MainConsole.Instance.DebugFormat("{0} {1}", update_movementflag, (update_rotation && DCFlagKeyPressed));
-                    //                    MainConsole.Instance.DebugFormat(
-                    //                        "In {0} adding velocity to {1} of {2}", m_scene.RegionInfo.RegionName, Name, agent_control_v3);
+                    // MainConsole.Instance.DebugFormat("{0} {1}", update_movementflag, (update_rotation && DCFlagKeyPressed));
+                    // MainConsole.Instance.DebugFormat(
+                    //    "In {0} adding velocity to {1} of {2}", m_scene.RegionInfo.RegionName, Name, agent_control_v3);
 
                     AddNewMovement(agent_control_v3, q);
                 }
@@ -1535,27 +1494,16 @@ namespace Aurora.Region
             m_autoPilotTarget = Pos;
             m_sitAtAutoTarget = false;
             PrimitiveBaseShape proxy = PrimitiveBaseShape.Default;
-            //proxy.PCode = (byte)PCode.ParticleSystem;
 
             proxyObjectGroup = new SceneObjectGroup(UUID, Pos, Rotation, proxy, "", m_scene);
             proxyObjectGroup.AttachToScene(m_scene);
 
-            // Commented out this code since it could never have executed, but might still be informative.
-            //            if (proxyObjectGroup != null)
-            //            {
             proxyObjectGroup.ScheduleGroupUpdate(PrimUpdateFlags.ForcedFullUpdate);
             remote_client.SendSitResponse(proxyObjectGroup.UUID, Vector3.Zero, Quaternion.Identity, true, Vector3.Zero,
                                           Vector3.Zero, false);
             IBackupModule backup = m_scene.RequestModuleInterface<IBackupModule>();
             if (backup != null)
                 backup.DeleteSceneObjects(new[] {proxyObjectGroup}, true, true);
-            //            }
-            //            else
-            //            {
-            //                m_autopilotMoving = false;
-            //                m_autoPilotTarget = Vector3.Zero;
-            //                ControllingClient.SendAlertMessage("Autopilot cancelled");
-            //            }
         }
 
         public void DoMoveToPosition(Object sender, string method, List<String> args)
@@ -1633,15 +1581,6 @@ namespace Aurora.Region
                     // Reset sit target.
                     if (part.SitTargetAvatar.Contains(UUID))
                         part.RemoveAvatarOnSitTarget(UUID);
-
-                    /*m_parentPosition = part.GetWorldPosition();
-                    Vector3 MovePos = new Vector3 {X = 1};
-                    //TODO: Make this configurable
-                    MovePos *= Rotation;
-                    m_parentPosition += MovePos;
-                    ControllingClient.SendClearFollowCamProperties(part.ParentUUID);
-                    if (part.PhysActor != null)
-                        part.PhysActor.Selected = false;*/
                 }
                 m_pos += m_parentPosition;// +new Vector3(0.0f, 0.0f, 2.0f * m_sitAvatarHeight);
                 m_parentPosition = Vector3.Zero;
@@ -1768,7 +1707,6 @@ namespace Aurora.Region
             Quaternion sitTargetOrient = sod.m_sitTargetRot;
 
             m_pos = new Vector3(sitTargetPos.X, sitTargetPos.Y, sitTargetPos.Z);
-            //m_pos += SIT_TARGET_ADJUSTMENT;
             m_bodyRot = sitTargetOrient;
             m_parentPosition = part.AbsolutePosition;
             m_parentID = m_requestedSitTargetUUID;
@@ -1864,7 +1802,6 @@ namespace Aurora.Region
                                     Position.Z += part.Scale.Z / 2f;
                                     Position.Z += appearance.Appearance.AvatarHeight / 2;
                                     Position.Z -= (float)(SIT_TARGET_ADJUSTMENT.Z / 1.5);
-                                    //m_appearance.AvatarHeight / 15;
                                     MovePos.X = (part.Scale.X / 2) + .1f;
                                     MovePos *= Rotation;
                                     break;
@@ -1872,7 +1809,6 @@ namespace Aurora.Region
                                     Position.Z += part.Scale.Z / 2f;
                                     Position.Z += appearance.Appearance.AvatarHeight / 2;
                                     Position.Z -= (float)(SIT_TARGET_ADJUSTMENT.Z / 1.5);
-                                    //m_appearance.AvatarHeight / 15;
                                     MovePos.X = (float)(part.Scale.X / 2.5);
                                     MovePos *= Rotation;
                                     break;
@@ -2227,12 +2163,7 @@ namespace Aurora.Region
                 Scene.SceneGraph.TaintPresenceForUpdate(this, PresenceTaint.SignificantMovement);
                 Scene.SceneGraph.TaintPresenceForUpdate(this, PresenceTaint.Movement);
             }
-            /*if (Vector3.DistanceSquared(AbsolutePosition, posLastTerseUpdate) >
-                TERSE_UPDATE_MOVEMENT*TERSE_UPDATE_MOVEMENT)
-            {
-                posLastTerseUpdate = AbsolutePosition;
-                Scene.SceneGraph.TaintPresenceForUpdate(this, PresenceTaint.Movement);
-            }*/
+
             if (m_sceneViewer == null || m_sceneViewer.Prioritizer == null)
                 return;
 
@@ -2251,7 +2182,6 @@ namespace Aurora.Region
 
             // Disabled for now until we can make sure that we only send one of these per simulation loop,
             //   as with lots of clients, this will lag the client badly.
-            //
             // Moving collision sound ID inside this loop so that we don't trigger it too much
             if (CollisionSoundID != UUID.Zero && (CollisionSoundLastTriggered == 0 ||
                                                   Util.EnvironmentTickCount() - CollisionSoundLastTriggered > 0))
@@ -2438,7 +2368,6 @@ namespace Aurora.Region
 
                                 return true;
                             }
-                            //else
                             //    MainConsole.Instance.Debug("[ScenePresence]: Could not find region for " + Name + " to cross into @ {" + TargetX / 256 + ", " + TargetY / 256 + "}");
                         }
                     }
@@ -2446,17 +2375,6 @@ namespace Aurora.Region
             }
             else
             {
-                //Crossings are much nastier if this code is enabled
-                //RemoveFromPhysicalScene();
-                // This constant has been inferred from experimentation
-                // I'm not sure what this value should be, so I tried a few values.
-                /*timeStep = 0.025f;
-                pos2 = AbsolutePosition;
-                pos2.X = pos2.X + (vel.X * timeStep);
-                pos2.Y = pos2.Y + (vel.Y * timeStep);
-                pos2.Z = pos2.Z + (vel.Z * timeStep);
-                //Velocity = (AbsolutePosition - pos2) * 2;
-                AbsolutePosition = pos2;*/
                 return true;
             }
             return false;
@@ -2516,8 +2434,6 @@ namespace Aurora.Region
         public virtual void ChildAgentDataUpdate(AgentData cAgentData)
         {
             //MainConsole.Instance.Debug("   >>> ChildAgentDataUpdate <<< " + Scene.RegionInfo.RegionName);
-            //if (!IsChildAgent)
-            //    return;
 
             CopyFrom(cAgentData);
         }
@@ -2588,10 +2504,7 @@ namespace Aurora.Region
             cAgent.ControlFlags = (uint) m_AgentControlFlags;
 
             //This is checked by the other sim, so we don't have to validate it at all
-            //if (m_scene.Permissions.IsGod(new UUID(cAgent.AgentID)))
             cAgent.GodLevel = (byte) m_godLevel;
-            //else 
-            //    cAgent.GodLevel = (byte) 0;
 
             cAgent.Speed = SpeedModifier;
             cAgent.DrawDistance = DrawDistance;
@@ -2837,7 +2750,6 @@ namespace Aurora.Region
         protected void PhysicsUpdatePosAndVelocity()
         {
             //Whenever the physics engine updates its positions, we get this update and make sure the animator has the newest info
-            //Scene.SceneGraph.TaintPresenceForUpdate (this, PresenceTaint.Movement);
             if (Animator != null && m_parentID == UUID.Zero)
                 Animator.UpdateMovementAnimations(true);
         }
@@ -2845,8 +2757,6 @@ namespace Aurora.Region
         protected void UpdatePosAndVelocity()
         {
             //Whenever the physics engine updates its positions, we get this update and make sure the animator has the newest info
-            //if (Animator != null && m_parentID == UUID.Zero)
-            //    Animator.UpdateMovementAnimations(true);
             m_scene.EventManager.TriggerClientMovement(this);
         }
 
@@ -2927,7 +2837,7 @@ namespace Aurora.Region
                             {
                                 Vector4 newPlane = new Vector4(-lowest.SurfaceNormal,
                                                                -Vector3.Dot(lowest.Position, lowest.SurfaceNormal));
-                                //if (lowest.SurfaceNormal != Vector3.Zero)//Generates a 0,0,0,0, which is bad for the client
+
                                 if (!CollisionPlane.ApproxEquals(newPlane, 0.5f))
                                 {
                                     if (PhysicsActor != null && PhysicsActor.IsColliding)

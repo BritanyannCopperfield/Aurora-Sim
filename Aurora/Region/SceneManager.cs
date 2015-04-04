@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.ModuleLoader;
 using Aurora.Framework.Modules;
@@ -65,7 +64,7 @@ namespace Aurora.Region
         public event NewScene OnAddedScene;
         public event NewScene OnFinishedAddingScene;
 
-        protected ISimulationBase m_OpenSimBase;
+        protected ISimulationBase m_SimBase;
         protected List<IScene> m_scenes = new List<IScene>();
 
         public List<IScene> Scenes { get { return m_scenes; } }
@@ -86,7 +85,7 @@ namespace Aurora.Region
 
         public void PreStartup(ISimulationBase simBase)
         {
-            m_OpenSimBase = simBase;
+            m_SimBase = simBase;
 
             IConfig handlerConfig = simBase.ConfigSource.Configs["ApplicationPlugins"];
             if (handlerConfig.GetString("SceneManager", "") != Name)
@@ -94,7 +93,7 @@ namespace Aurora.Region
 
             m_config = simBase.ConfigSource;
             //Register us!
-            m_OpenSimBase.ApplicationRegistry.RegisterModuleInterface<ISceneManager>(this);
+            m_SimBase.ApplicationRegistry.RegisterModuleInterface<ISceneManager>(this);
         }
 
         public void Initialize(ISimulationBase simBase)
@@ -199,9 +198,9 @@ namespace Aurora.Region
         {
             //Tell modules about it 
             StartupCompleteModules();
-            m_OpenSimBase.RunStartupCommands();
+            m_SimBase.RunStartupCommands();
 
-            TimeSpan timeTaken = DateTime.Now - m_OpenSimBase.StartupTime;
+            TimeSpan timeTaken = DateTime.Now - m_SimBase.StartupTime;
 
             MainConsole.Instance.InfoFormat(
                 "[SceneManager]: Startup Complete. This took {0}m {1}.{2}s",
@@ -225,7 +224,7 @@ namespace Aurora.Region
             if (newRegion)
             {
                 ISimulationDataStore store = m_selectedDataService.Copy();
-                regions.Add(new KeyValuePair<ISimulationDataStore, RegionInfo>(store, store.CreateNewRegion(m_OpenSimBase)));
+                regions.Add(new KeyValuePair<ISimulationDataStore, RegionInfo>(store, store.CreateNewRegion(m_SimBase)));
             }
             else
             {
@@ -233,7 +232,7 @@ namespace Aurora.Region
                 {
                     ISimulationDataStore store = m_selectedDataService.Copy();
                     regions.Add(new KeyValuePair<ISimulationDataStore, RegionInfo>(store, 
-                        store.LoadRegionInfo(fileName, m_OpenSimBase)));
+                        store.LoadRegionInfo(fileName, m_SimBase)));
                 }
             }
 
@@ -246,7 +245,7 @@ namespace Aurora.Region
             MainConsole.Instance.InfoFormat("[SceneManager]: Starting region \"{0}\" at @ {1},{2}",
                                             regionInfo.RegionName,
                                             regionInfo.RegionLocX/256, regionInfo.RegionLocY/256);
-            ISceneLoader sceneLoader = m_OpenSimBase.ApplicationRegistry.RequestModuleInterface<ISceneLoader>();
+            ISceneLoader sceneLoader = m_SimBase.ApplicationRegistry.RequestModuleInterface<ISceneLoader>();
             if (sceneLoader == null)
                 throw new Exception("No Scene Loader Interface!");
 
@@ -317,7 +316,7 @@ namespace Aurora.Region
             else
             {
                 //Kill us now
-                m_OpenSimBase.Shutdown(true);
+                m_SimBase.Shutdown(true);
             }
         }
 
@@ -362,12 +361,12 @@ namespace Aurora.Region
             //First, Initialize the SharedRegionStartupModule
             foreach (ISharedRegionStartupModule module in m_startupPlugins)
             {
-                module.Initialise(scene, m_config, m_OpenSimBase);
+                module.Initialise(scene, m_config, m_SimBase);
             }
             //Then do the ISharedRegionModule and INonSharedRegionModules
             MainConsole.Instance.Debug("[Modules]: Loading region modules");
             IRegionModulesController controller;
-            if (m_OpenSimBase.ApplicationRegistry.TryRequestModuleInterface(out controller))
+            if (m_SimBase.ApplicationRegistry.TryRequestModuleInterface(out controller))
             {
                 controller.AddRegionToModules(scene);
             }
@@ -376,15 +375,15 @@ namespace Aurora.Region
             //Then finish the rest of the SharedRegionStartupModules
             foreach (ISharedRegionStartupModule module in m_startupPlugins)
             {
-                module.PostInitialise(scene, m_config, m_OpenSimBase);
+                module.PostInitialise(scene, m_config, m_SimBase);
             }
             foreach (ISharedRegionStartupModule module in m_startupPlugins)
             {
-                module.FinishStartup(scene, m_config, m_OpenSimBase);
+                module.FinishStartup(scene, m_config, m_SimBase);
             }
             foreach (ISharedRegionStartupModule module in m_startupPlugins)
             {
-                module.PostFinishStartup(scene, m_config, m_OpenSimBase);
+                module.PostFinishStartup(scene, m_config, m_SimBase);
             }
         }
 
@@ -406,7 +405,7 @@ namespace Aurora.Region
         protected void CloseModules(IScene scene)
         {
             IRegionModulesController controller;
-            if (m_OpenSimBase.ApplicationRegistry.TryRequestModuleInterface(out controller))
+            if (m_SimBase.ApplicationRegistry.TryRequestModuleInterface(out controller))
                 controller.RemoveRegionFromModules(scene);
 
             foreach (ISharedRegionStartupModule module in m_startupPlugins)
@@ -512,7 +511,7 @@ namespace Aurora.Region
         private void CreateNewRegion(IScene scene, string[] cmd)
         {
             ISimulationDataStore store = m_selectedDataService.Copy();
-            StartRegion(store, store.CreateNewRegion(m_OpenSimBase));
+            StartRegion(store, store.CreateNewRegion(m_SimBase));
 
             foreach (ISimulationDataStore st in m_simulationDataServices)
                 st.ForceBackup();
@@ -607,7 +606,7 @@ namespace Aurora.Region
             string[] cmdparams = args.ToArray();
 
             IRegionModulesController controller =
-                m_OpenSimBase.ApplicationRegistry.RequestModuleInterface<IRegionModulesController>();
+                m_SimBase.ApplicationRegistry.RequestModuleInterface<IRegionModulesController>();
             if (cmdparams.Length > 1)
             {
                 foreach (IRegionModuleBase irm in controller.AllModules)
@@ -632,7 +631,7 @@ namespace Aurora.Region
             args.RemoveAt(0);
 
             IRegionModulesController controller =
-                m_OpenSimBase.ApplicationRegistry.RequestModuleInterface<IRegionModulesController>();
+                m_SimBase.ApplicationRegistry.RequestModuleInterface<IRegionModulesController>();
             foreach (IRegionModuleBase irm in controller.AllModules)
             {
                 if (irm is INonSharedRegionModule)
@@ -683,7 +682,7 @@ namespace Aurora.Region
                 case "command-script":
                     if (cmdparams.Length > 0)
                     {
-                        m_OpenSimBase.RunCommandScript(cmdparams[0]);
+                        m_SimBase.RunCommandScript(cmdparams[0]);
                     }
                     break;
 

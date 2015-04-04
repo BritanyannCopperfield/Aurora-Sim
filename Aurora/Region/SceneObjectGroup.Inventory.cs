@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -236,17 +235,6 @@ namespace Aurora.Region
                 perms &= ~(uint) PermissionMask.Copy;
             if ((ownerMask & (uint) PermissionMask.Transfer) == 0)
                 perms &= ~(uint) PermissionMask.Transfer;
-
-            // If root prim permissions are applied here, this would screw
-            // with in-inventory manipulation of the next owner perms
-            // in a major way. So, let's move this to the give itself.
-            // Yes. I know. Evil.
-//            if ((ownerMask & RootPart.NextOwnerMask & (uint)PermissionMask.Modify) == 0)
-//                perms &= ~((uint)PermissionMask.Modify >> 13);
-//            if ((ownerMask & RootPart.NextOwnerMask & (uint)PermissionMask.Copy) == 0)
-//                perms &= ~((uint)PermissionMask.Copy >> 13);
-//            if ((ownerMask & RootPart.NextOwnerMask & (uint)PermissionMask.Transfer) == 0)
-//                perms &= ~((uint)PermissionMask.Transfer >> 13);
 
             return perms;
         }
