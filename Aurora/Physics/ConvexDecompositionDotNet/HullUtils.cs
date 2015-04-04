@@ -1,4 +1,31 @@
-﻿/* The MIT License
+﻿/*
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * See CONTRIBUTORS.TXT for a full list of copyright holders.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Aurora-Sim Project nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE DEVELOPERS ``AS IS'' AND ANY
+ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
+ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/* The MIT License
  * 
  * Copyright (c) 2010 Intel Corporation.
  * All rights reserved.
@@ -29,7 +56,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
+namespace Aurora.Region.Physics.ConvexDecompositionDotNet
 {
     public static class HullUtils
     {
@@ -282,7 +309,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
 
             // By using the cached plane distances d0 and d1
             // we can optimize the following:
-            //     the_point = planelineintersection(nrml,dist,v0,v1);
             float a = d0 / (d0 - d1);
             the_point = v0 * (1 - a) + v1 * a;
 
@@ -328,7 +354,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             if (v0.x <= bmin.x && v1.x >= bmin.x)
             {
                 float a = (bmin.x - v0.x) / (v1.x - v0.x);
-                //v.x = bmin.x;
                 float vy = (1 - a) * v0.y + a * v1.y;
                 float vz = (1 - a) * v0.z + a * v1.z;
                 if (vy >= bmin.y && vy <= bmax.y && vz >= bmin.z && vz <= bmax.z)
@@ -342,7 +367,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             else if (v0.x >= bmax.x && v1.x <= bmax.x)
             {
                 float a = (bmax.x - v0.x) / (v1.x - v0.x);
-                //v.x = bmax.x;
                 float vy = (1 - a) * v0.y + a * v1.y;
                 float vz = (1 - a) * v0.z + a * v1.z;
                 if (vy >= bmin.y && vy <= bmax.y && vz >= bmin.z && vz <= bmax.z)
@@ -357,7 +381,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             {
                 float a = (bmin.y - v0.y) / (v1.y - v0.y);
                 float vx = (1 - a) * v0.x + a * v1.x;
-                //v.y = bmin.y;
                 float vz = (1 - a) * v0.z + a * v1.z;
                 if (vx >= bmin.x && vx <= bmax.x && vz >= bmin.z && vz <= bmax.z)
                 {
@@ -371,7 +394,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             {
                 float a = (bmax.y - v0.y) / (v1.y - v0.y);
                 float vx = (1 - a) * v0.x + a * v1.x;
-                // vy = bmax.y;
                 float vz = (1 - a) * v0.z + a * v1.z;
                 if (vx >= bmin.x && vx <= bmax.x && vz >= bmin.z && vz <= bmax.z)
                 {
@@ -386,7 +408,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                 float a = (bmin.z - v0.z) / (v1.z - v0.z);
                 float vx = (1 - a) * v0.x + a * v1.x;
                 float vy = (1 - a) * v0.y + a * v1.y;
-                // v.z = bmin.z;
                 if (vy >= bmin.y && vy <= bmax.y && vx >= bmin.x && vx <= bmax.x)
                 {
                     impact.x = vx;
@@ -400,7 +421,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                 float a = (bmax.z - v0.z) / (v1.z - v0.z);
                 float vx = (1 - a) * v0.x + a * v1.x;
                 float vy = (1 - a) * v0.y + a * v1.y;
-                // v.z = bmax.z;
                 if (vy >= bmin.y && vy <= bmax.y && vx >= bmin.x && vx <= bmax.x)
                 {
                     impact.x = vx;
@@ -735,10 +755,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                     ConvexH.HalfEdge edgea = convex.edges[edge0.ea];
 
                     planeside |= vertflag[edge0.v].planetest;
-                    //if((vertflag[edge0.v].planetest & vertflag[edge1.v].planetest)  == COPLANAR) {
-                    //	assert(ecop==-1);
-                    //	ecop=e;
-                    //}
 
                     if (vertflag[edge0.v].planetest == (2) && vertflag[edge1.v].planetest == (2))
                     {
@@ -810,8 +826,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                             Plane p0 = convex.facets[edge0.p];
                             Plane pa = convex.facets[edgea.p];
                             createdverts.Add(ThreePlaneIntersection(p0, pa, slice));
-                            //createdverts.Add(PlaneProject(slice,PlaneLineIntersection(slice,convex.vertices[edge0.v],convex.vertices[edgea.v])));
-                            //createdverts.Add(PlaneLineIntersection(slice,convex.vertices[edge0.v],convex.vertices[edgea.v]));
                             vout = vertcountunder++;
                         }
                         under_edge_count++;
@@ -866,8 +880,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                             Plane p0 = convex.facets[edge0.p];
                             Plane pa = convex.facets[edgea.p];
                             createdverts.Add(ThreePlaneIntersection(p0, pa, slice));
-                            //createdverts.Add(PlaneLineIntersection(slice,convex.vertices[edge0.v],convex.vertices[edgea.v]));
-                            //createdverts.Add(PlaneProject(slice,PlaneLineIntersection(slice,convex.vertices[edge0.v],convex.vertices[edgea.v])));
                             vin = vertcountunder++;
                         }
                         else
@@ -1073,7 +1085,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
 
         public static int maxdirfiltered(List<float3> p, int count, float3 dir, byte[] allow)
         {
-            //Debug.Assert(count != 0);
             int m = 0;
             float currDotm = float3.dot(p[0], dir);
             float currDoti;
@@ -1093,7 +1104,7 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                     }
                 }
             }
-            //Debug.Assert(m != -1);
+
             return m;
         }
 
@@ -1254,7 +1265,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                 int v = te.vmax;
                 Debug.Assert(isextreme[v] == 0); // wtf we've already done this vertex
                 isextreme[v] = 1;
-                //if(v==p0 || v==p1 || v==p2 || v==p3) continue; // done these already
                 j = tris.Count;
                 while (j-- != 0)
                 {
@@ -1384,8 +1394,7 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
                 bmin = float3.VectorMin(bmin, verts[i]);
                 bmax = float3.VectorMax(bmax, verts[i]);
             }
-            //	float diameter = magnitude(bmax-bmin);
-            //	inflate *=diameter;   // RELATIVE INFLATION
+
             bmin -= new float3(inflate, inflate, inflate);
             bmax += new float3(inflate, inflate, inflate);
             for (i = 0; i < planes.Count; i++)
@@ -1397,7 +1406,6 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             float epsilon = float3.magnitude(emax - emin) * 0.025f;
             float planetestepsilon = float3.magnitude(emax - emin) * (0.001f);
             // todo: add bounding cube planes to force bevel. or try instead not adding the diameter expansion ??? must think.
-            // ConvexH *convex = ConvexHMakeCube(bmin - float3(diameter,diameter,diameter),bmax+float3(diameter,diameter,diameter));
             ConvexH c = ConvexHMakeCube(new float3(bmin), new float3(bmax));
             int k;
             while (maxplanes-- != 0 && (k = candidateplane(planes, planes.Count, c, epsilon)) >= 0)
@@ -1422,7 +1430,7 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             Debug.Assert(AssertIntact(c, planetestepsilon));
             //return c;
             //C++ TO C# CONVERTER TODO TASK: The memory management function 'malloc' has no equivalent in C#:
-            faces_out = new List<int>(); //(int)malloc(sizeof(int) * (1 + c.facets.Count + c.edges.Count)); // new int[1+c->facets.count+c->edges.count];
+            faces_out = new List<int>();
             int faces_count_out = 0;
             i = 0;
             faces_out[faces_count_out++] = -1;
@@ -1445,7 +1453,7 @@ namespace OpenSim.Region.Physics.ConvexDecompositionDotNet
             faces_out[0] = k; // number of faces.
             Debug.Assert(k == c.facets.Count);
             Debug.Assert(faces_count_out == 1 + c.facets.Count + c.edges.Count);
-            verts_out = c.vertices; // new float3[c->vertices.count];
+            verts_out = c.vertices;
             int verts_count_out = c.vertices.Count;
             for (i = 0; i < c.vertices.Count; i++)
             {

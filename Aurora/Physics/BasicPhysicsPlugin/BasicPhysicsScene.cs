@@ -95,13 +95,6 @@ namespace Aurora.Physics.BasicPhysicsPlugin
             }
         }
 
-/*
-        public override PhysicsActor AddPrim(Vector3 position, Vector3 size, Quaternion rotation)
-        {
-            return null;
-        }
-*/
-
         public override PhysicsActor AddPrimShape(UUID primID, uint localID, string name, byte physicsType, PrimitiveBaseShape shape,
                                                 Vector3 position, Vector3 size, Quaternion rotation, bool isPhysical, int material,
                                                 float friction, float restitution, float gravityMultiplier, float density)

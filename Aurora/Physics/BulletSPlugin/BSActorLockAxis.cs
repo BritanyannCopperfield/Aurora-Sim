@@ -1,15 +1,15 @@
 ﻿/*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyrightD
+ *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the Aurora-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -32,7 +32,7 @@ using System.Text;
 
 using OMV = OpenMetaverse;
 
-namespace OpenSim.Region.Physics.BulletSPlugin
+namespace Aurora.Region.Physics.BulletSPlugin
 {
 public class BSActorLockAxis : BSActor
 {
@@ -113,7 +113,7 @@ public class BSActorLockAxis : BSActor
 
             BSConstraint6Dof axisConstrainer = new BSConstraint6Dof(m_physicsScene.World, m_controllingPrim.PhysBody,
                                 OMV.Vector3.Zero, OMV.Quaternion.Identity,
-                                false /* useLinearReferenceFrameB */, true /* disableCollisionsBetweenLinkedBodies */);
+                                false, true);
             LockAxisConstraint = axisConstrainer;
             m_physicsScene.Constraints.AddConstraint(LockAxisConstraint);
 
@@ -152,7 +152,7 @@ public class BSActorLockAxis : BSActor
                                         m_controllingPrim.LocalID, linearLow, linearHigh, angularLow, angularHigh);
 
             // Constants from one of the posts mentioned above and used in Bullet's ConstraintDemo.
-            axisConstrainer.TranslationalLimitMotor(true /* enable */, 5.0f, 0.1f);
+            axisConstrainer.TranslationalLimitMotor(true, 5.0f, 0.1f);
 
             axisConstrainer.RecomputeConstraintVariables(m_controllingPrim.RawMass);
         }

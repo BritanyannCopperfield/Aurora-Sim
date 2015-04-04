@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,8 +67,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                                                                 | CollisionCategories.Body |
                                                                 CollisionCategories.Character | CollisionCategories.Land);
 
-        //        float m_UpdateTimecntr = 0;
-        //        float m_UpdateFPScntr = 0.05f;
         protected bool m_isJumping;
         public bool m_isPhysical; // the current physical status
         protected bool m_iscolliding;
@@ -348,11 +346,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
         {
             get
             {
-                // There's a problem with Vector3.Zero! Don't Use it Here!
-                //if (_zeroFlag)
-                //    return Vector3.Zero;
-                //And definitely don't set this, otherwise, we never stop sending updates!
-                //m_lastUpdateSent = false;
                 return _velocity;
             }
             set
@@ -542,15 +535,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             if (vcntr == 3)
                 VelIsZero = true;
 
-            // slow down updates, changed y mind: updates should go at physics fps, acording to movement conditions
-/*
-            m_UpdateTimecntr += timestep;
-            m_UpdateFPScntr = 2.5f * _parent_scene.StepTime;
-            if(m_UpdateTimecntr < m_UpdateFPScntr)
-                return;
-
-            m_UpdateTimecntr = 0;
-*/
             float VELOCITY_TOLERANCE = 0.025f*0.25f;
             if (_parent_scene.TimeDilation < 0.5)
             {
@@ -567,19 +551,10 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                 (
                     vlength > VELOCITY_TOLERANCE ||
                     plength > POSITION_TOLERANCE
-                //(anglength > ANG_VELOCITY_TOLERANCE) ||
-                //true
-                //                    (Math.Abs(_lastorientation.X - _orientation.X) > 0.001) ||
-                //                    (Math.Abs(_lastorientation.Y - _orientation.Y) > 0.001) ||
-                //                    (Math.Abs(_lastorientation.Z - _orientation.Z) > 0.001) ||
-                //                    (Math.Abs(_lastorientation.W - _orientation.W) > 0.001)
                 ))
             {
                 needSendUpdate = true;
                 m_ZeroUpdateSent = 3;
-                //                            _lastorientation = Orientation;
-                //                        base.RequestPhysicsterseUpdate();
-                //                        base.TriggerSignificantMovement();
             }
             else if (VelIsZero)
             {
@@ -593,7 +568,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             if (needSendUpdate)
             {
                 m_lastPosition = _position;
-                //                        m_lastRotationalVelocity = RotationalVelocity;
                 m_lastVelocity = _velocity;
                 m_lastAngVelocity = RotationalVelocity;
 
@@ -607,101 +581,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
         #endregion
 
         #region Unused code
-
-/* suspended
-        private void AlignAvatarTiltWithCurrentDirectionOfMovement(Vector3 movementVector)
-            {
-            if (!_parent_scene.IsAvCapsuleTilted)
-                return;
-
-            movementVector.Z = 0f;           
-
-            if (movementVector == Vector3.Zero)
-                {
-                return;
-                }
-
-            // if we change the capsule heading too often, the capsule can fall down
-            // therefore we snap movement vector to just 1 of 4 predefined directions (ne, nw, se, sw),
-            // meaning only 4 possible capsule tilt orientations
-
-            float sqr2 = 1.41421356f; // square root of 2  lasy to cut extra digits
-
-            if (movementVector.X > 0)
-                {
-                movementVector.X = sqr2;
-
-                // east ?? there is no east above
-                if (movementVector.Y > 0)
-                    {
-                    // northeast
-                    movementVector.Y = sqr2;
-                    }
-                else
-                    {
-                    // southeast
-                    movementVector.Y = -sqr2;
-                    }
-                }
-            else
-                {
-                movementVector.X = -sqr2;
-                // west 
-
-                if (movementVector.Y > 0)
-                    {
-                    // northwest
-                    movementVector.Y = sqr2;
-                    }
-                else
-                    {
-                    // southwest
-                    movementVector.Y = -sqr2;
-                    }
-                }
-
-            // movementVector.Z is zero
-
-            // calculate tilt components based on desired amount of tilt and current (snapped) heading.
-            // the "-" sign is to force the tilt to be OPPOSITE the direction of movement.
-            float xTiltComponent = -movementVector.X * m_tiltMagnitudeWhenProjectedOnXYPlane;
-            float yTiltComponent = -movementVector.Y * m_tiltMagnitudeWhenProjectedOnXYPlane;
-            //MainConsole.Instance.Debug(movementVector.X + " " + movementVector.Y);
-            //MainConsole.Instance.Debug("[PHYSICS] changing avatar tilt");
-            d.JointSetAMotorAngle(Amotor, 0, xTiltComponent);
-            d.JointSetAMotorAngle(Amotor, 1, yTiltComponent);
-            d.JointSetAMotorAngle(Amotor, 2, 0);
-            d.JointSetAMotorParam(Amotor, (int)dParam.LowStop, xTiltComponent - 0.001f);
-            d.JointSetAMotorParam(Amotor, (int)dParam.HiStop, xTiltComponent + 0.001f); // must be same as lowstop, else a different, spurious tilt is introduced
-            d.JointSetAMotorParam(Amotor, (int)dParam.LoStop2, yTiltComponent - 0.001f);
-            d.JointSetAMotorParam(Amotor, (int)dParam.HiStop2, yTiltComponent + 0.001f); // same as lowstop
-            d.JointSetAMotorParam(Amotor, (int)dParam.LoStop3, - 0.001f);
-            d.JointSetAMotorParam(Amotor, (int)dParam.HiStop3, 0.001f); // same as lowstop
-            }
-*/
-
-//      This code is very useful. Written by DanX0r. We're just not using it right now.
-//      Commented out to prevent a warning.
-//
-//         private void standupStraight()
-//         {
-//             // The purpose of this routine here is to quickly stabilize the Body while it's popped up in the air.
-//             // The amotor needs a few seconds to stabilize so without it, the avatar shoots up sky high when you
-//             // change appearance and when you enter the simulator
-//             // After this routine is done, the amotor stabilizes much quicker
-//             d.Vector3 feet;
-//             d.Vector3 head;
-//             d.BodyGetRelPointPos(Body, 0.0f, 0.0f, -1.0f, out feet);
-//             d.BodyGetRelPointPos(Body, 0.0f, 0.0f, 1.0f, out head);
-//             float posture = head.Z - feet.Z;
-
-//             // restoring force proportional to lack of posture:
-//             float servo = (2.5f - posture) * POSTURE_SERVO;
-//             d.BodyAddForceAtRelPos(Body, 0.0f, 0.0f, servo, 0.0f, 0.0f, 1.0f);
-//             d.BodyAddForceAtRelPos(Body, 0.0f, 0.0f, -servo, 0.0f, 0.0f, -1.0f);
-//             //d.Matrix3 bodyrotation = d.BodyGetRotation(Body);
-//             //MainConsole.Instance.Info("[PHYSICSAV]: Rotation: " + bodyrotation.M00 + " : " + bodyrotation.M01 + " : " + bodyrotation.M02 + " : " + bodyrotation.M10 + " : " + bodyrotation.M11 + " : " + bodyrotation.M12 + " : " + bodyrotation.M20 + " : " + bodyrotation.M21 + " : " + bodyrotation.M22);
-        //         }
 
         #endregion
 
@@ -736,7 +615,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             {
                 MainConsole.Instance.Warn("[PHYSICS]: Got a NaN force applied to a Character");
             }
-            //m_lastUpdateSent = false;
         }
 
         #endregion

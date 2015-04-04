@@ -1,15 +1,15 @@
 ﻿/*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyrightD
+ *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the Aurora-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -33,7 +33,7 @@ using System.Linq;
 using System.Text;
 using OMV = OpenMetaverse;
 
-namespace OpenSim.Region.Physics.BulletSPlugin
+namespace Aurora.Region.Physics.BulletSPlugin
 {
     public class BSActorAvatarMove : BSActor
     {
@@ -46,14 +46,12 @@ namespace OpenSim.Region.Physics.BulletSPlugin
             m_physicsScene.DetailLog("{0},BSActorAvatarMove,constructor", m_controllingPrim.LocalID);
         }
 
-        // BSActor.isActive
         public override bool isActive
         {
             get { return Enabled && m_controllingPrim.IsPhysicallyActive; }
         }
 
         // Release any connections and resources used by the actor.
-        // BSActor.Dispose()
         public override void Dispose()
         {
             Enabled = false;
@@ -61,7 +59,6 @@ namespace OpenSim.Region.Physics.BulletSPlugin
 
         // Called when physical parameters (properties set in Bullet) need to be re-applied.
         // Called at taint-time.
-        // BSActor.Refresh()
         public override void Refresh()
         {
             m_physicsScene.DetailLog("{0},BSActorAvatarMove,refresh", m_controllingPrim.LocalID);
@@ -151,7 +148,6 @@ namespace OpenSim.Region.Physics.BulletSPlugin
                                                     BSMotor.InfiniteVector,     // friction timescale
                                                     1f                          // efficiency
                 );
-                // _velocityMotor.PhysicsScene = PhysicsScene; // DEBUG DEBUG so motor will output detail log messages.
                 SetVelocityAndTarget(m_controllingPrim.RawVelocity, m_controllingPrim.TargetVelocity, true /* inTaintTime */, 0);
 
                 m_physicsScene.BeforeStep += Mover;
@@ -206,7 +202,7 @@ namespace OpenSim.Region.Physics.BulletSPlugin
                     {
                         m_physicsScene.DetailLog("{0},BSCharacter.MoveMotor,collidingWithStationary,zeroingMotion", m_controllingPrim.LocalID);
                         m_controllingPrim.IsStationary = true;
-                        m_controllingPrim.ZeroMotion(true /* inTaintTime */);
+                        m_controllingPrim.ZeroMotion(true);
                     }
 
                     // Standing has more friction on the ground
@@ -221,7 +217,7 @@ namespace OpenSim.Region.Physics.BulletSPlugin
                     if (m_controllingPrim.Flying)
                     {
                         // Flying and not collising and velocity nearly zero.
-                        m_controllingPrim.ZeroMotion(true /* inTaintTime */);
+                        m_controllingPrim.ZeroMotion(true);
                     }
                 }
 
@@ -246,7 +242,6 @@ namespace OpenSim.Region.Physics.BulletSPlugin
                 {
                     if (m_controllingPrim.RawVelocity.Z < 0)
                         stepVelocity.Z = m_controllingPrim.RawVelocity.Z;
-                    // DetailLog("{0},BSCharacter.MoveMotor,taint,overrideStepZWithWorldZ,stepVel={1}", LocalID, stepVelocity);
                 }
 
                 // 'stepVelocity' is now the speed we'd like the avatar to move in. Turn that into an instantanous force.
@@ -306,8 +301,6 @@ namespace OpenSim.Region.Physics.BulletSPlugin
             OMV.Vector3 ret = OMV.Vector3.Zero;
 
             // This test is done if moving forward, not flying and is colliding with something.
-            // DetailLog("{0},BSCharacter.WalkUpStairs,IsColliding={1},flying={2},targSpeed={3},collisions={4}",
-            //                 LocalID, IsColliding, Flying, TargetSpeed, CollisionsLastTick.Count);
             if (m_controllingPrim.IsColliding && !m_controllingPrim.Flying && m_controllingPrim.TargetVelocitySpeed > 0.1f /* && ForwardSpeed < 0.1f */)
             {
                 // The range near the character's feet where we will consider stairs
@@ -321,8 +314,7 @@ namespace OpenSim.Region.Physics.BulletSPlugin
                     if (kvp.Key > m_physicsScene.TerrainManager.HighestTerrainID)
                     {
                         OMV.Vector3 touchPosition = kvp.Value.Position;
-                        // DetailLog("{0},BSCharacter.WalkUpStairs,min={1},max={2},touch={3}",
-                        //                 LocalID, nearFeetHeightMin, nearFeetHeightMax, touchPosition);
+
                         if (touchPosition.Z >= nearFeetHeightMin && touchPosition.Z <= nearFeetHeightMax)
                         {
                             // This contact is within the 'near the feet' range.

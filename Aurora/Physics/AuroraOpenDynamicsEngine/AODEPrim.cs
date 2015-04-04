@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,8 +100,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
 
         private float m_buoyancy; //KF: m_buoyancy should be set by llSetBuoyancy() for non-vehicle. 
 
-        // private float m_tensor = 5f;
-
         private bool m_collidesLand = true;
         private bool m_collidesWater;
 
@@ -171,11 +169,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             _parent_scene = parent_scene;
             m_targetSpace = IntPtr.Zero;
 
-            /*
-                        m_isphysical = pisPhysical;
-                        if (m_isphysical)
-                            m_targetSpace = _parent_scene.space;
-            */
             m_isphysical = false;
 
             m_forceacc = Vector3.Zero;
@@ -337,7 +330,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
 
         public override Vector3 Force
         {
-            //get { return Vector3.Zero; }
             get { return m_force; }
             set
             {
@@ -533,7 +525,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
         public void SetGeom(IntPtr geom)
         {
             prim_geom = geom;
-            //Console.WriteLine("SetGeom to " + prim_geom + " for " + m_primName);
             if (prim_geom != IntPtr.Zero)
             {
                 d.GeomSetCategoryBits(prim_geom, (int) m_collisionCategories);
@@ -549,7 +540,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                 if (_parent != null && _parent is AuroraODEPrim)
                 {
                     AuroraODEPrim parent = (AuroraODEPrim) _parent;
-                    //Console.WriteLine("SetGeom calls ChildSetGeom");
                     parent.ChildSetGeom(this);
                 }
             }
@@ -584,10 +574,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
 
         private void MakeBody()
         {
-            //            d.Vector3 dvtmp;
-            //            d.Vector3 dbtmp;
-
-
             if (m_blockPhysicalReconstruction) // building is blocked
                 return;
 
@@ -707,7 +693,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             m_collisionFlags |= (CollisionCategories.Land | CollisionCategories.Wind);
 
             // disconnect from world gravity so we can apply buoyancy
-            //            if (!testRealGravity)
             d.BodySetGravityMode(Body, false);
 
             d.BodySetAutoDisableFlag(Body, true);
@@ -889,7 +874,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
         // prim is the child
         public void ParentPrim(AuroraODEPrim prim)
         {
-            //Console.WriteLine("ParentPrim  " + m_primName);
             if (this.m_localID != prim.m_localID)
             {
                 DestroyBody();
@@ -991,7 +975,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                     childrenPrim.Remove(odePrim);
                     odePrim.childPrim = false;
                     odePrim._parent = null;
-                    //odePrim.UpdateDataFromGeom ();
                     odePrim.MakeBody();
                 }
             }
@@ -1138,7 +1121,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             hasOOBoffsetFromMesh = false;
 
             bool havemesh = false;
-            //Console.WriteLine("CreateGeom:");
             if (_parent_scene.needsMeshing(this, PhysicsShapeType))
             {
                 havemesh = true;
@@ -1274,13 +1256,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                 try
                 {
                     d.GeomDestroy(prim_geom);
-                    /*
-                                        if (_triMeshData != IntPtr.Zero)
-                                        {
-                                            d.GeomTriMeshDataDestroy(_triMeshData);
-                                            _triMeshData = IntPtr.Zero;
-                                        }
-                     */
                 }
 
                 catch (Exception e)
@@ -1305,7 +1280,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             IntPtr targetspace = _parent_scene.calculateSpaceForGeom(_position);
             m_targetSpace = targetspace;
 
-            //Console.WriteLine("changeadd 1");
             CreateGeom(m_targetSpace);
             CalcPrimBodyData();
 
@@ -1319,7 +1293,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                 myrot.Z = fake.Z;
                 myrot.W = fake.W;
                 d.GeomSetQuaternion(prim_geom, ref myrot);
-                //                    _parent_scene.actor_name_map[prim_geom] = (PhysicsActor)this;
             }
 
             changeSelectedStatus(m_isSelected);
@@ -1419,79 +1392,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
             resetCollisionAccounting();
         }
 
-        /*
-                public void changemoveandrotate(Vector3 newpos, Quaternion newrot)
-                {
-                    if (m_isphysical)
-                    {
-                        if (childPrim)
-                        {
-                            if (m_blockPhysicalReconstruction)  // inertia is messed, must rebuild
-                            {
-                                _orientation = newrot;
-                                _position = newpos;
-                            }
-                        }
-                        else
-                        {
-                            if (newrot != _orientation)
-                            {
-                                d.Quaternion myrot = new d.Quaternion();
-                                Quaternion fake = newrot;
-                                myrot.X = fake.X;
-                                myrot.Y = fake.Y;
-                                myrot.Z = fake.Z;
-                                myrot.W = fake.W;
-                                d.GeomSetQuaternion(prim_geom, ref myrot);
-                                _orientation = newrot;
-                                if (Body != IntPtr.Zero && !m_angularlock.ApproxEquals(Vector3.One, 0f))
-                                    createAMotor(m_angularlock);
-                            }
-                            if (newpos != _position)
-                            {
-                                d.GeomSetPosition(prim_geom, newpos.X, newpos.Y, newpos.Z);
-                                _position = newpos;
-                            }
-                        }
-                        if (Body != IntPtr.Zero)
-                            d.BodyEnable(Body);
-                    }
-
-                    else
-                    {
-                        if (newrot != _orientation)
-                        {
-                            d.Quaternion myrot = new d.Quaternion();
-                            Quaternion fake = newrot;
-                            myrot.X = fake.X;
-                            myrot.Y = fake.Y;
-                            myrot.Z = fake.Z;
-                            myrot.W = fake.W;
-                            d.GeomSetQuaternion(prim_geom, ref myrot);
-                            _orientation = newrot;
-                        }
-                        if (newpos != _position)
-                        {
-                            _parent_scene.waitForSpaceUnlock(m_targetSpace);
-                            IntPtr tempspace = _parent_scene.recalculateSpaceForGeom(prim_geom, newpos, m_targetSpace);
-                            m_targetSpace = tempspace;
-                            d.GeomSetPosition(prim_geom, newpos.X, newpos.Y, newpos.Z);
-                            d.SpaceAdd(m_targetSpace, prim_geom);
-                            _position = newpos;
-                        }
-                    }
-
-                    if (--fakepos < 0)
-                        fakepos = 0;
-                    if (--fakeori < 0)
-                        fakeori = 0;
-
-                    changeSelectedStatus(m_isSelected);
-
-                    resetCollisionAccounting();
-                }
-        */
-
         public void Move(float timestep)
         {
             if (m_isphysical && Body != IntPtr.Zero && !m_isSelected && !childPrim && !m_blockPhysicalReconstruction)
@@ -1514,28 +1414,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                     }
                     else
                     {
-                        /*
-                        d.Vector3 vel = d.BodyGetLinearVel (Body);
-                        m_lastVelocity = _velocity;
-                        _velocity = new Vector3 ((float)vel.X, (float)vel.Y, (float)vel.Z);
-                        d.Vector3 pos = d.BodyGetPosition(Body);
-                        m_lastposition = _position;
-                        _position = new Vector3 ((float)pos.X, (float)pos.Y, (float)pos.Z);
-                        d.Quaternion ori;
-                        _zeroFlag = false;
-
-                        _acceleration = ((_velocity - m_lastVelocity) / timestep);
-                        //MainConsole.Instance.Info ("[PHYSICS]: P1: " + _position + " V2: " + m_lastposition + " Acceleration: " + _acceleration.ToString ());
-                        d.GeomCopyQuaternion (prim_geom, out ori);
-                        _orientation.X = ori.X;
-                        _orientation.Y = ori.Y;
-                        _orientation.Z = ori.Z;
-                        _orientation.W = ori.W;
-                        d.Vector3 rotvel = d.BodyGetAngularVel (Body);
-                        m_rotationalVelocity.X = (float)rotvel.X;
-                        m_rotationalVelocity.Y = (float)rotvel.Y;
-                        m_rotationalVelocity.Z = (float)rotvel.Z;
-                         */
                     }
                 }
                 else
@@ -1673,7 +1551,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                         // Disables the prim's movement physics....
                         // It's a hack and will generate a console message if it fails.
 
-                        //IsPhysical = false;
                         base.RaiseOutOfBounds(_position);
 
                         cpos.Z = cpos.Z < 0 ? 0 : _parent_scene.m_flightCeilingHeight;
@@ -1755,11 +1632,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                             // better let ode keep dealing with small values --Ubit
                             //ODE doesn't deal with them though, it just keeps adding them, never stopping the movement of the prim..
                             // its supposed to!
-                            /*
-                                                        d.BodySetLinearVel(Body, 0, 0, 0);
-                                                        d.BodySetAngularVel(Body, 0, 0, 0);
-                                                        d.BodySetForce(Body, 0, 0, 0);
-                            */
                             needupdate = true;
                             m_lastUpdateSent--;
                         }
@@ -1866,7 +1738,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                 {
                     if (Body != IntPtr.Zero)
                     {
-                        //UpdateChildsfromgeom ();
                         if (_pbs.SculptEntry && _parent_scene.meshSculptedPrim)
                         {
                             changeshape(_pbs);
@@ -2025,8 +1896,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
                         d.BodySetLinearVel(Body, _velocity.X, _velocity.Y, _velocity.Z);
                     }
                 }
-
-                //resetCollisionAccounting();
             }
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,8 +42,6 @@ namespace Aurora.Physics.AuroraOpenDynamicsEngine
     /// </summary>
     public class AuroraODEPlugin : IPhysicsPlugin
     {
-        //private static readonly log4net.ILog MainConsole.Instance = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static bool m_initialized;
         private AuroraODEPhysicsScene _mScene;
         private static object m_lock = new object();

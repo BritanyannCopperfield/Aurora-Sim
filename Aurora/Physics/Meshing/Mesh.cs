@@ -107,7 +107,6 @@ namespace Aurora.Physics.Meshing
             m_triangles = new int[faces.Count * 3];
             for (int i = 0; i < faces.Count; i++)
             {
-                //Face t = m_triangles[i];
                 m_triangles[3 * i + 0] = faces[i].v1;
                 m_triangles[3 * i + 1] = faces[i].v2;
                 m_triangles[3 * i + 2] = faces[i].v3;
@@ -120,7 +119,6 @@ namespace Aurora.Physics.Meshing
             m_vertices = new float[coords.Count * 3];
             for (int i = 0; i < coords.Count; i++)
             {
-                //Coord v = m_vertices[i];
                 m_vertices[3 * i + 0] = coords[i].X;
                 m_vertices[3 * i + 1] = coords[i].Y;
                 m_vertices[3 * i + 2] = coords[i].Z;
@@ -199,29 +197,12 @@ namespace Aurora.Physics.Meshing
         public OSD Serialize()
         {
             OSDArray array = new OSDArray();
-            /*foreach (Face t in m_triangles)
-            {
-                OSDArray triArray = new OSDArray
-                                        {
-                                            new Vector3(t.v1.X, t.v1.Y, t.v1.Z),
-                                            new Vector3(t.v2.X, t.v2.Y, t.v2.Z),
-                                            new Vector3(t.v3.X, t.v3.Y, t.v3.Z)
-                                        };
-                array.Add(triArray);
-            }*/
+
             return array;
         }
 
         public void Deserialize(OSD cachedMesh)
         {
-            /*OSDArray array = (OSDArray) cachedMesh;
-            foreach (OSD triangle in array)
-            {
-                OSDArray triangleArray = (OSDArray) triangle;
-                Add(new Triangle(new Coord(triangleArray[0].AsVector3()),
-                                 new Coord(triangleArray[1].AsVector3()),
-                                 new Coord(triangleArray[2].AsVector3())));
-            }*/
         }
 
         public int[] getIndexListAsInt()

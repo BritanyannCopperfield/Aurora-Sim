@@ -27,7 +27,6 @@
 
 //#define SPAM
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Physics;
 using Aurora.Framework.SceneInfo;
@@ -375,8 +374,7 @@ namespace Aurora.Physics.Meshing
                             MainConsole.Instance.Error("[SCULPT]: unable to load cached sculpt map " +
                                                        decodedSculptFileName + " " + e);
                         }
-                        //if (idata != null)
-                        //    MainConsole.Instance.Debug("[SCULPT]: loaded cached map asset for map ID: " + primShape.SculptTexture.ToString());
+                        // MainConsole.Instance.Debug("[SCULPT]: loaded cached map asset for map ID: " + primShape.SculptTexture.ToString());
                     }
 
                     if (idata == null)

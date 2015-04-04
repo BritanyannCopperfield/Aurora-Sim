@@ -746,7 +746,7 @@ namespace Aurora.Physics.PrimMesher
             else if (!simpleFace)
             {
                 coords.Add(center);
-                //hasCenter = true;
+
                 if (this.calcVertexNormals)
                     vertexNormals.Add(new Coord(0.0f, 0.0f, 1.0f));
                 us.Add(0.0f);
@@ -1005,11 +1005,7 @@ namespace Aurora.Physics.PrimMesher
                 if (startVert > 0)
                     faceNumbers.Add(-1);
                 for (int i = 0; i < numOuterVerts - 1; i++)
-                    //this.faceNumbers.Add(sides < 5 ? faceNum++ : faceNum);
                     faceNumbers.Add(sides < 5 && i < sides ? faceNum++ : faceNum);
-
-                //if (!hasHollow && !hasProfileCut)
-                //    this.bottomFaceNumber = faceNum++;
 
                 faceNumbers.Add(hasProfileCut ? -1 : faceNum++);
 
@@ -1026,8 +1022,7 @@ namespace Aurora.Physics.PrimMesher
 
                     hollowFaceNumber = faceNum++;
                 }
-                //if (hasProfileCut || hasHollow)
-                //    this.bottomFaceNumber = faceNum++;
+
                 bottomFaceNumber = faceNum++;
 
                 if (hasHollow && hasProfileCut)
@@ -2027,7 +2022,7 @@ namespace Aurora.Physics.PrimMesher
                         viewerFaces.Add(newViewerFace);
                     }
                 }
-            } // for (int nodeIndex = 0; nodeIndex < path.pathNodes.Count; nodeIndex++)
+            }
         }
 
 

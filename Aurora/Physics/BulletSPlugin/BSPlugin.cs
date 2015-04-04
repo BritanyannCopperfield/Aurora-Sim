@@ -1,15 +1,15 @@
 ﻿/*
- * Copyright (c) Contributors, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyrightD
+ *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the OpenSimulator Project nor the
+ *     * Neither the name of the Aurora-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -24,12 +24,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 using System;
 using System.Collections.Generic;
 using OpenMetaverse;
 using Aurora.Framework.Physics;
 
-namespace OpenSim.Region.Physics.BulletSPlugin
+namespace Aurora.Region.Physics.BulletSPlugin
 {
     /// <summary>
     /// Entry for a port of Bullet (http://bulletphysics.org/) to OpenSim.
@@ -39,35 +40,33 @@ namespace OpenSim.Region.Physics.BulletSPlugin
     /// The unmanaged library is compiled and linked statically with Bullet
     /// to create BulletSim.dll and libBulletSim.so (for both 32 and 64 bit).
     /// </summary>
-public class BSPlugin : IPhysicsPlugin
-{
-    //private static readonly log4net.ILog m_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-    private BSScene _mScene;
-
-    public BSPlugin()
+    public class BSPlugin : IPhysicsPlugin
     {
-    }
+        private BSScene _mScene;
 
-    public bool Init()
-    {
-        return true;
-    }
+        public BSPlugin()
+        {
+        }
 
-    public PhysicsScene GetScene()
-    {
-        if (_mScene == null)
-            _mScene = new BSScene();
-        return (_mScene);
-    }
+        public bool Init()
+        {
+            return true;
+        }
 
-    public string GetName()
-    {
-        return ("BulletSim");
-    }
+        public PhysicsScene GetScene()
+        {
+            if (_mScene == null)
+                _mScene = new BSScene();
+            return (_mScene);
+        }
 
-    public void Dispose()
-    {
+        public string GetName()
+        {
+            return ("BulletSim");
+        }
+
+        public void Dispose()
+        {
+        }
     }
-}
 }
