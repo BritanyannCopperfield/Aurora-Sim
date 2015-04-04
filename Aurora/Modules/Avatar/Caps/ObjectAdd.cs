@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -105,7 +104,6 @@ namespace Aurora.Modules.Caps
 
 
             OSD r = OSDParser.DeserializeLLSDXml(HttpServerHandlerHelpers.ReadFully(request));
-            //UUID session_id = UUID.Zero;
             bool bypass_raycast = false;
             uint everyone_mask = 0;
             uint group_mask = 0;
@@ -219,7 +217,6 @@ namespace Aurora.Modules.Caps
 
                     OSDMap AgentDataMap = (OSDMap) rm["AgentData"];
 
-                    //session_id = AgentDataMap["SessionId"].AsUUID();
                     group_id = AgentDataMap["GroupId"].AsUUID();
                 }
             }
@@ -259,8 +256,6 @@ namespace Aurora.Modules.Caps
 
                 ray_target_id = rm["ray_target_id"].AsUUID();
 
-
-                //session_id = rm["session_id"].AsUUID();
                 state = rm["state"].AsInteger();
                 try
                 {
@@ -311,8 +306,6 @@ namespace Aurora.Modules.Caps
             if (m_scene.Permissions.CanRezObject(1, avatar.UUID, pos, out reason))
             {
                 // rez ON the ground, not IN the ground
-                // pos.Z += 0.25F;
-
                 obj = m_scene.SceneGraph.AddNewPrim(avatar.UUID, group_id, pos, rotation, pbs);
             }
             else

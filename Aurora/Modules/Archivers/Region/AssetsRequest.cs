@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Services;
 using Aurora.Framework.Services.ClassHelpers.Assets;
@@ -227,13 +226,13 @@ namespace Aurora.Modules.Archivers
 
                     if (asset != null)
                     {
-//                        MainConsole.Instance.DebugFormat("[ARCHIVER]: Writing asset {0}", id);
+                        //MainConsole.Instance.DebugFormat("[ARCHIVER]: Writing asset {0}", id);
                         m_foundAssetUuids.Add(asset.ID);
                         m_assetsArchiver.WriteAsset(asset);
                     }
                     else
                     {
-//                        MainConsole.Instance.DebugFormat("[ARCHIVER]: Recording asset {0} as not found", id);
+                        //MainConsole.Instance.DebugFormat("[ARCHIVER]: Recording asset {0} as not found", id);
                         m_notFoundAssetUuids.Add(new UUID(assetID));
                     }
 

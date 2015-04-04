@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
@@ -152,8 +151,6 @@ namespace Aurora.Modules.Agent.J2KDecoder
 
         private bool DoJ2KDecode(UUID assetID, byte[] j2kData, bool useCSJ2K)
         {
-            //int DecodeTime = 0;
-            //DecodeTime = Environment.TickCount;
             OpenJPEG.J2KLayerInfo[] layers;
 
             if (!TryLoadCacheForAsset(assetID, out layers))

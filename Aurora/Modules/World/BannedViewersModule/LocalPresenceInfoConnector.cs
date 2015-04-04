@@ -24,7 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;
 using Aurora.Framework.Utilities;
@@ -134,10 +133,7 @@ namespace Aurora.Modules.Ban
 
         public void Check(PresenceInfo info, List<string> viewers, bool includeList)
         {
-            //
-            //Check passwords
-            //Check IPs, Mac's, etc
-            //
+            //Check passwords, Check IPs, Mac's, etc
 
             bool needsUpdated = false;
 

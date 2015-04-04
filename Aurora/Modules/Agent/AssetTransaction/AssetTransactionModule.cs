@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -39,8 +38,6 @@ namespace Aurora.Modules.Agent.AssetTransaction
 {
     public class AssetTransactionModule : INonSharedRegionModule, IAgentAssetTransactions
     {
-//        private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         ///     Each agent has its own singleton collection of transactions
         /// </summary>
@@ -157,8 +154,7 @@ namespace Aurora.Modules.Agent.AssetTransaction
                                                       uint callbackID, string description, string name, sbyte invType,
                                                       sbyte type, byte wearableType, uint nextOwnerMask)
         {
-            //            MainConsole.Instance.DebugFormat(
-            //                "[TRANSACTIONS MANAGER] Called HandleItemCreationFromTransaction with item {0}", name);
+            // MainConsole.Instance.DebugFormat("[TRANSACTIONS MANAGER] Called HandleItemCreationFromTransaction with item {0}", name);
 
             AgentAssetTransactions transactions = GetUserTransactions(remoteClient.AgentId);
 
@@ -185,9 +181,7 @@ namespace Aurora.Modules.Agent.AssetTransaction
         public void HandleItemUpdateFromTransaction(IClientAPI remoteClient, UUID transactionID,
                                                     InventoryItemBase item)
         {
-            //            MainConsole.Instance.DebugFormat(
-            //                "[TRANSACTIONS MANAGER] Called HandleItemUpdateFromTransaction with item {0}",
-            //                item.Name);
+            // MainConsole.Instance.DebugFormat("[TRANSACTIONS MANAGER] Called HandleItemUpdateFromTransaction with item {0}", item.Name);
 
             AgentAssetTransactions transactions = GetUserTransactions(remoteClient.AgentId);
 
@@ -214,9 +208,7 @@ namespace Aurora.Modules.Agent.AssetTransaction
         public void HandleTaskItemUpdateFromTransaction(
             IClientAPI remoteClient, ISceneChildEntity part, UUID transactionID, TaskInventoryItem item)
         {
-            //            MainConsole.Instance.DebugFormat(
-            //                "[TRANSACTIONS MANAGER] Called HandleTaskItemUpdateFromTransaction with item {0}",
-            //                item.Name);
+            // MainConsole.Instance.DebugFormat("[TRANSACTIONS MANAGER] Called HandleTaskItemUpdateFromTransaction with item {0}", item.Name);
 
             AgentAssetTransactions transactions = GetUserTransactions(remoteClient.AgentId);
 
@@ -263,7 +255,7 @@ namespace Aurora.Modules.Agent.AssetTransaction
         public void HandleUDPUploadRequest(IClientAPI remoteClient, UUID assetID, UUID transaction, sbyte type,
                                            byte[] data, bool storeLocal, bool tempFile)
         {
-//            MainConsole.Instance.Debug("HandleUDPUploadRequest - assetID: " + assetID.ToString() + " transaction: " + transaction.ToString() + " type: " + type.ToString() + " storelocal: " + storeLocal + " tempFile: " + tempFile);
+            // MainConsole.Instance.Debug("HandleUDPUploadRequest - assetID: " + assetID.ToString() + " transaction: " + transaction.ToString() + " type: " + type.ToString() + " storelocal: " + storeLocal + " tempFile: " + tempFile);
 
             if (((AssetType) type == AssetType.Texture ||
                  (AssetType) type == AssetType.Sound ||

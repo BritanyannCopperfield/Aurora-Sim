@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
@@ -46,9 +45,7 @@ namespace Aurora.Modules.Scripting
 {
     public class EmailModule : IEmailModule
     {
-        //
         // Module vars
-        //
         private readonly Dictionary<UUID, DateTime> m_LastGetEmailCall = new Dictionary<UUID, DateTime>();
         private readonly Dictionary<UUID, List<Email>> m_MailQueues = new Dictionary<UUID, List<Email>>();
 
@@ -56,8 +53,6 @@ namespace Aurora.Modules.Scripting
         // 2 hours without llGetNextEmail drops the queue
 
         // Scenes by Region Handle
-
-
         private string SMTP_SERVER_HOSTNAME = string.Empty;
         private string SMTP_SERVER_LOGIN = string.Empty;
         private string SMTP_SERVER_PASSWORD = string.Empty;

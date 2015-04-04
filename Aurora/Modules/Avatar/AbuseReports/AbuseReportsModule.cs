@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -96,8 +95,6 @@ namespace Aurora.Modules.AbuseReports
     /// </summary>
     public class AbuseReportsModule : INonSharedRegionModule
     {
-        //private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         private IScene m_Scene;
         private bool m_enabled;
 
@@ -133,8 +130,6 @@ namespace Aurora.Modules.AbuseReports
 
             scene.EventManager.OnNewClient -= OnNewClient;
             scene.EventManager.OnClosingClient -= OnClosingClient;
-            //Disabled until complete
-            //scene.EventManager.OnRegisterCaps -= OnRegisterCaps;
         }
 
         public void RegionLoaded(IScene scene)
@@ -289,7 +284,6 @@ namespace Aurora.Modules.AbuseReports
         {
             IScenePresence SP = findScenePresence(AgentID);
             OSDMap map = (OSDMap)OSDParser.DeserializeLLSDXml(HttpServerHandlerHelpers.ReadFully(request));
-            //string RegionName = map["abuse-region-name"];
             UUID AbuserID = map["abuser-id"];
             uint Category = map["category"];
             uint CheckFlags = map["check-flags"];

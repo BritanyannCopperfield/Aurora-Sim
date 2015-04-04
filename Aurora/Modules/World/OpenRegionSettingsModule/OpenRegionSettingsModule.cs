@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -260,15 +259,6 @@ namespace Aurora.Modules.OpenRegionSettingsModule
                 m_settings.SayDistance = chatmodule.SayDistance;
                 m_settings.ShoutDistance = chatmodule.ShoutDistance;
             }
-            /*IScriptModule scriptmodule = scene.RequestModuleInterface<IScriptModule>();
-            if (scriptmodule != null)
-            {
-                List<string> FunctionNames = scriptmodule.GetAllFunctionNames();
-                foreach (string FunctionName in FunctionNames)
-                {
-                    m_settings.LSLCommands.Add(OSD.FromString(FunctionName));
-                }
-            }*/
         }
 
         public string Name

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -467,8 +466,6 @@ namespace Aurora.Modules.Startup
                 {
                     if (grp == null)
                         continue;
-                    //if (group.IsAttachment)
-                    //    continue;
                     parts.AddRange(grp.ChildrenEntities());
                     DeleteSceneObject(grp, true, true);
                 }

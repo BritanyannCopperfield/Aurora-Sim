@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -213,7 +212,6 @@ namespace Aurora.Modules.Caps
                                                 MainConsole.Instance.Debug("[MaterialsDemoModule]: null SOP for localId: " + matLocalID.ToString());
                                             else
                                             {
-                                                //var te = sop.Shape.Textures;
                                                 var te = new Primitive.TextureEntry(sop.Shape.TextureEntry, 0, sop.Shape.TextureEntry.Length);
 
                                                 if (te == null)
@@ -297,7 +295,6 @@ namespace Aurora.Modules.Caps
                 catch (Exception e)
                 {
                     MainConsole.Instance.Warn("[MaterialsDemoModule]: exception decoding zipped CAP payload: " + e.ToString());
-                    //return "";
                 }
                 MainConsole.Instance.Debug("[MaterialsDemoModule]: knownMaterials.Count: " + m_knownMaterials.Count.ToString());
             }

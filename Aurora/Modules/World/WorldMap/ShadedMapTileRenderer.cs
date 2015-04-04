@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -40,14 +39,12 @@ namespace Aurora.Modules.WorldMap
         private static readonly Color WATER_COLOR = Color.FromArgb(29, 71, 95);
 
         private IScene m_scene;
-        //private IConfigSource m_config; // not used currently
 
         #region IMapTileTerrainRenderer Members
 
         public void Initialise(IScene scene, IConfigSource config)
         {
             m_scene = scene;
-            // m_config = config; // not used currently
         }
 
         public Bitmap TerrainToBitmap(Bitmap mapbmp)
@@ -87,9 +84,6 @@ namespace Aurora.Modules.WorldMap
                     if (heightvalue > waterHeight)
                     {
                         // scale height value
-                        // No, that doesn't scale it:
-                        // heightvalue = low + mid * (heightvalue - low) / mid; => low + (heightvalue - low) * mid / mid = low + (heightvalue - low) * 1 = low + heightvalue - low = heightvalue
-
                         if (Single.IsInfinity(heightvalue) || Single.IsNaN(heightvalue))
                             heightvalue = 0;
                         else if (heightvalue > 255f)
@@ -103,9 +97,6 @@ namespace Aurora.Modules.WorldMap
 
                         try
                         {
-                            //X
-                            // .
-                            //
                             // Shade the terrain for shadows
                             if (x < (m_scene.RegionInfo.RegionSizeX - 1) && yr < (m_scene.RegionInfo.RegionSizeY - 1))
                             {
@@ -115,7 +106,6 @@ namespace Aurora.Modules.WorldMap
                                 if ((x + 1 < m_scene.RegionInfo.RegionSizeX) && (y + 1 < m_scene.RegionInfo.RegionSizeY))
                                 {
                                     hfvaluecompare = heightmap[x + 1, y + 1];
-                                    // light from north-east => look at land height there
                                 }
                                 if (Single.IsInfinity(hfvalue) || Single.IsNaN(hfvalue))
                                     hfvalue = 0f;
@@ -124,7 +114,6 @@ namespace Aurora.Modules.WorldMap
                                     hfvaluecompare = 0f;
 
                                 float hfdiff = hfvalue - hfvaluecompare;
-                                // => positive if NE is lower, negative if here is lower
 
                                 int hfdiffi = 0;
                                 int hfdiffihighlight = 0;
@@ -132,18 +121,15 @@ namespace Aurora.Modules.WorldMap
 
                                 try
                                 {
-                                    // hfdiffi = Math.Abs((int)((hfdiff * 4) + (hfdiff * 0.5))) + 1;
                                     hfdiffi = Math.Abs((int) (hfdiff*4.5f)) + 1;
                                     if (hfdiff%1f != 0)
                                     {
-                                        // hfdiffi = hfdiffi + Math.Abs((int)(((hfdiff % 1) * 0.5f) * 10f) - 1);
                                         hfdiffi = hfdiffi + Math.Abs((int) ((hfdiff%1f)*5f) - 1);
                                     }
 
                                     hfdiffihighlight = Math.Abs((int) ((hfdiff*highlightfactor)*4.5f)) + 1;
                                     if (hfdiff%1f != 0)
                                     {
-                                        // hfdiffi = hfdiffi + Math.Abs((int)(((hfdiff % 1) * 0.5f) * 10f) - 1);
                                         hfdiffihighlight = hfdiffihighlight +
                                                            Math.Abs((int) (((hfdiff*highlightfactor)%1f)*5f) - 1);
                                     }

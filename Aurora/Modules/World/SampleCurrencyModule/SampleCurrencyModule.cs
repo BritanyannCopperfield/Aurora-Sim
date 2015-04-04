@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.SceneInfo;
@@ -244,32 +243,6 @@ namespace Aurora.Modules.SampleCurrencyModule
 
         protected XmlRpcResponse buy_func(XmlRpcRequest request, IPEndPoint ep)
         {
-            /*Hashtable requestData = (Hashtable)request.Params[0];
-            UUID agentId = UUID.Zero;
-            int amount = 0;
-            if (requestData.ContainsKey("agentId") && requestData.ContainsKey("currencyBuy"))
-            {
-                UUID.TryParse((string)requestData["agentId"], out agentId);
-                try
-                {
-                    amount = (Int32)requestData["currencyBuy"];
-                }
-                catch (InvalidCastException)
-                {
-                }
-                if (agentId != UUID.Zero)
-                {
-                    uint buyer = CheckExistAndRefreshFunds(agentId);
-                    buyer += (uint)amount;
-                    UpdateBalance(agentId,buyer);
-					
-                    IClientAPI client = LocateClientObject(agentId);
-                    if (client != null)
-                    {
-                        SendMoneyBalance(client, agentId, client.SessionId, UUID.Zero);
-                    }
-                }
-            }*/
             XmlRpcResponse returnval = new XmlRpcResponse();
             Hashtable returnresp = new Hashtable {{"success", true}};
             returnval.Value = returnresp;

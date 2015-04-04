@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -40,9 +39,7 @@ namespace Aurora.Modules.Sun
 {
     public class SunModule : ISunModule
     {
-        //
         // Global Constants used to determine where in the sky the sun is
-        //
         private const double m_SeasonalTilt = 0.03*Math.PI; // A daily shift of approximately 1.7188 degrees
         private const double m_AverageTilt = -0.25*Math.PI; // A 45 degree tilt
         private const double m_SunCycle = 2.0D*Math.PI; // A perfect circle measured in radians
@@ -57,15 +54,12 @@ namespace Aurora.Modules.Sun
         private double SeasonSpeed; // Rate of change for seasonal effects
         private double SeasonalOffset; // Seaonal variation of tilt
 
-        //
-        //    Per Region Values
-        //
 
+        //    Per Region Values
         private uint SecondsPerSunCycle; // Length of a virtual day in RW seconds
         private uint SecondsPerYear; // Length of a virtual year in RW seconds
         private double SunSpeed; // Rate of passage in radians/second
         private long TicksToEpoch; // Elapsed time for 1/1/1970
-        // private double HoursToRadians;            // Rate of change for seasonal effects
         private long TicksUTCOffset; // seconds offset from UTC
         private Quaternion Tilt = new Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
         // Calculated every update
@@ -202,10 +196,6 @@ namespace Aurora.Modules.Sun
                 {
                     // Mode: determines how the sun is handled
                     m_RegionMode = m_config.Configs["Sun"].GetString("mode", d_mode);
-                    // Mode: determines how the sun is handled
-                    // m_latitude = config.Configs["Sun"].GetDouble("latitude", d_latitude);
-                    // Mode: determines how the sun is handled
-                    // m_longitude = config.Configs["Sun"].GetDouble("longitude", d_longitude);
                     // Year length in days
                     m_YearLengthDays = m_config.Configs["Sun"].GetInt("year_length", d_year_length);
                     // Day length in decimal hours
@@ -231,9 +221,6 @@ namespace Aurora.Modules.Sun
                     m_HorizonShift = d_day_night;
                     m_UpdateInterval = d_frame_mod;
                     m_DayTimeSunHourScale = d_DayTimeSunHourScale;
-
-                    // m_latitude    = d_latitude;
-                    // m_longitude   = d_longitude;
                 }
             }
             catch (Exception e)
@@ -245,9 +232,6 @@ namespace Aurora.Modules.Sun
                 m_HorizonShift = d_day_night;
                 m_UpdateInterval = d_frame_mod;
                 m_DayTimeSunHourScale = d_DayTimeSunHourScale;
-
-                // m_latitude    = d_latitude;
-                // m_longitude   = d_longitude;
             }
             switch (m_RegionMode)
             {
@@ -259,10 +243,6 @@ namespace Aurora.Modules.Sun
                     SecondsPerSunCycle = (uint) (m_DayLengthHours*60*60);
                     SecondsPerYear = (uint) (SecondsPerSunCycle*m_YearLengthDays);
 
-                    // Ration of real-to-virtual time
-
-                    // VWTimeRatio        = 24/m_day_length;
-
                     // Speed of rotation needed to complete a cycle in the
                     // designated period (day and season)
 
@@ -272,7 +252,6 @@ namespace Aurora.Modules.Sun
                     // Horizon translation
 
                     HorizonShift = m_HorizonShift; // Z axis translation
-                    // HoursToRadians    = (SunCycle/24)*VWTimeRatio;
 
                     //  Insert our event handling hooks
 
@@ -474,9 +453,6 @@ namespace Aurora.Modules.Sun
             TotalDistanceTravelled = SunSpeed*PosTime; // distance measured in radians
 
             OrbitalPosition = (float) (TotalDistanceTravelled%m_SunCycle); // position measured in radians
-
-            // TotalDistanceTravelled += HoursToRadians-(0.25*Math.PI)*Math.Cos(HoursToRadians)-OrbitalPosition;
-            // OrbitalPosition         = (float) (TotalDistanceTravelled%SunCycle);
 
             SeasonalOffset = SeasonSpeed*PosTime;
             // Present season determined as total radians travelled around season cycle

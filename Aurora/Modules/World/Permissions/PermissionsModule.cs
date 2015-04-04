@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -52,10 +51,8 @@ namespace Aurora.Modules.Permissions
 
         // These are here for testing.  They will be taken out
 
-        //private uint PERM_ALL = (uint)2147483647;
         private uint PERM_COPY = 32768;
         private uint PERM_LOCKED = 540672;
-        //private uint PERM_MODIFY = (uint)16384;
         private uint PERM_MOVE = 524288;
         private uint PERM_TRANS = 8192;
 
@@ -468,19 +465,9 @@ namespace Aurora.Modules.Permissions
 
         public void RegionLoaded(IScene scene)
         {
-            //if (m_friendsModule == null)
-            //    MainConsole.Instance.Warn("[PERMISSIONS]: Friends module not found, friend permissions will not work");
-
             m_groupsModule = m_scene.RequestModuleInterface<IGroupsModule>();
 
-            //if (m_groupsModule == null)
-            //    MainConsole.Instance.Warn("[PERMISSIONS]: Groups module not found, group permissions will not work");
-
             m_moapModule = m_scene.RequestModuleInterface<IMoapModule>();
-
-            // This log line will be commented out when no longer required for debugging
-//            if (m_moapModule == null)
-//                MainConsole.Instance.Warn("[PERMISSIONS]: Media on a prim module not found, media on a prim permissions will not work");
 
             m_parcelManagement = m_scene.RequestModuleInterface<IParcelManagementModule>();
         }
@@ -938,9 +925,8 @@ namespace Aurora.Modules.Permissions
 
         private bool CanControlPrimMedia(UUID agentID, UUID primID, int face)
         {
-//            MainConsole.Instance.DebugFormat(
-//                "[PERMISSONS]: Performing CanControlPrimMedia check with agentID {0}, primID {1}, face {2}",
-//                agentID, primID, face);
+           // MainConsole.Instance.DebugFormat(
+           //     "[PERMISSONS]: Performing CanControlPrimMedia check with agentID {0}, primID {1}, face {2}", agentID, primID, face);
 
             if (null == m_moapModule)
                 return false;
@@ -955,18 +941,18 @@ namespace Aurora.Modules.Permissions
             if (null == me)
                 return true;
 
-//            MainConsole.Instance.DebugFormat(
-//                "[PERMISSIONS]: Checking CanControlPrimMedia for {0} on {1} face {2} with control permissions {3}", 
-//                agentID, primID, face, me.ControlPermissions);
+          //  MainConsole.Instance.DebugFormat(
+          //      "[PERMISSIONS]: Checking CanControlPrimMedia for {0} on {1} face {2} with control permissions {3}", 
+          //      agentID, primID, face, me.ControlPermissions);
 
             return GenericObjectPermission(part.UUID, agentID, true);
         }
 
         private bool CanInteractWithPrimMedia(UUID agentID, UUID primID, int face)
         {
-//            MainConsole.Instance.DebugFormat(
-//                "[PERMISSONS]: Performing CanInteractWithPrimMedia check with agentID {0}, primID {1}, face {2}",
-//                agentID, primID, face);
+           // MainConsole.Instance.DebugFormat(
+           //     "[PERMISSONS]: Performing CanInteractWithPrimMedia check with agentID {0}, primID {1}, face {2}",
+           //     agentID, primID, face);
 
             if (null == m_moapModule)
                 return false;
@@ -981,18 +967,15 @@ namespace Aurora.Modules.Permissions
             if (null == me)
                 return true;
 
-//            MainConsole.Instance.DebugFormat(
-//                "[PERMISSIONS]: Checking CanInteractWithPrimMedia for {0} on {1} face {2} with interact permissions {3}", 
-//                agentID, primID, face, me.InteractPermissions);
+           // MainConsole.Instance.DebugFormat(
+           //     "[PERMISSIONS]: Checking CanInteractWithPrimMedia for {0} on {1} face {2} with interact permissions {3}", 
+           //     agentID, primID, face, me.InteractPermissions);
 
             return GenericPrimMediaPermission(part, agentID, me.InteractPermissions);
         }
 
         private bool GenericPrimMediaPermission(ISceneChildEntity part, UUID agentID, MediaPermission perms)
         {
-//            if (IsAdministrator(agentID))
-//                return true;
-
             if ((perms & MediaPermission.Anyone) == MediaPermission.Anyone)
                 return true;
 
@@ -1081,8 +1064,7 @@ namespace Aurora.Modules.Permissions
             // Remove any of the objectFlags that are temporary.  These will get added back if appropriate
             // in the next bit of code
 
-            // libomv will moan about PrimFlags.ObjectYouOfficer being
-            // deprecated
+            // libomv will moan about PrimFlags.ObjectYouOfficer being deprecated
 #pragma warning disable 0612 
             objflags &= (uint)
                         ~(PrimFlags.ObjectCopy | // Tells client you can copy the object
@@ -1193,7 +1175,6 @@ namespace Aurora.Modules.Permissions
             // sets an object locked, the only thing that they can do is unlock it.
             //
             // Nobody but the object owner can set permissions on an object
-            //
 
             if (locked && (!IsAdministrator(currentUser)) && denyOnLocked)
                 return false;
@@ -1250,21 +1231,7 @@ namespace Aurora.Modules.Permissions
         protected bool GenericCommunicationPermission(UUID user, UUID target)
         {
             //TODO:FEATURE: Setting this to true so that cool stuff can happen until we define what determines Generic Communication Permission
-            //bool permission = false;
             return true;
-            /*string reason = "Only registered users may communicate with another account.";
-
-            // Uhh, we need to finish this before we enable it..   because it's blocking all sorts of goodies and features
-            if (IsAdministrator(user))
-                permission = true;
-
-            if (IsEstateManager(user))
-                permission = true;
-
-            if (!permission)
-                SendPermissionError(user, reason);
-
-            return permission;*/
         }
 
         public bool GenericEstatePermission(UUID user)
@@ -1534,7 +1501,6 @@ namespace Aurora.Modules.Permissions
 
             // Ordinarily, if you can view it, you can edit it
             // There is no viewing a no mod script
-            //
             return CanViewScript(script, objectID, user, scene);
         }
 
@@ -1557,7 +1523,6 @@ namespace Aurora.Modules.Permissions
             if (m_bypassPermissions) return m_bypassPermissionsValue;
 
             // If the sender is an object, check owner instead
-            //
             ISceneChildEntity part = startScene.GetSceneObjectPart(user);
             if (part != null)
                 user = part.OwnerID;
@@ -1771,7 +1736,6 @@ namespace Aurora.Modules.Permissions
                 // This is a short cut for efficiency. If land is non-null,
                 // then all objects are on that parcel and we can save
                 // ourselves the checking for each prim. Much faster.
-                //
                 if (land != null)
                 {
                     l = land;
@@ -1793,16 +1757,13 @@ namespace Aurora.Modules.Permissions
                 }
 
                 // If we own the land outright, then allow
-                //
                 if (l.LandData.OwnerID == user)
                     continue;
 
                 // Group voodoo
-                //
                 if (l.LandData.IsGroupOwned)
                 {
                     // Not a group member, or no rights at all
-                    //
                     if (!m_groupsModule.GroupPermissionCheck(client.AgentId, g.GroupID, GroupPowers.None))
                     {
                         objects.Remove(g);
@@ -1810,7 +1771,6 @@ namespace Aurora.Modules.Permissions
                     }
 
                     // Group deeded object?
-                    //
                     if (g.OwnerID == l.LandData.GroupID &&
                         !m_groupsModule.GroupPermissionCheck(client.AgentId, g.GroupID, GroupPowers.ReturnGroupOwned))
                     {
@@ -1819,7 +1779,6 @@ namespace Aurora.Modules.Permissions
                     }
 
                     // Group set object?
-                    //
                     if (g.GroupID == l.LandData.GroupID &&
                         !m_groupsModule.GroupPermissionCheck(client.AgentId, g.GroupID, GroupPowers.ReturnGroupSet))
                     {
@@ -1835,12 +1794,10 @@ namespace Aurora.Modules.Permissions
 
                     // So we can remove all objects from this group land.
                     // Fine.
-                    //
                     continue;
                 }
 
                 // By default, we can't remove
-                //
                 objects.Remove(g);
             }
 
@@ -2085,7 +2042,6 @@ namespace Aurora.Modules.Permissions
                 // the below expressions.
                 // Trying to improve on SL perms by making a script
                 // readable only if it's really full perms
-                //
                 if ((assetRequestItem.CurrentPermissions &
                      ((uint) PermissionMask.Modify |
                       (uint) PermissionMask.Copy |
@@ -2188,7 +2144,6 @@ namespace Aurora.Modules.Permissions
                 // the below expressions.
                 // Trying to improve on SL perms by making a script
                 // readable only if it's really full perms
-                //
                 if ((assetRequestItem.CurrentPermissions &
                      ((uint) PermissionMask.Modify |
                       (uint) PermissionMask.Copy |

@@ -26,7 +26,6 @@
  */
 
 using System.IO;
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
 

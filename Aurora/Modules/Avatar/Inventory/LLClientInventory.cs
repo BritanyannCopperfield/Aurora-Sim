@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -276,8 +275,7 @@ namespace Aurora.Modules.Inventory
         protected void HandleUpdateInventoryFolder(IClientAPI remoteClient, UUID folderID, ushort type, string name,
                                                    UUID parentID)
         {
-            //            MainConsole.Instance.DebugFormat(
-            //                "[AGENT INVENTORY]: Updating inventory folder {0} {1} for {2} {3}", folderID, name, remoteClient.Name, remoteClient.AgentId);
+            // MainConsole.Instance.DebugFormat("[AGENT INVENTORY]: Updating inventory folder {0} {1} for {2} {3}", folderID, name, remoteClient.Name, remoteClient.AgentId);
 
             InventoryFolderBase folder = new InventoryFolderBase(folderID, remoteClient.AgentId);
             folder = m_scene.InventoryService.GetFolder(folder);
@@ -831,7 +829,6 @@ namespace Aurora.Modules.Inventory
                     item.CreationDate = itemUpd.CreationDate == 0 ? Util.UnixTimeSinceEpoch() : itemUpd.CreationDate;
 
                     // TODO: Check if folder changed and move item
-                    //item.NextPermissions = itemUpd.Folder;
                     item.InvType = itemUpd.InvType;
                     item.SalePrice = itemUpd.SalePrice;
                     item.SaleType = itemUpd.SaleType;
@@ -1138,7 +1135,6 @@ namespace Aurora.Modules.Inventory
                 // Explicity allow anyone to add to the inventory if the
                 // AllowInventoryDrop flag has been set. Don't however let
                 // them update an item unless they pass the external checks
-                //
                 if (!m_scene.Permissions.CanEditObjectInventory(part.UUID, remoteClient.AgentId)
                     && (currentItem != null || !allowInventoryDrop))
                     return;
@@ -1250,9 +1246,7 @@ namespace Aurora.Modules.Inventory
                         part.ParentEntity.AddInventoryItem(remoteClient, localID, item, copyID);
                         part.Inventory.CreateScriptInstance(copyID, 0, false, 0);
 
-                        //                        MainConsole.Instance.InfoFormat("[PRIMINVENTORY]: " +
-                        //                                         "Rezzed script {0} into prim local ID {1} for user {2}",
-                        //                                         item.inventoryName, localID, remoteClient.Name);
+                        // MainConsole.Instance.InfoFormat("[PRIMINVENTORY]: " + "Rezzed script {0} into prim local ID {1} for user {2}", item.inventoryName, localID, remoteClient.Name);
                         part.GetProperties(remoteClient);
                     }
                     else
@@ -1604,7 +1598,6 @@ namespace Aurora.Modules.Inventory
             }
 
             // Can't transfer this
-            //
             if ((part.OwnerID != destPart.OwnerID) &&
                 ((srcTaskItem.CurrentPermissions & (uint) PermissionMask.Transfer) == 0))
                 return;
@@ -2041,9 +2034,7 @@ namespace Aurora.Modules.Inventory
             {
                 try
                 {
-                    //                    MainConsole.Instance.InfoFormat("[CAPS]: " +
-                    //                                     "TaskInventoryScriptUpdater received data: {0}, path: {1}, param: {2}",
-                    //                                     data, path, param));
+                    // MainConsole.Instance.InfoFormat("[CAPS]: " + "TaskInventoryScriptUpdater received data: {0}, path: {1}, param: {2}", data, path, param));
 
                     IClientAPI client;
                     m_scene.ClientManager.TryGetValue(AgentID, out client);
@@ -2139,7 +2130,6 @@ namespace Aurora.Modules.Inventory
                     if (isScriptRunning2)
                     {
                         // Needs to determine which engine was running it and use that
-                        //
                         part.Inventory.UpdateScriptInstance(item.ItemID, data, 0, false, StateSource.NewRez);
                         errors = part.Inventory.GetScriptErrors(item.ItemID);
                     }

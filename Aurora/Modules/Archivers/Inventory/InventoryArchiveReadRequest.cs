@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -251,15 +250,12 @@ namespace Aurora.Modules.Archivers
         {
             string iarPathExisting = iarPath;
 
-            //            MainConsole.Instance.DebugFormat(
-            //                "[INVENTORY ARCHIVER]: Loading folder {0} {1}", rootDestFolder.Name, rootDestFolder.ID);
+            // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Loading folder {0} {1}", rootDestFolder.Name, rootDestFolder.ID);
 
             InventoryFolderBase destFolder
                 = ResolveDestinationFolder(rootDestFolder, ref iarPathExisting, ref resolvedFolders);
 
-            //            MainConsole.Instance.DebugFormat(
-            //                "[INVENTORY ARCHIVER]: originalArchivePath [{0}], section already loaded [{1}]", 
-            //                iarPath, iarPathExisting);
+            // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: originalArchivePath [{0}], section already loaded [{1}]",  iarPath, iarPathExisting);
 
             string iarPathToCreate = iarPath.Substring(iarPathExisting.Length);
             CreateFoldersForPath(destFolder, iarPathExisting, iarPathToCreate, ref resolvedFolders, ref loadedNodes);
@@ -291,16 +287,13 @@ namespace Aurora.Modules.Archivers
             ref string archivePath,
             ref Dictionary<string, InventoryFolderBase> resolvedFolders)
         {
-            //            string originalArchivePath = archivePath;
-
             while (archivePath.Length > 0)
             {
-                //                MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Trying to resolve destination folder {0}", archivePath);
+                // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Trying to resolve destination folder {0}", archivePath);
 
                 if (resolvedFolders.ContainsKey(archivePath))
                 {
-                    //                    MainConsole.Instance.DebugFormat(
-                    //                        "[INVENTORY ARCHIVER]: Found previously created folder from archive path {0}", archivePath);
+                    // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Found previously created folder from archive path {0}", archivePath);
                     return resolvedFolders[archivePath];
                 }
                 if (m_merge)
@@ -331,9 +324,7 @@ namespace Aurora.Modules.Archivers
                 }
                 else
                 {
-                    //                        MainConsole.Instance.DebugFormat(
-                    //                            "[INVENTORY ARCHIVER]: Found no previously created folder for archive path {0}",
-                    //                            originalArchivePath);
+                    // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Found no previously created folder for archive path {0}", originalArchivePath);
                     archivePath = string.Empty;
                     return rootDestFolder;
                 }
@@ -371,7 +362,7 @@ namespace Aurora.Modules.Archivers
 
             for (int i = 0; i < rawDirsToCreate.Length; i++)
             {
-                //                MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Creating folder {0} from IAR", rawDirsToCreate[i]);
+                // MainConsole.Instance.DebugFormat("[INVENTORY ARCHIVER]: Creating folder {0} from IAR", rawDirsToCreate[i]);
 
                 if (!rawDirsToCreate[i].Contains(ArchiveConstants.INVENTORY_NODE_NAME_COMPONENT_SEPARATOR))
                     continue;
@@ -462,9 +453,7 @@ namespace Aurora.Modules.Archivers
                                                                                             (AssetType) item.AssetType);
                 if (f != null)
                 {
-                    //                    MainConsole.Instance.DebugFormat(
-                    //                        "[LOCAL INVENTORY SERVICES CONNECTOR]: Found folder {0} type {1} for item {2}", 
-                    //                        f.Name, (AssetType)f.Type, item.Name);
+                    // MainConsole.Instance.DebugFormat( "[LOCAL INVENTORY SERVICES CONNECTOR]: Found folder {0} type {1} for item {2}",  f.Name, (AssetType)f.Type, item.Name);
 
                     item.Folder = f.ID;
                 }

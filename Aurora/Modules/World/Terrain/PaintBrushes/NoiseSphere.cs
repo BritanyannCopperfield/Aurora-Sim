@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
 using OpenMetaverse;
-using Aurora.Framework;
 
 namespace Aurora.Modules.Terrain.PaintBrushes
 {

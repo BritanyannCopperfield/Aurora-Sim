@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -147,10 +146,6 @@ namespace Aurora.Modules.Vegetation
                 case Tree.Dogwood:
                     tree.Scale = new Vector3(6.5f, 6.5f, 6.5f);
                     break;
-
-                    // case... other tree types
-                    // tree.Scale = new Vector3(?, ?, ?);
-                    // break;
 
                 default:
                     tree.Scale = new Vector3(4, 4, 4);

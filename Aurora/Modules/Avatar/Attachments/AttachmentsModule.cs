@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -303,7 +302,6 @@ namespace Aurora.Modules.Attachments
             ISceneEntity group = m_scene.GetGroupByPrim(objectLocalID);
             if (group != null)
             {
-                //group.DetachToGround();
                 DetachSingleAttachmentToInventory(group.RootChild.FromUserInventoryItemID, remoteClient);
             }
             else
@@ -459,10 +457,6 @@ namespace Aurora.Modules.Attachments
                     //Update the ItemID with the new item
                     objatt.SetFromItemID(itemID, assetID);
 
-                    //DO NOT SEND THIS KILL ENTITY
-                    // If we send this, when someone copies an inworld object, then wears it, the inworld objects disapepars
-                    // If a bug is caused by this, we need to figure out some other workaround.
-                    //SendKillEntity(objatt.RootChild);
                     //We also have to reset the IDs so that it doesn't have the same IDs as one inworld (possibly)!
                     ISceneEntity[] atts = GetAttachmentsForAvatar(remoteClient.AgentId);
                     foreach (var obj in atts)
@@ -503,11 +497,6 @@ namespace Aurora.Modules.Attachments
 
                                 return (e as ISceneEntity); //It was already added
                             }
-                            /*foreach (var prim in objatt.ChildrenEntities())
-                                prim.LocalId = 0;
-                            bool success = m_scene.SceneGraph.RestorePrimToScene(objatt, true);
-                            if (!success)
-                                MainConsole.Instance.Error("[AttachmentModule]: Failed to add attachment " + objatt.Name + " for user " + remoteClient.Name + "!"); */
                         }
                     }
                     catch
@@ -647,11 +636,8 @@ namespace Aurora.Modules.Attachments
                 sog.UpdateGroupPosition(pos, true);
                 sog.RootChild.AttachedPos = pos;
                 sog.RootChild.FixOffsetPosition((pos), false);
-                //sog.AbsolutePosition = sog.RootChild.AttachedPos;
                 sog.SetAttachmentPoint(attachmentPoint);
                 sog.ScheduleGroupUpdate(PrimUpdateFlags.TerseUpdate);
-                //Don't update right now, wait until logout
-                //UpdateKnownItem(client, sog, sog.GetFromItemID(), sog.OwnerID);
             }
             else
             {
@@ -763,7 +749,6 @@ namespace Aurora.Modules.Attachments
                 {
                     // Check object for older stored attachment point
                     AttachmentPt = group.RootChild.Shape.State & 0x7f;
-                    //attachPos = group.AbsolutePosition;
                 }
 
                 // if we still didn't find a suitable attachment point, force it to the default
@@ -830,7 +815,6 @@ namespace Aurora.Modules.Attachments
             // Killing it here will cause the client to deselect it
             // It then reappears on the avatar, deselected
             // through the full update below
-            //
             if (group.IsSelected)
             {
                 foreach (ISceneChildEntity part in group.ChildrenEntities())
@@ -861,7 +845,6 @@ namespace Aurora.Modules.Attachments
                     //it came from an item, we need to start the scripts
 
                     // Fire after attach, so we don't get messy perms dialogs
-                    // 4 == AttachedRez
                     group.CreateScriptInstances(0, true, StateSource.AttachedRez, UUID.Zero, false);
                 }
 
@@ -1026,9 +1009,6 @@ namespace Aurora.Modules.Attachments
 
 
                 m_scene.InventoryService.UpdateAssetIDForItem(itemID, asset.ID);
-
-                // this gets called when the agent logs off!
-                //remoteClient.SendInventoryItemCreateUpdate(item, 0);
 
                 return asset.ID;
             }

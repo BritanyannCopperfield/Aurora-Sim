@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.PresenceInfo;
 using Aurora.Framework.Services.ClassHelpers.Assets;
 using Aurora.Framework.Utilities;
@@ -36,7 +35,6 @@ namespace Aurora.Modules.Estate
 {
     public class EstateTerrainXferHandler
     {
-        //private static readonly ILog MainConsole.Instance = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         #region Delegates
 

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -181,7 +180,6 @@ namespace Aurora.Modules.Agent.Xfer
             if (Transfers.ContainsKey(xferID))
             {
                 XferDownLoad xferItem = Transfers[xferID];
-                //string filename = xferItem.FileName;
                 Transfers.Remove(xferID);
                 xferItem.Data = new byte[0]; // Clear the data
                 xferItem.DataPointer = 0;

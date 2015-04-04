@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -187,7 +186,6 @@ namespace Aurora.Modules.Archivers
             // part can't be exported then the entire SOG can't be exported.
 
             bool permitted = true;
-            //int primNumber = 1;
 
             foreach (ISceneChildEntity obj in objGroup.ChildrenEntities())
             {
@@ -237,8 +235,6 @@ namespace Aurora.Modules.Archivers
                     permitted = false;
                     break;
                 }
-
-                //++primNumber;
             }
 
             return permitted;

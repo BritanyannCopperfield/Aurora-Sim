@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -87,7 +86,6 @@ namespace Aurora.Modules.Scripting
 
         private string m_name = "XMLRPCModule";
 
-        // <channel id, RPCChannelInfo>
         private Dictionary<UUID, RPCChannelInfo> m_openChannels;
         private Dictionary<UUID, SendRemoteDataRequest> m_pendingSRDResponses;
         private int m_remoteDataPort;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -168,7 +167,7 @@ namespace Aurora.Modules.SimProtection
                 SimZeroFPSStartTime = DateTime.MinValue;
 
             float[] stats = m_scene.RequestModuleInterface<IMonitorModule>().GetRegionStats(m_scene);
-            if (stats[2] /*PhysicsFPS*/< BaseRateFramesPerSecond*(PercentToBeginShutDownOfServices/100) &&
+            if (stats[2] < BaseRateFramesPerSecond*(PercentToBeginShutDownOfServices/100) &&
                 stats[2] != 0 &&
                 AllowDisablePhysics &&
                 !m_scene.RegionInfo.RegionSettings.DisablePhysics)

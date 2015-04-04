@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -124,7 +123,6 @@ namespace Aurora.Modules.Chat
 
         private void EventManager_OnClosingClient(IClientAPI client)
         {
-            //client.OnInstantMessage -= OnInstantMessage;
         }
 
         private void EventManager_OnNewClient(IClientAPI client)

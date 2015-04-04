@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -54,7 +53,6 @@ namespace Aurora.Modules.Inventory
             if (config.Configs["Messaging"] != null)
             {
                 // Allow disabling this module in config
-                //
                 if (config.Configs["Messaging"].GetString(
                     "InventoryTransferModule", "InventoryTransferModule") !=
                     "InventoryTransferModule")
@@ -151,7 +149,6 @@ namespace Aurora.Modules.Inventory
                 // Send the IM to the recipient. The item is already
                 // in their inventory, so it will not be lost if
                 // they are offline.
-                //
                 if (user != null)
                 {
                     // First byte is the asset type
@@ -285,7 +282,6 @@ namespace Aurora.Modules.Inventory
                 // Here, the recipient is local and we can assume that the
                 // inventory is loaded. Courtesy of the above bulk update,
                 // It will have been pushed to the client, too
-                //
                 IInventoryService invService = m_Scene.InventoryService;
 
                 InventoryFolderBase trashFolder =
@@ -355,7 +351,6 @@ namespace Aurora.Modules.Inventory
         private void OnGridInstantMessage(GridInstantMessage msg)
         {
             // Find agent to deliver to
-            //
             IScenePresence user = m_Scene.GetScenePresence(msg.ToAgentID);
 
             // Just forward to local handling

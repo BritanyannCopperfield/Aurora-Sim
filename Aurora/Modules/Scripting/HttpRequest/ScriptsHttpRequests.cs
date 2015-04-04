@@ -40,7 +40,6 @@ using Aurora.Framework.Servers.HttpServer.Implementation;
 using Aurora.Framework.Utilities;
 using Nini.Config;
 using OpenMetaverse;
-using Aurora.Framework;
 using Aurora.Framework.Servers.HttpServer;
 
 /*****************************************************
@@ -95,15 +94,11 @@ namespace Aurora.Modules.Scripting
         private int httpTimeout = 30000;
         private string m_name = "HttpScriptRequests";
 
-        // <itemID, HttpRequestClasss>
         private Dictionary<UUID, List<HttpRequestClass>> m_pendingRequests;
         private string m_proxyexcepts = "";
         private string m_proxyurl = "";
-        // <reqID, itemID>
         private IScene m_scene;
         private IScriptModule m_scriptModule;
-
-        // private Queue<HttpRequestClass> rpcQueue = new Queue<HttpRequestClass>();
 
         public HttpRequestModule()
         {
@@ -378,10 +373,6 @@ namespace Aurora.Modules.Scripting
     public class HttpRequestClass : IHttpRequestClass
     {
         // Constants for parameters
-        // public const int HTTP_BODY_MAXLENGTH = 2;
-        // public const int HTTP_METHOD = 0;
-        // public const int HTTP_MIMETYPE = 1;
-        // public const int HTTP_VERIFY_CERT = 3;
         public string HttpMIMEType = "text/plain;charset=utf-8";
         public string HttpMethod = "GET";
         public int HttpTimeout;
@@ -463,13 +454,8 @@ namespace Aurora.Modules.Scripting
                 {
                     // Connection Group Name is probably not used so we hijack it to identify
                     // a desired security exception
-//                  Request.ConnectionGroupName="NoVerify";
                     Request.Headers.Add("NoVerifyCert", "true");
                 }
-//              else
-//              {
-//                  Request.ConnectionGroupName="Verify";
-//              }
 
                 if (!string.IsNullOrEmpty(proxyurl))
                 {

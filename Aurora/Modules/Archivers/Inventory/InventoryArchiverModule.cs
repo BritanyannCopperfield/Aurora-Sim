@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -130,7 +129,6 @@ namespace Aurora.Modules.Archivers
                     MainConsole.Instance.Commands.AddCommand(
                         "load iar",
                         "load iar <first> <last> <inventory path> [<IAR path>]",
-                        //"load iar [--merge] <first> <last> <inventory path> <password> [<IAR path>]",
                         "Load user inventory archive (IAR). "
                         +
                         "--merge is an option which merges the loaded IAR with existing inventory folders where possible, rather than always creating new ones"

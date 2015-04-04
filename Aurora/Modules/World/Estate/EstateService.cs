@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -465,8 +464,6 @@ namespace Aurora.Modules.Estate
                     {
                         if (!FindUnBannedParcel(Position, Sp, userID, out ILO, out newPosition, out reason))
                         {
-                            //We found a place for them, but we don't need to check any further on positions here
-                            //return true;
                         }
                     }
                 }
@@ -481,8 +478,6 @@ namespace Aurora.Modules.Estate
                     if (ILO.IsRestrictedFromLand(userID))
                         if (!FindUnBannedParcel(Position, Sp, userID, out ILO, out newPosition, out reason))
                         {
-                            //We found a place for them, but we don't need to check any further on positions here
-                            //return true;
                         }
                 }
                 else if ((parcelflags & ParcelFlags.UsePassList) == ParcelFlags.UsePassList)
@@ -496,8 +491,6 @@ namespace Aurora.Modules.Estate
                     if (ILO.IsRestrictedFromLand(Sp.UUID))
                         if (!FindUnBannedParcel(Position, Sp, userID, out ILO, out newPosition, out reason))
                         {
-                            //We found a place for them, but we don't need to check any further on positions here
-                            //return true;
                         }
                 }
             }
@@ -657,7 +650,6 @@ namespace Aurora.Modules.Estate
                 }
             }
 
-            //newPosition = Position;
             reason = "";
             return true;
         }

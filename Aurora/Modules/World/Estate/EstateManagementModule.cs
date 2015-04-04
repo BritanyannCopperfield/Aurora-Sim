@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -316,7 +315,6 @@ namespace Aurora.Modules.Estate
         {
             TriggerRegionInfoChange();
             sendRegionHandshakeToAll();
-            //sendRegionInfoPacketToAll ();
         }
 
         public void setRegionTerrainSettings(UUID AgentID, float WaterHeight,
@@ -916,11 +914,8 @@ namespace Aurora.Modules.Estate
                             if (selectedParcel.LandData.OwnerID != targetID) //Check to make sure it isn't their land
                                 prims.AddRange(selectedParcel.GetPrimsOverByOwner(targetID, containsScript));
                         }
-                            //Other estates flag doesn't seem to get sent by the viewer, so don't touch it
-                            //else if ((flags & (int)SimWideDeletesFlags.ReturnObjectsOtherEstate) == (int)SimWideDeletesFlags.ReturnObjectsOtherEstate)
-                            //    prims.AddRange (selectedParcel.GetPrimsOverByOwner (targetID, containsScript));
+
                         else
-                            // if ((flags & (int)SimWideDeletesFlags.ReturnObjects) == (int)SimWideDeletesFlags.ReturnObjects)//Return them all
                             prims.AddRange(selectedParcel.GetPrimsOverByOwner(targetID, containsScript));
                     }
                 }
@@ -1211,7 +1206,6 @@ namespace Aurora.Modules.Estate
         {
             client.OnDetailedEstateDataRequest += sendDetailedEstateData;
             client.OnSetEstateFlagsRequest += estateSetRegionInfoHandler;
-//            client.OnSetEstateTerrainBaseTexture += setEstateTerrainBaseTexture;
             client.OnSetEstateTerrainDetailTexture += setEstateTerrainBaseTexture;
             client.OnSetEstateTerrainTextureHeights += setEstateTerrainTextureHeights;
             client.OnCommitEstateTerrainTextureRequest += handleCommitEstateTerrainTextureRequest;
@@ -1239,7 +1233,6 @@ namespace Aurora.Modules.Estate
         {
             client.OnDetailedEstateDataRequest -= sendDetailedEstateData;
             client.OnSetEstateFlagsRequest -= estateSetRegionInfoHandler;
-            //            client.OnSetEstateTerrainBaseTexture -= setEstateTerrainBaseTexture;
             client.OnSetEstateTerrainDetailTexture -= setEstateTerrainBaseTexture;
             client.OnSetEstateTerrainTextureHeights -= setEstateTerrainTextureHeights;
             client.OnCommitEstateTerrainTextureRequest -= handleCommitEstateTerrainTextureRequest;
@@ -1267,7 +1260,6 @@ namespace Aurora.Modules.Estate
             RegionFlags flags = RegionFlags.None;
 
             // Fully implemented
-            //
             if (m_scene.RegionInfo.RegionSettings.AllowDamage)
                 flags |= RegionFlags.AllowDamage;
             if (m_scene.RegionInfo.RegionSettings.BlockTerraform)
@@ -1307,13 +1299,6 @@ namespace Aurora.Modules.Estate
                 if (m_scene.RegionInfo.EstateSettings.AllowVoice)
                     flags |= RegionFlags.AllowVoice;
             }
-
-
-            // Omitted
-            //
-            // Omitted: SkipUpdateInterestList  Region does not update agent prim interest lists. Internal debugging option.
-            // Omitted: NullLayer Unknown: Related to the availability of an overview world map tile.(Think mainland images when zoomed out.)
-            // Omitted: SkipAgentAction Unknown: Related to region debug flags. Possibly to skip processing of agent interaction with world.
 
             return (ulong) flags;
         }
@@ -1413,7 +1398,6 @@ namespace Aurora.Modules.Estate
                         sun = sunModule.GetCurrentSunHour();
                 }
 
-                // 
                 m_scene.EventManager.TriggerEstateToolsSunUpdate(
                     m_scene.RegionInfo.RegionHandle,
                     m_scene.RegionInfo.EstateSettings.FixedSun,

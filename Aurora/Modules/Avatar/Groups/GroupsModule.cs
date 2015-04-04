@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -719,8 +718,6 @@ namespace Aurora.Modules.Groups
                                                      Timestamp = 0,
                                                      FromAgentName = agentName
                                                  };
-                    // msg.fromAgentID = GetRequestingAgentID(remoteClient).Guid;
-                    // msg.timestamp = (uint)Util.UnixTimeSinceEpoch();
                     GroupRecord groupInfo = GetGroupRecord(groupID);
                     string MemberShipCost = ". There is no cost to join this group.";
                     if (groupInfo.MembershipFee != 0)
@@ -998,7 +995,6 @@ namespace Aurora.Modules.Groups
         {
             // Notify all group members of a change in group roles and/or
             // permissions
-            //
         }
 
         private void OutgoingInstantMessage(GridInstantMessage msg, UUID msgTo)
@@ -1126,9 +1122,6 @@ namespace Aurora.Modules.Groups
             scene.EventManager.OnClientLogin += EventManager_OnClientLogin;
             scene.EventManager.OnRegisterCaps += OnRegisterCaps;
             scene.EventManager.OnCachedUserInfo += UpdateCachedData;
-            // The InstantMessageModule itself doesn't do this, 
-            // so lets see if things explode if we don't do it
-            // scene.EventManager.OnClientClosed += OnClientClosed;
         }
 
         public void RemoveRegion(IScene scene)
@@ -1322,7 +1315,6 @@ namespace Aurora.Modules.Groups
             if (m_debugEnabled)
                 MainConsole.Instance.DebugFormat("[GROUPS]: {0} called", MethodBase.GetCurrentMethod().Name);
 
-            //GroupMembershipData[] avatarGroups = m_groupData.GetAgentGroupMemberships(GetRequestingAgentID(remoteClient), avatarID).ToArray();
             GroupMembershipData[] avatarGroups = GetProfileListedGroupMemberships(remoteClient, avatarID);
             remoteClient.SendAvatarGroupsReply(avatarID, avatarGroups);
         }
@@ -1374,40 +1366,6 @@ namespace Aurora.Modules.Groups
                 }
             }
         }
-
-        /*
-         * This becomes very problematic in a shared module.  In a shared module you may have more then one
-         * reference to IClientAPI's, one for 0 or 1 root connections, and 0 or more child connections.
-         * The OnClientClosed event does not provide anything to indicate which one of those should be closed
-         * nor does it provide what scene it was from so that the specific reference can be looked up.
-         * The InstantMessageModule.cs does not currently worry about unregistering the handles, 
-         * and it should be an issue, since it's the client that references us not the other way around
-         * , so as long as we don't keep a reference to the client laying around, the client can still be GC'ed
-        private void OnClientClosed(UUID AgentId)
-        {
-            if (m_debugEnabled) MainConsole.Instance.DebugFormat("[GROUPS]: {0} called", System.Reflection.MethodBase.GetCurrentMethod().Name);
-
-            lock (m_ActiveClients)
-            {
-                if (m_ActiveClients.ContainsKey(AgentId))
-                {
-                    IClientAPI client = m_ActiveClients[AgentId];
-                    client.OnUUIDGroupNameRequest -= HandleUUIDGroupNameRequest;
-                    client.OnAgentDataUpdateRequest -= OnAgentDataUpdateRequest;
-                    client.OnDirFindQuery -= OnDirFindQuery;
-                    client.OnInstantMessage -= OnInstantMessage;
-
-                    m_ActiveClients.Remove(AgentId);
-                }
-                else
-                {
-                    if (m_debugEnabled) MainConsole.Instance.WarnFormat("[GROUPS]: Client closed that wasn't registered here.");
-                }
-
-                
-            }
-        }
-        */
 
         private void OnDirFindQuery(IClientAPI remoteClient, UUID queryID, string queryText, uint queryFlags,
                                     int queryStart)

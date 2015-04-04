@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -555,11 +554,9 @@ namespace Aurora.Modules.Monitoring
                     //21 and 22 are forced to the GC memory as they WILL make memory usage go up rapidly otherwise!
                     sb[21].StatID = (uint) Stats.VirtualSizeKB;
                     sb[21].StatValue = GC.GetTotalMemory(false)/1024;
-                    // System.Diagnostics.Process.GetCurrentProcess().WorkingSet64 / (1024);
 
                     sb[22].StatID = (uint) Stats.ResidentSizeKB;
                     sb[22].StatValue = GC.GetTotalMemory(false)/1024;
-                    //(float)System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize64 / (1024);
 
                     sb[23].StatID = (uint) Stats.PendingLocalUploads;
                     sb[23].StatValue = (networkMonitor.PendingUploads/statsUpdateFactor);
@@ -593,9 +590,7 @@ namespace Aurora.Modules.Monitoring
                     // It is the sleep time, physics step, update physics shape, physics other, and pumpI0.
                     // Note: take out agent Update and script time for now, as they are not a part of the heartbeat right now and will mess this calc up
                     float SpareTime = TotalFrames - (
-                                                        /*NetMS + */ PhysicsMS + otherMS + imageMS);
-//                         + /*(agentUpdateFrameMonitor.AgentFrameTime / statsUpdateFactor) +*/
-//                        (imagesMonitor.GetValue() / statsUpdateFactor) /* + ScriptMS*/));
+                                                        PhysicsMS + otherMS + imageMS);
 
                     sb[32].StatValue = SpareTime;
 

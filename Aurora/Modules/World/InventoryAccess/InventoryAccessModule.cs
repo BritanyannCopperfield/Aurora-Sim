@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -294,16 +293,13 @@ namespace Aurora.Modules.InventoryAccess
                 return UUID.Zero;
 
             // Get the user info of the item destination
-            //
             IScenePresence SP = m_scene.GetScenePresence(agentId);
             UUID userID = UUID.Zero;
 
             if (action == DeRezAction.Take || action == DeRezAction.AcquireToUserInventory ||
                 action == DeRezAction.SaveToExistingUserInventoryItem)
             {
-                // Take or take copy require a taker
-                // Saving changes requires a local user
-                //
+                // Take or take copy require a taker Saving changes requires a local user
                 if (SP == null || SP.ControllingClient == null)
                     return UUID.Zero;
 
@@ -312,8 +308,6 @@ namespace Aurora.Modules.InventoryAccess
             else
             {
                 // All returns / deletes go to the object owner
-                //
-
                 userID = objectGroups[0].OwnerID;
             }
 
@@ -326,17 +320,12 @@ namespace Aurora.Modules.InventoryAccess
             // owner's Lost And Found folder.
             // Delete is treated like return in this case
             // Deleting your own items makes them go to trash
-            //
-
             InventoryFolderBase folder = null;
             InventoryItemBase item = null;
 
             if (DeRezAction.SaveToExistingUserInventoryItem == action)
             {
                 item = m_scene.InventoryService.GetItem(userID, objectGroups[0].RootChild.FromUserInventoryItemID);
-
-                //item = userInfo.RootFolder.FindItem(
-                //        objectGroup.RootPart.FromUserInventoryItemID);
 
                 if (null == item)
                 {
@@ -349,12 +338,9 @@ namespace Aurora.Modules.InventoryAccess
             else
             {
                 // Folder magic
-                //
                 if (action == DeRezAction.Delete)
                 {
                     // Deleting someone else's item
-                    //
-
                     if (SP == null || SP.ControllingClient == null ||
                         objectGroups[0].OwnerID != agentId)
                     {
@@ -370,7 +356,6 @@ namespace Aurora.Modules.InventoryAccess
                 else if (action == DeRezAction.Return)
                 {
                     // Dump to lost + found unconditionally
-                    //
                     folder = m_scene.InventoryService.GetFolderForType(userID, InventoryType.Unknown,
                                                                        AssetType.LostAndFoundFolder);
                 }
@@ -380,7 +365,6 @@ namespace Aurora.Modules.InventoryAccess
                     if (action == DeRezAction.Delete)
                     {
                         // Deletes go to trash by default
-                        //
                         folder = m_scene.InventoryService.GetFolderForType(userID, InventoryType.Unknown,
                                                                            AssetType.TrashFolder);
                     }
@@ -402,7 +386,6 @@ namespace Aurora.Modules.InventoryAccess
 
                 // Override and put into where it came from, if it came
                 // from anywhere in inventory
-                //
                 if (action == DeRezAction.Attachment || action == DeRezAction.Take ||
                     action == DeRezAction.AcquireToUserInventory)
                 {
@@ -608,7 +591,6 @@ namespace Aurora.Modules.InventoryAccess
             else
             {
                 // Brave new fullperm world
-                //
                 itemId = item.ID;
             }
             return CreateObjectFromInventory(remoteClient, itemId, item.AssetID, out doc, item);
@@ -637,7 +619,6 @@ namespace Aurora.Modules.InventoryAccess
             else
             {
                 // Brave new fullperm world
-                //
                 itemId = item.ID;
             }
             return CreateObjectFromInventory(remoteClient, itemId, item.AssetID, out doc, item);
@@ -828,7 +809,6 @@ namespace Aurora.Modules.InventoryAccess
                 // have already removed the item from the folder
                 // if it's no copy.
                 // Put it back if it's not an attachment
-                //
                 if ((item.CurrentPermissions & (uint) PermissionMask.Copy) == 0)
                     remoteClient.SendBulkUpdateInventory(item);
                 remoteClient.SendAlertMessage("You do not have permission to rez objects here.");
@@ -974,7 +954,6 @@ namespace Aurora.Modules.InventoryAccess
                     // have already removed the item from the folder
                     // if it's no copy.
                     // Put it back if it's not an attachment
-                    //
                     if (((item.CurrentPermissions & (uint) PermissionMask.Copy) == 0))
                         remoteClient.SendBulkUpdateInventory(item);
                     return null;
@@ -995,7 +974,6 @@ namespace Aurora.Modules.InventoryAccess
                     RayStart, RayEnd, RayTargetID, Quaternion.Identity,
                     BypassRayCast, bRayEndIsIntersection, true, group.GetAxisAlignedBoundingBox(out offsetHeight), false);
                 pos.Z += offsetHeight;
-                //group.AbsolutePosition = pos;
                 //   MainConsole.Instance.InfoFormat("rezx point for inventory rezz is {0} {1} {2}  and offsetheight was {3}", pos.X, pos.Y, pos.Z, offsetHeight);
 
                 ISceneChildEntity rootPart = group.GetChildPart(group.UUID);
@@ -1067,7 +1045,6 @@ namespace Aurora.Modules.InventoryAccess
                     {
                         // If this is done on attachments, no
                         // copy ones will be lost, so avoid it
-                        //
                         List<UUID> uuids = new List<UUID> {item.ID};
                         m_scene.InventoryService.DeleteItems(item.Owner, uuids);
                     }
@@ -1100,7 +1077,6 @@ namespace Aurora.Modules.InventoryAccess
             // At this point, we need to apply perms
             // only to notecards and scripts. All
             // other asset types are always available
-            //
             if (assetRequestItem.AssetType == (int) AssetType.LSLText)
             {
                 if (!m_scene.Permissions.CanViewScript(itemID, UUID.Zero, remoteClient.AgentId))

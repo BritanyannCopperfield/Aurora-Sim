@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -59,7 +58,6 @@ namespace Aurora.Modules.Scripting
         public int responseCode;
         public string responseBody;
         public string contentType;
-        //public ManualResetEvent ev;
         public bool requestDone;
         public int startTime;
         public string uri;
@@ -410,7 +408,6 @@ namespace Aurora.Modules.Scripting
                     requestData.headers["x-script-url"] = url.url;
                     requestData.contentType = "text/plain";
 
-                    //requestData.ev = new ManualResetEvent(false);
                     lock (url.requests)
                     {
                         url.requests.Add(requestID, requestData);
@@ -430,7 +427,6 @@ namespace Aurora.Modules.Scripting
                 }
                 catch (Exception we)
                 {
-                    //Hashtable response = new Hashtable();
                     MainConsole.Instance.Warn("[HttpRequestHandler]: http-in request failed");
                     MainConsole.Instance.Warn(we.Message);
                     MainConsole.Instance.Warn(we.StackTrace);

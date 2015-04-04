@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -152,7 +151,6 @@ namespace Aurora.Modules.Scripting
             }
 
             RequestState state = new RequestState((HttpWebRequest) request, requestID);
-            // IAsyncResult result = request.BeginGetResponse(new AsyncCallback(HttpRequestReturn), state);
             request.BeginGetResponse(HttpRequestReturn, state);
 
             TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));

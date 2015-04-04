@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
 using Nini.Config;
-using Aurora.Framework;
 
 namespace Aurora.Modules.VersionControl
 {
@@ -97,7 +96,6 @@ namespace Aurora.Modules.VersionControl
                 m_autoOARTimer.Enabled = true;
                 m_Scene = scene;
             }
-            //scene.AddCommand(this, "save version", "save version <description>", "Saves the current region as the next incremented version in the version control module.", SaveVersion);
         }
 
         #endregion

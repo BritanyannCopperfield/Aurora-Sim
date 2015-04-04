@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -89,9 +88,6 @@ namespace Aurora.Modules.Scripting
 {
     public class WorldCommModule : INonSharedRegionModule, IWorldComm
     {
-        // private static readonly ILog MainConsole.Instance =
-        //     LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         protected static Vector3 CenterOfRegion = new Vector3(128, 128, 20);
         private readonly List<int> BlockedChannels = new List<int>();
         private ListenerManager m_listenerManager;
@@ -469,7 +465,6 @@ namespace Aurora.Modules.Scripting
             if (coll.Count > 0)
             {
                 // special case, called with same filter settings, return same handle
-                // (2008-05-02, tested on 1.21.1 server, still holds)
                 return coll[0].GetHandle();
             }
 
@@ -630,7 +625,6 @@ namespace Aurora.Modules.Scripting
 
         // Theres probably a more clever and efficient way to
         // do this, maybe with regex.
-        // PM2008: Ha, one could even be smart and define a specialized Enumerator.
         public List<ListenerInfo> GetListeners(UUID itemID, int channel, string name, UUID id, string msg)
         {
             List<ListenerInfo> collection = new List<ListenerInfo>();
@@ -693,7 +687,6 @@ namespace Aurora.Modules.Scripting
         private bool m_active; // Listener is active or not
         private int m_channel; // Channel
         private int m_handle; // Assigned handle of this listener
-        //private uint m_localID; // Local ID from script engine
         private UUID m_hostID; // ID of the host/scene part
         private UUID m_id; // ID to filter messages from
         private UUID m_itemID; // ID of the host script engine

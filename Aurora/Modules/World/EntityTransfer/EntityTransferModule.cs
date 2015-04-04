@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -324,10 +323,6 @@ namespace Aurora.Modules.EntityTransfer
                 return;
 
             sp.SetAgentLeaving(finalDestination);
-
-            //Kill the groups here, otherwise they will become ghost attachments 
-            //  and stay in the sim, they'll get readded below into the new sim
-            //KillAttachments(sp);
 
             // Well, this is it. The agent is over there.
             KillEntity(sp.Scene, sp);
@@ -773,7 +768,6 @@ namespace Aurora.Modules.EntityTransfer
         {
             // If the user is banned, we won't let any of their objects
             // enter. Period.
-            //
             if (scene.RegionInfo.EstateSettings.IsBanned(sceneObject.OwnerID))
             {
                 MainConsole.Instance.Info("[EntityTransferModule]: Denied prim crossing for banned avatar");
@@ -781,13 +775,11 @@ namespace Aurora.Modules.EntityTransfer
                 return false;
             }
 
-            //if (!sceneObject.IsAttachmentCheckFull()) // Not Attachment
             {
                 if (!scene.Permissions.CanObjectEntry(sceneObject.UUID,
                                                       true, sceneObject.AbsolutePosition, sceneObject.OwnerID))
                 {
                     // Deny non attachments based on parcel settings
-                    //
                     MainConsole.Instance.Info("[EntityTransferModule]: Denied prim crossing " +
                                               "because of parcel settings");
 
@@ -1021,8 +1013,6 @@ namespace Aurora.Modules.EntityTransfer
                 sp.CopyTo(data);
                 agent = data;
                 circuitData = BuildCircuitDataForPresence(sp, sp.AbsolutePosition);
-                //if (agentIsLeaving)
-                //    sp.SetAgentLeaving(null);//We arn't sure where they are going
                 return true;
             }
 

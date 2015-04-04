@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -662,11 +661,6 @@ textures 1
                     if (appearance.Wearables[i][j].ItemID == UUID.Zero)
                         continue;
 
-                    // ItemIDs will be updated with new assetIDs if the avatar has just updated their clothing,
-                    //    so we can't assume this...
-                    //if (nowWearing[i].ItemID == oldAppearance.Wearables[i][j].ItemID)
-                    //    continue; //Don't relookup items that are the same and have already been found earlier
-
                     UUID assetID = invService.GetItemAssetID(userID, appearance.Wearables[i][j].ItemID);
 
                     if (assetID != UUID.Zero)
@@ -948,10 +942,6 @@ textures 1
                                               " was added and appearance was not sent, force sending now.");
 
                     m_sp.ControllingClient.SendWearables(Appearance.Wearables, Appearance.Serial);
-
-                    //Send rebakes if needed
-                    // NOTE: Do NOT send this! It seems to make the client become a cloud
-                    //sp.SendAppearanceToAgent(sp);
 
                     // If the avatars baked textures are all in the cache, then we have a 
                     // complete appearance... send it out, if not, then we'll send it when

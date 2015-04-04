@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -225,8 +224,6 @@ namespace Aurora.Modules
 
         public void FinishedStartup()
         {
-            //if (m_pluginEnabled)
-            //    VivoxLogout();
         }
 
         #region IVoiceModule Members
@@ -524,7 +521,6 @@ namespace Aurora.Modules
                 if (!VivoxTryCreateDirectory("Server" + sessionid + "D", sessionid.ToString(), out parentID))
                 {
                     VivoxTryGetDirectory("Server" + sessionid + "D", out parentID);
-                    //parentID = String.Empty;
                 }
                 // Added by Adam to help debug channel not availible errors.
                 if (VivoxTryGetChannel(parentID, channelID, out channelID, out channelUri))
@@ -542,13 +538,6 @@ namespace Aurora.Modules
             voice_credentials["channel_credentials"] = "";
             map["voice_credentials"] = voice_credentials;
 
-            // <llsd><map>
-            //       <key>session-id</key><string>c0da7611-9405-e3a4-0172-c36a1120c77a</string>
-            //       <key>voice_credentials</key><map>
-            //           <key>channel_credentials</key><string>rh1iIIiT2v+ebJjRI+klpFHjFmo</string>
-            //           <key>channel_uri</key><string>sip:confctl-12574742@bhr.vivox.com</string>
-            //       </map>
-            // </map></llsd>
             return map;
         }
 
@@ -676,11 +665,6 @@ namespace Aurora.Modules
         private bool VivoxTryCreateDirectory(string dirId, string description, out string channelId)
         {
             string requrl = String.Format(m_vivoxChannelPath, m_vivoxServer, "create", dirId, m_authToken);
-
-            // if (parent != null && parent != String.Empty)
-            // {
-            //     requrl = String.Format("{0}&chan_parent={1}", requrl, parent);
-            // }
 
             if (!string.IsNullOrEmpty(description))
             {
@@ -844,18 +828,6 @@ namespace Aurora.Modules
             return false;
         }
 
-        // private static readonly string m_vivoxChannelById = "http://{0}/api2/viv_chan_mod.php?mode={1}&chan_id={2}&auth_token={3}";
-
-        // private XmlElement VivoxGetChannelById(string parent, string channelid)
-        // {
-        //     string requrl = String.Format(m_vivoxChannelById, m_vivoxServer, "get", channelid, m_authToken);
-
-        //     if (parent != null && parent != String.Empty)
-        //         return VivoxGetChild(parent, channelid);
-        //     else
-        //         return VivoxCall(requrl, true);
-        // }
-
         /// <summary>
         ///     Delete a channel.
         ///     Once again, there a multitude of options possible. In the simplest case
@@ -891,37 +863,6 @@ namespace Aurora.Modules
             string requrl = String.Format(m_vivoxChannelSearch, m_vivoxServer, channelid, m_authToken);
             return VivoxCall(requrl, true);
         }
-
-        // private XmlElement VivoxGetChild(string parent, string child)
-        // {
-
-        //     XmlElement children = VivoxListChildren(parent);
-        //     string count;
-
-        //    if (XmlFind(children, "response.level0.channel-search.count", out count))
-        //     {
-        //         int cnum = Convert.ToInt32(count);
-        //         for (int i = 0; i < cnum; i++)
-        //         {
-        //             string name;
-        //             string id;
-        //             if (XmlFind(children, "response.level0.channel-search.channels.channels.level4.name", i, out name))
-        //             {
-        //                 if (name == child)
-        //                 {
-        //                    if (XmlFind(children, "response.level0.channel-search.channels.channels.level4.id", i, out id))
-        //                     {
-        //                         return VivoxGetChannelById(null, id);
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-
-        //     // One we *know* does not exist.
-        //     return VivoxGetChannel(null, Guid.NewGuid().ToString());
-
-        // }
 
         /// <summary>
         ///     This method handles the WEB side of making a request over the

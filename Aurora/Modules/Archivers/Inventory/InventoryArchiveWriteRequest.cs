@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -259,7 +258,6 @@ namespace Aurora.Modules.Archivers
                     inventoryItem =
                         InventoryArchiveUtils.FindItemByPath(m_registry.RequestModuleInterface<IInventoryService>(),
                                                              rootFolder, m_invPath);
-                    //inventoryItem = m_userInfo.RootFolder.FindItemByPath(m_invPath);
                 }
 
                 if (null == inventoryFolder && null == inventoryItem)
@@ -295,7 +293,6 @@ namespace Aurora.Modules.Archivers
                 }
 
                 // Don't put all this profile information into the archive right now.
-                //SaveUsers();
             }
             catch (Exception)
             {

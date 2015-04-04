@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -2051,7 +2050,6 @@ namespace Aurora.Modules.Land
 
             //Go to the edge, this happens in teleporting to a region with no available parcels
             Vector3 nearestRegionEdgePoint = GetNearestRegionEdgePosition(avatar);
-            //Debug.WriteLine("They are really in a place they don't belong, sending them to: " + nearestRegionEdgePoint.ToString());
             return nearestRegionEdgePoint;
         }
 
@@ -2272,16 +2270,6 @@ namespace Aurora.Modules.Land
             IScenePresence presenceEntity;
             if (m_scene.TryGetScenePresence(client.AgentId, out presenceEntity) && !presenceEntity.IsChildAgent)
             {
-                /*if (presenceEntity.PhysicsActor != null)
-                {
-                    presenceEntity.PhysicsActor.OnPositionAndVelocityUpdate += delegate ()
-                    {
-                        if (m_lastResults.ContainsKey (presenceEntity.UUID) && m_lastResults[presenceEntity.UUID] != 0)
-                        {
-                            m_lastLandObject[presenceEntity.UUID].SendLandProperties (m_lastResults[presenceEntity.UUID], false, (int)m_lastDataResults[presenceEntity.UUID], presenceEntity.ControllingClient);
-                        }
-                    };
-                }*/
                 SendParcelOverlay(client);
             }
         }

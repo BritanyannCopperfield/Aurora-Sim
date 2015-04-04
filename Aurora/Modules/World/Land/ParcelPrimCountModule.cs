@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo;
@@ -535,7 +534,6 @@ namespace Aurora.Modules.Land
             else if (FunctionName == "ObjectEnteringNewParcel")
             {
                 //Taint the parcels
-                //SceneObjectGroup grp = (((Object[])parameters)[0]) as SceneObjectGroup;
                 UUID newParcel = (UUID) (((Object[]) parameters)[1]);
                 UUID oldParcel = (UUID) (((Object[]) parameters)[2]);
                 ILandObject oldlandObject =

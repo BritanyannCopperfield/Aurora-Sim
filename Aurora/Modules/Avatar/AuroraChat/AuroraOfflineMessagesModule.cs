@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.DatabaseInterfaces;
@@ -180,10 +179,8 @@ namespace Aurora.Modules.Chat
             {
                 // Send through scene event manager so all modules get a chance
                 // to look at this message before it gets delivered.
-                //
                 // Needed for proper state management for stored group
                 // invitations
-                //
                 IM.Offline = 1;
                 m_Scene.EventManager.TriggerIncomingInstantMessage(IM);
             }

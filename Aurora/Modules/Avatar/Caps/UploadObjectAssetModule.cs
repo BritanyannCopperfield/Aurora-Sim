@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Framework.PresenceInfo;
@@ -152,26 +151,6 @@ namespace Aurora.Modules.Caps
                     rootpos = obj.Position;
                 }
 
-
-                // Combine the extraparams data into it's ugly blob again....
-                //int bytelength = 0;
-                //for (int extparams = 0; extparams < obj.ExtraParams.Length; extparams++)
-                //{
-                //    bytelength += obj.ExtraParams[extparams].ExtraParamData.Length;
-                //}
-                //byte[] extraparams = new byte[bytelength];
-                //int position = 0;
-
-
-                //for (int extparams = 0; extparams < obj.ExtraParams.Length; extparams++)
-                //{
-                //    Buffer.BlockCopy(obj.ExtraParams[extparams].ExtraParamData, 0, extraparams, position,
-                //                     obj.ExtraParams[extparams].ExtraParamData.Length);
-                //
-                //    position += obj.ExtraParams[extparams].ExtraParamData.Length;
-                // }
-
-                //pbs.ExtraParams = extraparams;
                 foreach (UploadObjectAssetMessage.Object.ExtraParam extraParam in obj.ExtraParams)
                 {
                     switch ((ushort) extraParam.Type)

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -200,7 +199,6 @@ namespace Aurora.Modules.Chat
 
             // If this event has handlers, then an IM from an agent will be
             // considered delivered. This will suppress the error message.
-            //
             if (handlerUndeliveredMessage != null)
             {
                 handlerUndeliveredMessage(im, reason);

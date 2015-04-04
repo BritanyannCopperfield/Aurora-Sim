@@ -26,7 +26,6 @@
  */
 
 using System;
-using Aurora.Framework;
 using Aurora.Framework.Modules;
 
 namespace Aurora.Modules.Monitoring.Monitors

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -924,7 +923,6 @@ namespace Aurora.Modules.Land
                 //The return system will take care of the returned objects
                 m_parcelManagementModule.AddReturns(ol[0].OwnerID, ol[0].Name, ol[0].AbsolutePosition,
                                                     "Parcel Owner Return", ol);
-                //m_scene.returnObjects(ol.ToArray(), remote_client.AgentId);
             }
         }
 

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.ModuleLoader;
 using Aurora.Framework.Modules;
@@ -507,7 +506,6 @@ namespace Aurora.Modules.Terrain
                                         }
                                     }
                                     //MainConsole.Instance.Error("[TERRAIN]: Unable to load heightmap, the terrain you have given is larger than the current region.");
-                                    //return;
                                 }
                                 else
                                 {
@@ -845,8 +843,6 @@ namespace Aurora.Modules.Terrain
                             terrainarray[x, y] = true;
                             xs.Add(x);
                             ys.Add(y);
-                            //Wait and send them all at once
-                            //presence.ControllingClient.SendLayerData(x, y, serializedMap);
                         }
                     }
                 }
@@ -1133,8 +1129,6 @@ namespace Aurora.Modules.Terrain
         {
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
 
-            // request.Credentials = credentials;
-
             request.ContentLength = 0;
             request.KeepAlive = false;
 
@@ -1144,7 +1138,6 @@ namespace Aurora.Modules.Terrain
             if (response.ContentLength == 0)
                 throw new Exception(String.Format("{0} returned an empty file", uri));
 
-            // return new BufferedStream(file, (int) response.ContentLength);
             return new BufferedStream(file, 1000000);
         }
 

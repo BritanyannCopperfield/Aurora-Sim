@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.ModuleLoader;
 using Aurora.Framework.Modules;
@@ -52,7 +51,6 @@ namespace Aurora.Modules.Wind
         private uint m_frame;
         private uint m_frameLastUpdateClientArray;
         private int m_frameUpdateRate = 150;
-        //private Random m_rndnums = new Random(Environment.TickCount);
         private bool m_ready;
         private IScene m_scene;
 

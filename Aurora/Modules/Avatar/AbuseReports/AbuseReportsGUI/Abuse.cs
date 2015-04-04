@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/
+ * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Aurora.Framework;
 using Aurora.Framework.DatabaseInterfaces;
 using Aurora.Framework.Modules;
 using Aurora.Framework.Services;

@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework;
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -233,7 +232,6 @@ namespace Aurora.Modules.Friends
             }
             else if (message["Method"] == "FriendshipOffered")
             {
-                //UUID Requester = message["Requester"].AsUUID();
                 UUID Friend = message["Friend"].AsUUID();
                 GridInstantMessage im = new GridInstantMessage();
                 im.FromOSD((OSDMap) message["Message"]);
@@ -541,10 +539,7 @@ namespace Aurora.Modules.Friends
                 // Update the local cache
                 UpdateFriendsCache(friendID);
 
-
-                //
                 // put a calling card into the inventory of the friend
-                //
                 ICallingCardModule ccmodule = friendClient.Scene.RequestModuleInterface<ICallingCardModule>();
                 if (ccmodule != null)
                 {
@@ -594,7 +589,7 @@ namespace Aurora.Modules.Friends
                 // update local cache
                 UpdateFriendsCache(exfriendID);
                 // the friend in this sim as root agent
-                // you do NOT send the friend his uuid...  /me sighs...    - Revolution
+                // you do NOT send the friend his uuid
                 friendClient.SendTerminateFriend(terminatingUser);
                 return true;
             }
