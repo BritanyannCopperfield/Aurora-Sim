@@ -29,6 +29,7 @@ using System;
 
 namespace Aurora.DataManager
 {
+    [Serializable]
     public class DataManagerException : Exception
     {
         public DataManagerException(string message) : base(message)

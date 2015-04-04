@@ -32,6 +32,7 @@ namespace Aurora.Modules.Archivers
     /// <summary>
     ///     Signals an inventory archiving problem
     /// </summary>
+    [Serializable]
     public class InventoryArchiverException : Exception
     {
         public InventoryArchiverException(string message) : base(message)

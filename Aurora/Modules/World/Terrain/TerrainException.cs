@@ -29,6 +29,7 @@ using System;
 
 namespace Aurora.Modules.Terrain
 {
+    [Serializable]
     public class TerrainException : Exception
     {
         public TerrainException()
