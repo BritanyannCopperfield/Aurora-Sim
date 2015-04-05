@@ -67,9 +67,10 @@ namespace Aurora.Framework.Configuration
             bool iniFileExists = false;
             bool oldoptions = false;
 
-            string mainIniDirectory = "";
+            string mainIniDirectory = Constants.DEFAULT_CONFIG_DIR;
             string mainIniFileName = defaultIniFile;
             string secondaryIniFileName = "";
+            string worldIniFileName = "MyWorld.ini";
 
             List<string> sources = new List<string>();
             string basePath = Util.configDir();
@@ -106,7 +107,9 @@ namespace Aurora.Framework.Configuration
                     //Be mindful of these when modifying...
                     //1) When file A includes file B, if the same directive is found in both, that the value in file B wins.
                     //2) That inifile may be used with or without inimaster being used.
-                    //3) That any values for directives pulled in via inifile (Config Set 2) override directives of the same name found in the directive set (Config Set 1) created by reading in bin/Aurora.ini and its subsequently included files or that created by reading in whatever file inimaster points to and its subsequently included files.
+                    //3) That any values for directives pulled in via inifile (Config Set 2) override directives of the same name found in 
+                    //    the directive set (Config Set 1) created by reading in bin/WhiteCore.ini and its subsequently included files
+                    //    or that created by reading in whatever file inimaster points to and its subsequently included files.
 
                     if (IsUri(masterFileName))
                     {
@@ -178,11 +181,11 @@ namespace Aurora.Framework.Configuration
                         string[] fileEntries = Directory.GetFiles(iniDirName);
 
                         foreach (string filePath in fileEntries.Where(filePath =>
-                                                                          {
-                                                                              var extension = Path.GetExtension(filePath);
-                                                                              return extension != null &&
-                                                                                     extension.ToLower() == ".ini";
-                                                                          })
+                        {
+                            var extension = Path.GetExtension(filePath);
+                            return extension != null &&
+                                   extension.ToLower() == ".ini";
+                        })
                                                                .Where(
                                                                    filePath =>
                                                                    !sources.Contains(Path.Combine(iniDirName, filePath)))
@@ -194,9 +197,9 @@ namespace Aurora.Framework.Configuration
                 }
                 else
                 {
-                    mainIniDirectory = startupConfig.GetString("mainIniDirectory", "");
+                    mainIniDirectory = startupConfig.GetString("mainIniDirectory", mainIniDirectory);
                     mainIniFileName = startupConfig.GetString("mainIniFileName", defaultIniFile);
-                    secondaryIniFileName = startupConfig.GetString("secondaryIniFileName", "");
+                    secondaryIniFileName = startupConfig.GetString("secondaryIniFileName", secondaryIniFileName);
                 }
             }
 
@@ -238,6 +241,8 @@ namespace Aurora.Framework.Configuration
             IConfigSource m_config = new IniConfigSource();
             IConfigSource m_fakeconfig = new IniConfigSource();
 
+            //Console.WriteLine(string.Format("[Config]: Reading configuration settings"));
+
             if (sources.Count == 0)
             {
                 Console.WriteLine(string.Format("[CONFIG]: Could not load any configuration"));
@@ -273,12 +278,21 @@ namespace Aurora.Framework.Configuration
                     ReadConfig(sources[i] + ".example", i, m_config);
             }
 
+            // add override paramteres if they exist ONLY for standalone operation
+            if (!mainIniFileName.Contains("GridServer"))
+            {
+                string worldIniFilePath = Path.Combine(mainIniDirectory, worldIniFileName);
+                if (File.Exists(worldIniFilePath))
+                    ReadConfig(worldIniFilePath, 0, m_config);
+            }
+
             FixDefines(ref m_config);
 
             if (!iniFileExists)
             {
                 Console.WriteLine(string.Format("[CONFIG]: Could not load any configuration"));
-                Console.WriteLine(string.Format("[CONFIG]: Configuration exists, but there was an error loading it!"));
+                Console.WriteLine(string.Format("[CONFIG]: .. or Configuration possibly exists, but there was an error loading it!"));
+                Console.WriteLine(string.Format("[CONFIG]: Configuration : " + mainIniDirectory + ", " + mainIniFileName));
                 throw new NotSupportedException();
             }
             // Make sure command line options take precedence
@@ -357,14 +371,14 @@ namespace Aurora.Framework.Configuration
                             // Resolve relative paths with wildcards
                             string chunkWithoutWildcards = file;
                             string chunkWithWildcards = string.Empty;
-                            int wildcardIndex = file.IndexOfAny(new[] {'*', '?'});
+                            int wildcardIndex = file.IndexOfAny(new[] { '*', '?' });
                             if (wildcardIndex != -1)
                             {
                                 chunkWithoutWildcards = file.Substring(0, wildcardIndex);
                                 chunkWithWildcards = file.Substring(wildcardIndex);
                             }
                             string path = Path.Combine(basePath, chunkWithoutWildcards + chunkWithWildcards);
-                            List<string> paths = new List<string>(new string[1] {path});
+                            List<string> paths = new List<string>(new string[1] { path });
                             if (path.Contains("*"))
                                 if (path.Contains("*.ini"))
                                 {
@@ -407,14 +421,14 @@ namespace Aurora.Framework.Configuration
                             // Resolve relative paths with wildcards
                             string chunkWithoutWildcards = file;
                             string chunkWithWildcards = string.Empty;
-                            int wildcardIndex = file.IndexOfAny(new[] {'*', '?'});
+                            int wildcardIndex = file.IndexOfAny(new[] { '*', '?' });
                             if (wildcardIndex != -1)
                             {
                                 chunkWithoutWildcards = file.Substring(0, wildcardIndex);
                                 chunkWithWildcards = file.Substring(wildcardIndex);
                             }
                             string path = Path.Combine(basePath, chunkWithoutWildcards + chunkWithWildcards);
-                            string[] paths = new string[1] {path};
+                            string[] paths = new string[1] { path };
                             if (path.Contains("*"))
                                 paths = Util.GetSubFiles(path);
 
