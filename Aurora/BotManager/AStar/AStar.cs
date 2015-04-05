@@ -27,9 +27,8 @@
 
 using System;
 using System.Collections;
-using Tanis.Collections;
 
-namespace Games.Pathfinding
+namespace Aurora.BotManager.AStar
 {
     /// <summary>
     ///     Base class for pathfinding nodes, it holds no actual information about the map.
@@ -40,8 +39,8 @@ namespace Games.Pathfinding
     {
         #region Properties
 
-        private double FGoalEstimate;
-        private AStarNode FGoalNode;
+        double FGoalEstimate;
+        AStarNode FGoalNode;
 
         /// <summary>
         ///     The parent of the node.
@@ -51,7 +50,7 @@ namespace Games.Pathfinding
         /// <summary>
         ///     The accumulative cost of the path until now.
         /// </summary>
-        public double Cost { set; get; }
+        public double Cost { get; set; }
 
         /// <summary>
         ///     The estimated cost to the goal from here.
@@ -109,7 +108,7 @@ namespace Games.Pathfinding
         #region Public Methods
 
         /// <summary>
-        ///     Determines wheather the current node is the goal.
+        ///     Determines whether the current node is the goal.
         /// </summary>
         /// <returns>Returns true if current node is the goal</returns>
         public bool IsGoal()
@@ -122,7 +121,7 @@ namespace Games.Pathfinding
         #region Virtual Methods
 
         /// <summary>
-        ///     Determines wheather the current node is the same state as the on passed.
+        ///     Determines whether the current node is the same state as the on passed.
         /// </summary>
         /// <param name="ANode">AStarNode to compare the current node to</param>
         /// <returns>Returns true if they are the same state</returns>
@@ -153,7 +152,7 @@ namespace Games.Pathfinding
 
         public override bool Equals(object obj)
         {
-            return IsSameState((AStarNode) obj);
+            return IsSameState((AStarNode)obj);
         }
 
         public override int GetHashCode()
@@ -167,7 +166,7 @@ namespace Games.Pathfinding
 
         public int CompareTo(object obj)
         {
-            return (-TotalCost.CompareTo(((AStarNode) obj).TotalCost));
+            return (-TotalCost.CompareTo(((AStarNode)obj).TotalCost));
         }
 
         #endregion
@@ -180,19 +179,19 @@ namespace Games.Pathfinding
     {
         #region Private Fields
 
-        private readonly Heap FClosedList;
-        private readonly Heap FOpenList;
-        private readonly ArrayList FSuccessors;
-        private AStarNode FGoalNode;
-        private AStarNode FStartNode;
+        readonly Heap FClosedList;
+        readonly Heap FOpenList;
+        readonly ArrayList FSuccessors;
+        AStarNode FGoalNode;
+        AStarNode FStartNode;
 
         #endregion
 
         #region Properties
 
-        private readonly ArrayList FSolution;
+        readonly ArrayList FSolution;
 
-        private bool m_pathPossible = true;
+        bool m_pathPossible = true;
 
         /// <summary>
         ///     Holds the solution after pathfinding is done. <see>FindPath()</see>
@@ -227,12 +226,11 @@ namespace Games.Pathfinding
         ///     Prints all the nodes in a list
         /// </summary>
         /// <param name="ANodeList">List to print</param>
-        private void PrintNodeList(object ANodeList)
+        void PrintNodeList(object ANodeList)
         {
             Console.WriteLine("Node list:");
             foreach (AStarNode n in (ANodeList as IEnumerable))
             {
-                //n.PrintNodeInfo();
             }
             Console.WriteLine("=====");
         }
@@ -256,7 +254,7 @@ namespace Games.Pathfinding
             while (FOpenList.Count > 0 && i < 2000)
             {
                 // Get the node with the lowest TotalCost
-                AStarNode NodeCurrent = (AStarNode) FOpenList.Pop();
+                AStarNode NodeCurrent = (AStarNode)FOpenList.Pop();
 
                 // If the node is the goal copy the path to the solution array
                 if (NodeCurrent.IsGoal())
@@ -277,7 +275,7 @@ namespace Games.Pathfinding
                     // the TotalCost is higher, we will throw away the current successor.
                     AStarNode NodeOpen = null;
                     if (FOpenList.Contains(NodeSuccessor))
-                        NodeOpen = (AStarNode) FOpenList[FOpenList.IndexOf(NodeSuccessor)];
+                        NodeOpen = (AStarNode)FOpenList[FOpenList.IndexOf(NodeSuccessor)];
                     if ((NodeOpen != null) && (NodeSuccessor.TotalCost > NodeOpen.TotalCost))
                         continue;
 
@@ -285,7 +283,7 @@ namespace Games.Pathfinding
                     // the TotalCost is higher, we will throw away the current successor.
                     AStarNode NodeClosed = null;
                     if (FClosedList.Contains(NodeSuccessor))
-                        NodeClosed = (AStarNode) FClosedList[FClosedList.IndexOf(NodeSuccessor)];
+                        NodeClosed = (AStarNode)FClosedList[FClosedList.IndexOf(NodeSuccessor)];
                     if ((NodeClosed != null) && (NodeSuccessor.TotalCost > NodeClosed.TotalCost))
                         continue;
 

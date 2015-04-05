@@ -85,7 +85,7 @@ namespace Aurora.BotManager
                     new LSL_String(
                         manager.CreateAvatar(FirstName, LastName, m_host.ParentEntity.Scene,
                                              UUID.Parse(appearanceToClone), m_host.OwnerID,
-                                             new Vector3((float) startPos.x, (float) startPos.y, (float) startPos.z)).
+                                             new Vector3((float)startPos.x, (float)startPos.y, (float)startPos.z)).
                                 ToString());
             return new LSL_String("");
         }
@@ -129,13 +129,13 @@ namespace Aurora.BotManager
             for (int i = 0; i < positions.Length; i++)
             {
                 LSL_Vector pos = positions.GetVector3Item(i);
-                PositionsMap.Add(new Vector3((float) pos.x, (float) pos.y, (float) pos.z));
+                PositionsMap.Add(new Vector3((float)pos.x, (float)pos.y, (float)pos.z));
             }
             List<TravelMode> TravelMap = new List<TravelMode>();
             for (int i = 0; i < movementType.Length; i++)
             {
                 LSL_Integer travel = movementType.GetLSLIntegerItem(i);
-                TravelMap.Add((TravelMode) travel.value);
+                TravelMap.Add((TravelMode)travel.value);
             }
 
             IBotManager manager = World.RequestModuleInterface<IBotManager>();
@@ -169,7 +169,7 @@ namespace Aurora.BotManager
                 return;
             IBotManager manager = World.RequestModuleInterface<IBotManager>();
             if (manager != null)
-                manager.FollowAvatar(UUID.Parse(bot), avatarName, (float) startFollowDistance, (float) endFollowDistance,
+                manager.FollowAvatar(UUID.Parse(bot), avatarName, (float)startFollowDistance, (float)endFollowDistance,
                                      false, Vector3.Zero,
                                      m_host.OwnerID);
         }
@@ -233,7 +233,7 @@ namespace Aurora.BotManager
                 throw new Exception("Failed to find entity to sit on");
 
             sp.HandleAgentRequestSit(sp.ControllingClient, UUID.Parse(objectID),
-                                     new Vector3((float) offset.x, (float) offset.y, (float) offset.z));
+                                     new Vector3((float)offset.x, (float)offset.y, (float)offset.z));
         }
 
         public void botStandUp(string bot)
@@ -340,7 +340,7 @@ namespace Aurora.BotManager
         /// </summary>
         public string[] NamespaceAdditions
         {
-            get { return new string[1] {"Aurora.BotManager"}; }
+            get { return new string[1] { "Aurora.BotManager" }; }
         }
 
         #endregion
@@ -351,7 +351,7 @@ namespace Aurora.BotManager
 
         public override Object InitializeLifetimeService()
         {
-            ILease lease = (ILease) base.InitializeLifetimeService();
+            ILease lease = (ILease)base.InitializeLifetimeService();
 
             if (lease.CurrentState == LeaseState.Initial)
             {

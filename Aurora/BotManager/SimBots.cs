@@ -37,7 +37,7 @@ namespace Aurora.BotManager
         public static double target;
 
         /// <summary>
-        ///     This is used to seacrh the current map for
+        ///     This is used to search the current map for
         ///     Items that the bot needs. Like when he is hungry he will search for 9 on the map
         ///     Fun is 7 and Comfort is 8 etc.
         ///     This returns the x and y to BotMe and then he passes them on to Astar and builds a list of waypoints to
@@ -68,7 +68,7 @@ namespace Aurora.BotManager
                     {
                         double distx = botx - i;
                         double disty = boty - j;
-                        double goalDist = Math.Sqrt((distx*distx) + (disty*disty));
+                        double goalDist = Math.Sqrt((distx * distx) + (disty * disty));
                         if (goalDist < distTarget)
                         {
                             target = goalDist;

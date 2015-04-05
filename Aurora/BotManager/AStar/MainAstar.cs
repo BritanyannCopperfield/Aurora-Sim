@@ -28,7 +28,7 @@
 using System;
 using System.Collections;
 
-namespace Games.Pathfinding.AStar2DTest
+namespace Aurora.BotManager.AStar
 {
     /// <summary>
     ///     Test class for doing A* pathfinding on a 2D map.
@@ -37,7 +37,7 @@ namespace Games.Pathfinding.AStar2DTest
     {
         #region Test Maps
 
-        private static readonly int[,] Map =
+        static readonly int[,] Map =
             {
                 {1, -1, 1, 1, 1, -1, 1, 1, 1, 1},
                 {1, -1, 1, -1, 1, -1, 1, 1, 1, 1},
@@ -103,14 +103,14 @@ namespace Games.Pathfinding.AStar2DTest
         ///     The main entry point for the application.
         /// </summary>
         [STAThread]
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             Console.WriteLine("Starting...");
 
             AStar astar = new AStar();
 
             AStarNode2D GoalNode = new AStarNode2D(null, null, 0, 9, 9);
-            AStarNode2D StartNode = new AStarNode2D(null, GoalNode, 0, 0, 0) {GoalNode = GoalNode};
+            AStarNode2D StartNode = new AStarNode2D(null, GoalNode, 0, 0, 0) { GoalNode = GoalNode };
             astar.FindPath(StartNode, GoalNode);
 
             PrintSolution(astar.Solution);

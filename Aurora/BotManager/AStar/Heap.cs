@@ -28,7 +28,7 @@
 using System;
 using System.Collections;
 
-namespace Tanis.Collections
+namespace Aurora.BotManager.AStar
 {
     /// <summary>
     ///     The Heap allows to maintain a list sorted as long as needed.
@@ -48,9 +48,9 @@ namespace Tanis.Collections
 
         #endregion
 
-        private IComparer FComparer;
-        private ArrayList FList;
-        private bool FUseObjectsComparison;
+        IComparer FComparer;
+        ArrayList FList;
+        bool FUseObjectsComparison;
 
         #region Constructors
 
@@ -100,7 +100,7 @@ namespace Tanis.Collections
 
         #region Properties
 
-        private bool FAddDuplicates;
+        bool FAddDuplicates;
 
         /// <summary>
         ///     If set to true, it will not be possible to add an object to the list if its value is already in the list.
@@ -131,8 +131,7 @@ namespace Tanis.Collections
         /// <returns>Cloned object.</returns>
         public object Clone()
         {
-            Heap Clone = new Heap(FComparer, FList.Capacity)
-                             {FList = (ArrayList) FList.Clone(), FAddDuplicates = FAddDuplicates};
+            Heap Clone = new Heap(FComparer, FList.Capacity) { FList = (ArrayList)FList.Clone(), FAddDuplicates = FAddDuplicates };
             return Clone;
         }
 
@@ -164,7 +163,7 @@ namespace Tanis.Collections
         /// </summary>
         /// <param name="O">The object to add.</param>
         /// <returns>The index where the object has been added.</returns>
-        /// <exception cref="ArgumentException">The Heap is set to use object's IComparable interface, and the specifed object does not implement this interface.</exception>
+        /// <exception cref="ArgumentException">The Heap is set to use object's IComparable interface, and the specified object does not implement this interface.</exception>
         public int Add(object O)
         {
             int Return = -1;
@@ -325,7 +324,7 @@ namespace Tanis.Collections
         ///     Object.ToString() override.
         ///     Build a string to represent the list.
         /// </summary>
-        /// <returns>The string refecting the list.</returns>
+        /// <returns>The string reflecting the list.</returns>
         public override string ToString()
         {
             string OutString = "{";
@@ -340,7 +339,7 @@ namespace Tanis.Collections
         /// <returns>true if object is equal to this, otherwise false.</returns>
         public override bool Equals(object Object)
         {
-            Heap SL = (Heap) Object;
+            Heap SL = (Heap)Object;
             if (SL.Count != Count)
                 return false;
             for (int i = 0; i < Count; i++)
@@ -407,7 +406,7 @@ namespace Tanis.Collections
         /// </summary>
         /// <param name="C">The object to add.</param>
         /// <returns>The index where the object has been added.</returns>
-        /// <exception cref="ArgumentException">The Heap is set to use object's IComparable interface, and the specifed object does not implement this interface.</exception>
+        /// <exception cref="ArgumentException">The Heap is set to use object's IComparable interface, and the specified object does not implement this interface.</exception>
         public void AddRange(ICollection C)
         {
             foreach (object Object in C)
@@ -517,7 +516,7 @@ namespace Tanis.Collections
             return (Add(Object));
         }
 
-        private bool ObjectIsCompliant(object Object)
+        bool ObjectIsCompliant(object Object)
         {
             if (FUseObjectsComparison && !(Object is IComparable))
                 throw new ArgumentException(
@@ -527,7 +526,7 @@ namespace Tanis.Collections
             return true;
         }
 
-        private void InitProperties(IComparer Comparer, int Capacity)
+        void InitProperties(IComparer Comparer, int Capacity)
         {
             if (Comparer != null)
             {
@@ -545,7 +544,7 @@ namespace Tanis.Collections
 
         #region Nested type: Comparison
 
-        private class Comparison : IComparer
+        class Comparison : IComparer
         {
             #region IComparer Members
 

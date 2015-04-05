@@ -34,7 +34,7 @@ namespace Aurora.BotManager
 {
     public class NodeGraph
     {
-        private readonly object m_lock = new object();
+        readonly object m_lock = new object();
         public int CurrentPos;
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace Aurora.BotManager
         /// </summary>
         public bool FollowIndefinitely;
 
-        private DateTime m_lastChangedPosition = DateTime.MinValue;
-        private List<Vector3> m_listOfPositions = new List<Vector3>();
-        private List<TravelMode> m_listOfStates = new List<TravelMode>();
-        private DateTime m_waitingSince = DateTime.MinValue;
+        DateTime m_lastChangedPosition = DateTime.MinValue;
+        List<Vector3> m_listOfPositions = new List<Vector3>();
+        List<TravelMode> m_listOfStates = new List<TravelMode>();
+        DateTime m_waitingSince = DateTime.MinValue;
 
         #region Add
 
@@ -87,9 +87,10 @@ namespace Aurora.BotManager
                                     out Vector3 position, out TravelMode state, out bool needsToTeleportToPosition)
         {
             const bool found = false;
+
             lock (m_lock)
             {
-                findNewTarget:
+            findNewTarget:
                 position = Vector3.Zero;
                 state = TravelMode.None;
                 needsToTeleportToPosition = false;
@@ -133,8 +134,11 @@ namespace Aurora.BotManager
                     }
                     return true;
                 }
+
                 if (m_listOfPositions.Count == 0)
                     return false;
+
+
                 if (FollowIndefinitely)
                 {
                     CurrentPos = 0; //Reset the position to the beginning if we have run out of positions
@@ -148,6 +152,11 @@ namespace Aurora.BotManager
         {
             m_listOfPositions = graph.m_listOfPositions;
             m_listOfStates = graph.m_listOfStates;
+        }
+
+        public int NodePositions()
+        {
+            return m_listOfPositions.Count;
         }
     }
 }

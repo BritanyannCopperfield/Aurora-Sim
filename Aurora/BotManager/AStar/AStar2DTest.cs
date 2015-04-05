@@ -29,7 +29,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Games.Pathfinding.AStar2DTest
+namespace Aurora.BotManager.AStar
 {
     /// <summary>
     ///     A node class for doing pathfinding on a 2-dimensional map
@@ -45,9 +45,8 @@ namespace Games.Pathfinding.AStar2DTest
     {
         #region Properties
 
-        private readonly int FX;
-
-        private readonly int FY;
+        readonly int FX;
+        readonly int FY;
 
         /// <summary>
         ///     The X-coordinate of the node
@@ -94,7 +93,7 @@ namespace Games.Pathfinding.AStar2DTest
         /// <param name="ASuccessors">List of successors</param>
         /// <param name="AX">X-coordinate</param>
         /// <param name="AY">Y-coordinate</param>
-        private void AddSuccessor(ArrayList ASuccessors, int AX, int AY)
+        void AddSuccessor(ArrayList ASuccessors, int AX, int AY)
         {
             int CurrentCost = StartPath.GetMap(AX, AY);
             if (CurrentCost == -1)
@@ -114,7 +113,7 @@ namespace Games.Pathfinding.AStar2DTest
         #region Overidden Methods
 
         /// <summary>
-        ///     Determines wheather the current node is the same state as the on passed.
+        ///     Determines whether the current node is the same state as the on passed.
         /// </summary>
         /// <param name="ANode">AStarNode to compare the current node to</param>
         /// <returns>Returns true if they are the same state</returns>
@@ -124,8 +123,8 @@ namespace Games.Pathfinding.AStar2DTest
             {
                 return false;
             }
-            return ((((AStarNode2D) ANode).X == FX) &&
-                    (((AStarNode2D) ANode).Y == FY));
+            return ((((AStarNode2D)ANode).X == FX) &&
+                    (((AStarNode2D)ANode).Y == FY));
         }
 
         /// <summary>
@@ -135,8 +134,8 @@ namespace Games.Pathfinding.AStar2DTest
         {
             if (GoalNode != null)
             {
-                double xd = Math.Abs(FX - ((AStarNode2D) GoalNode).X);
-                double yd = Math.Abs(FY - ((AStarNode2D) GoalNode).Y);
+                double xd = Math.Abs(FX - ((AStarNode2D)GoalNode).X);
+                double yd = Math.Abs(FY - ((AStarNode2D)GoalNode).Y);
 
                 // "Manhattan Distance" - Used when search can only move vertically and 
                 // horizontally.
@@ -191,7 +190,7 @@ namespace Games.Pathfinding.AStar2DTest
 
         /// <summary>
         ///     Entry and Exit from BotMe is StartPath.Path
-        ///     CurrenMap is the map read from the file in ReadMap
+        ///     CurrentMap is the map read from the file in ReadMap
         /// </summary>
         public static int[,] Map
         {
@@ -245,7 +244,7 @@ namespace Games.Pathfinding.AStar2DTest
         /// <summary>
         ///     The main entry point for the pathfinding routines.
         ///     AstarNode2D is derived from AStar then the StarPath class creates an instance of AStar and uses AstarNode2D
-        ///     to override the methds in AStar.cs.
+        ///     to override the methods in AStar.cs.
         ///     Using Path method as an entry and return point from/to BotMe. Also StartPath is used to make maps and check limits
         ///     as well as print the map out in a console if we use console apps.
         /// </summary>
@@ -255,7 +254,7 @@ namespace Games.Pathfinding.AStar2DTest
             // This works because each character is internally represented by a number. 
             // The characters '0' to '9' are represented by consecutive numbers, so finding 
             // the difference between the characters '0' and '2' results in the number 2.if char = 2 or whatever.
-            int[,] mapArray = new int[mapx,mapy];
+            int[,] mapArray = new int[mapx, mapy];
             xLimit = mapx;
             yLimit = mapy;
 
@@ -292,7 +291,7 @@ namespace Games.Pathfinding.AStar2DTest
             AStar astar = new AStar();
 
             AStarNode2D GoalNode = new AStarNode2D(null, null, 0, endx, endy);
-            AStarNode2D StartNode = new AStarNode2D(null, GoalNode, 0, startx, starty) {GoalNode = GoalNode};
+            AStarNode2D StartNode = new AStarNode2D(null, GoalNode, 0, startx, starty) { GoalNode = GoalNode };
 
             // Prepare the final List that will become the waypoints for him to leaf through
             List<string> botPoint = new List<string>();
@@ -326,7 +325,7 @@ namespace Games.Pathfinding.AStar2DTest
             ArrayList Nodes = new ArrayList(astar.Solution);
             foreach (AStarNode nn in Nodes)
             {
-                AStarNode2D n = (AStarNode2D) nn;
+                AStarNode2D n = (AStarNode2D)nn;
                 // Return x and y from printinfo
                 int[] XYreturn = new int[2];
                 XYreturn = n.PrintNodeInfo();
@@ -372,7 +371,7 @@ namespace Games.Pathfinding.AStar2DTest
             {
                 return 88;
             }
-            return (Y2 - Y1)/(X2 - X1);
+            return (Y2 - Y1) / (X2 - X1);
         }
 
         #endregion
