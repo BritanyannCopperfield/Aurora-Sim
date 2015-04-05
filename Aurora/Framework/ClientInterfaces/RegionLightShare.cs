@@ -70,7 +70,7 @@ namespace Aurora.Framework.ClientInterfaces
                 OSDArray cycle = new OSDArray();
                 foreach (KeyValuePair<string, SkyData> kvp in DataSettings)
                 {
-                    cycle.Add(new OSDArray {kvp.Key, kvp.Value.preset_name});
+                    cycle.Add(new OSDArray { kvp.Key, kvp.Value.preset_name });
                     settings[kvp.Value.preset_name] = kvp.Value.ToOSD();
                 }
 
@@ -149,7 +149,7 @@ namespace Aurora.Framework.ClientInterfaces
                 map["cloud_shadow"] = cloud_shadow;
                 map["density_multiplier"] = density_multiplier;
                 map["distance_multiplier"] = distance_multiplier;
-                map["enable_cloud_scroll"] = new OSDArray {enable_cloud_scroll.X == 1, enable_cloud_scroll.Y == 1};
+                map["enable_cloud_scroll"] = new OSDArray { enable_cloud_scroll.X == 1, enable_cloud_scroll.Y == 1 };
                 map["gamma"] = gamma;
                 map["glow"] = glow;
                 map["haze_density"] = haze_density;
@@ -231,8 +231,8 @@ namespace Aurora.Framework.ClientInterfaces
 
         public OSD ToOSD()
         {
-            OSDArray array = new OSDArray(4) {null, null, null, null};
-            array[0] = new OSDMap {{"regionID", RegionID}};
+            OSDArray array = new OSDArray(4) { null, null, null, null };
+            array[0] = new OSDMap { { "regionID", RegionID } };
             Cycle.ToOSD(ref array);
             Water.ToOSD(ref array);
 

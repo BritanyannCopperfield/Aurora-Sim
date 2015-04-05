@@ -163,19 +163,19 @@ namespace Aurora.Framework.ClientInterfaces
         public OSChatMessage Copy()
         {
             OSChatMessage message = new OSChatMessage
-                                        {
-                                            Channel = Channel,
-                                            From = From,
-                                            Message = Message,
-                                            Position = Position,
-                                            Range = Range,
-                                            Scene = Scene,
-                                            Sender = Sender,
-                                            SenderObject = SenderObject,
-                                            SenderUUID = SenderUUID,
-                                            Type = Type,
-                                            ToAgentID = ToAgentID
-                                        };
+            {
+                Channel = Channel,
+                From = From,
+                Message = Message,
+                Position = Position,
+                Range = Range,
+                Scene = Scene,
+                Sender = Sender,
+                SenderObject = SenderObject,
+                SenderUUID = SenderUUID,
+                Type = Type,
+                ToAgentID = ToAgentID
+            };
             return message;
         }
 
@@ -189,7 +189,7 @@ namespace Aurora.Framework.ClientInterfaces
         {
             Dictionary<string, object> kvp = new Dictionary<string, object>();
             kvp["Message"] = Message;
-            kvp["Type"] = (int) Type;
+            kvp["Type"] = (int)Type;
             kvp["Channel"] = Channel;
             kvp["Range"] = Range;
             kvp["Position"] = Position;
@@ -202,7 +202,7 @@ namespace Aurora.Framework.ClientInterfaces
         public void FromKVP(Dictionary<string, object> kvp)
         {
             Message = kvp["Message"].ToString();
-            Type = ((ChatTypeEnum) int.Parse(kvp["Type"].ToString()));
+            Type = ((ChatTypeEnum)int.Parse(kvp["Type"].ToString()));
             Channel = int.Parse(kvp["Channel"].ToString());
             Range = float.Parse(kvp["Range"].ToString());
             Position = Vector3.Parse(kvp["Position"].ToString());

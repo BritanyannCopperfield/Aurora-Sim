@@ -27,7 +27,6 @@
 
 using System;
 using Aurora.Framework.Modules;
-using Aurora.Framework.SceneInfo;
 using Aurora.Framework.Utilities;
 using OpenMetaverse;
 using OpenMetaverse.StructuredData;
@@ -35,79 +34,66 @@ using ProtoBuf;
 
 namespace Aurora.Framework.ClientInterfaces
 {
-    [ProtoContract(UseProtoMembersOnly=true)]
-    public class GridInstantMessage : IDataTransferable
+    public class EventData : IDataTransferable
     {
-        [ProtoMember(1)]
-        public uint ParentEstateID;
-        [ProtoMember(2)]
-        public Vector3 Position;
-        [ProtoMember(3)]
-        public UUID RegionID;
-        [ProtoMember(4)]
-        public byte[] BinaryBucket;
-        [ProtoMember(5)]
-        public byte Dialog;
-        [ProtoMember(6)]
-        public UUID FromAgentID;
-        [ProtoMember(7)]
-        public string FromAgentName;
-        [ProtoMember(8)]
-        public bool FromGroup;
-        [ProtoMember(9)]
-        public UUID SessionID;
-        [ProtoMember(10)]
-        public string Message;
-        [ProtoMember(11)]
-        public byte Offline;
-        [ProtoMember(12)]
-        public uint Timestamp;
-        [ProtoMember(13)]
-        public UUID ToAgentID;
+        public uint amount;
+        public string category;
+        public uint cover;
+        public string creator;
+        public string date;
+        public uint dateUTC;
+        public string description;
+        public uint duration;
+        public uint eventFlags;
+        public uint eventID;
+        public Vector3 globalPos;
+        public Vector3 regionPos;
+        public int maturity;
+        public string name;
+        public string simName;
 
-        public GridInstantMessage()
+        public EventData()
         {
-            BinaryBucket = new byte[0];
-            Timestamp = (uint) Util.UnixTimeSinceEpoch();
-            SessionID = FromAgentID ^ ToAgentID;
         }
 
         public override OSDMap ToOSD()
         {
-            OSDMap map = new OSDMap
-                             {
-                                 {"fromAgentID", OSD.FromUUID(FromAgentID)},
-                                 {"fromAgentName", OSD.FromString(FromAgentName)},
-                                 {"toAgentID", OSD.FromUUID(ToAgentID)},
-                                 {"dialog", OSD.FromInteger(Dialog)},
-                                 {"fromGroup", OSD.FromBoolean(FromGroup)},
-                                 {"message", OSD.FromString(Message)},
-                                 {"imSessionID", OSD.FromUUID(SessionID)},
-                                 {"offline", OSD.FromInteger(Offline)},
-                                 {"Position", OSD.FromVector3(Position)},
-                                 {"binaryBucket", OSD.FromBinary(BinaryBucket)},
-                                 {"ParentEstateID", OSD.FromUInteger(ParentEstateID)},
-                                 {"RegionID", OSD.FromUUID(RegionID)},
-                                 {"timestamp", OSD.FromUInteger(Timestamp)}
-                             };
+            OSDMap map = new OSDMap();
+            map["eventID"] = eventID;
+            map["creator"] = creator;
+            map["name"] = name;
+            map["category"] = category;
+            map["description"] = description;
+            map["date"] = date;
+            map["dateUTC"] = dateUTC;
+            map["duration"] = duration;
+            map["cover"] = cover;
+            map["amount"] = amount;
+            map["simName"] = simName;
+            map["globalPos"] = globalPos;
+            map["regionPos"] = regionPos;
+            map["eventFlags"] = eventFlags;
+            map["maturity"] = maturity;
             return map;
         }
 
         public override void FromOSD(OSDMap map)
         {
-            FromAgentID = map["fromAgentID"].AsUUID();
-            FromAgentName = map["fromAgentName"].AsString();
-            ToAgentID = map["toAgentID"].AsUUID();
-            Dialog = (byte) map["dialog"].AsInteger();
-            FromGroup = map["fromGroup"].AsBoolean();
-            Message = map["message"].ToString();
-            Offline = (byte) map["offline"].AsInteger();
-            Position = map["Position"].AsVector3();
-            BinaryBucket = map["binaryBucket"].AsBinary();
-            ParentEstateID = map["ParentEstateID"].AsUInteger();
-            RegionID = map["RegionID"].AsUUID();
-            SessionID = map["imSessionID"].AsUUID();
-            Timestamp = map["timestamp"].AsUInteger();
+            eventID = map["eventID"];
+            creator = map["creator"];
+            name = map["name"];
+            category = map["category"];
+            description = map["description"];
+            date = map["date"];
+            dateUTC = map["dateUTC"];
+            duration = map["duration"];
+            cover = map["cover"];
+            amount = map["amount"];
+            simName = map["simName"];
+            globalPos = map["globalPos"];
+            regionPos = map["regionPos"];
+            eventFlags = map["eventFlags"];
+            maturity = map["maturity"];
         }
     }
 }

@@ -375,7 +375,7 @@ namespace Aurora.Framework.ClientInterfaces
             values["FromName"] = FromName;
             values["Subject"] = Subject;
             values["HasAttachment"] = HasAttachment;
-            values["AssetType"] = (int) AssetType;
+            values["AssetType"] = (int)AssetType;
             values["ItemID"] = ItemID;
             values["ItemName"] = ItemName;
             return values;
@@ -389,7 +389,7 @@ namespace Aurora.Framework.ClientInterfaces
             FromName = values["FromName"];
             Subject = values["Subject"];
             HasAttachment = values["HasAttachment"];
-            AssetType = (byte) (int) values["AssetType"];
+            AssetType = (byte)(int)values["AssetType"];
             ItemID = values["ItemID"];
             ItemName = values["ItemName"];
         }

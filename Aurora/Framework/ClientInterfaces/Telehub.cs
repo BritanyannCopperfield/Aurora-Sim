@@ -30,6 +30,8 @@ using System.Linq;
 using Aurora.Framework.Modules;
 using OpenMetaverse;
 using OpenMetaverse.StructuredData;
+using System.Xml;
+using System.IO;
 
 namespace Aurora.Framework.ClientInterfaces
 {
@@ -93,14 +95,14 @@ namespace Aurora.Framework.ClientInterfaces
         public override void FromOSD(OSDMap map)
         {
             RegionID = map["RegionID"].AsUUID();
-            RegionLocX = (float) map["RegionLocX"].AsReal();
-            RegionLocY = (float) map["RegionLocY"].AsReal();
-            TelehubRotX = (float) map["TelehubRotX"].AsReal();
-            TelehubRotY = (float) map["TelehubRotY"].AsReal();
-            TelehubRotZ = (float) map["TelehubRotZ"].AsReal();
-            TelehubLocX = (float) map["TelehubLocX"].AsReal();
-            TelehubLocY = (float) map["TelehubLocY"].AsReal();
-            TelehubLocZ = (float) map["TelehubLocZ"].AsReal();
+            RegionLocX = (float)map["RegionLocX"].AsReal();
+            RegionLocY = (float)map["RegionLocY"].AsReal();
+            TelehubRotX = (float)map["TelehubRotX"].AsReal();
+            TelehubRotY = (float)map["TelehubRotY"].AsReal();
+            TelehubRotZ = (float)map["TelehubRotZ"].AsReal();
+            TelehubLocX = (float)map["TelehubLocX"].AsReal();
+            TelehubLocY = (float)map["TelehubLocY"].AsReal();
+            TelehubLocZ = (float)map["TelehubLocZ"].AsReal();
             SpawnPos = BuildToList(map["Spawns"].AsString());
             Name = map["Name"].AsString();
             ObjectUUID = map["ObjectUUID"].AsUUID();
@@ -125,5 +127,68 @@ namespace Aurora.Framework.ClientInterfaces
                              };
             return map;
         }
+
+        #region Serialization
+        public static string Serialize(Telehub settings)
+        {
+            StringWriter sw = new StringWriter();
+            XmlTextWriter xtw = new XmlTextWriter(sw) { Formatting = Formatting.Indented };
+            xtw.WriteStartDocument();
+
+            xtw.WriteStartElement("Telehub");
+            if (settings.ObjectUUID != UUID.Zero)
+            {
+                xtw.WriteElementString("TelehubObject", settings.ObjectUUID.ToString());
+                xtw.WriteElementString("TelehubName", settings.Name);
+                foreach (var point in settings.SpawnPos)
+                    xtw.WriteElementString("SpawnPoint", point.ToString());
+            }
+            xtw.WriteEndElement();
+
+            xtw.Close();
+
+            return sw.ToString();
+        }
+
+
+        public static Telehub Deserialize(string serializedSettings, UUID RegionID)
+        {
+            Telehub settings = new Telehub();
+
+            StringReader sr = new StringReader(serializedSettings);
+            XmlTextReader xtr = new XmlTextReader(sr);
+
+
+            xtr.ReadEndElement();
+            xtr.ReadStartElement("Telehub");
+
+            //  OAR 0.8 format addition
+            while (xtr.Read() && xtr.NodeType != XmlNodeType.EndElement)
+            {
+                switch (xtr.Name)
+                {
+                    case "TelehubObject":
+                        {
+                            settings.RegionID = RegionID;
+                            settings.ObjectUUID = UUID.Parse(xtr.ReadElementContentAsString());
+                            break;
+                        }
+                    case "SpawnPoint":
+                        settings.SpawnPos.Add(Vector3.Parse(xtr.ReadElementContentAsString()));
+                        break;
+
+                    case "TelehubName":
+                        settings.Name = xtr.ReadElementContentAsString();
+                        break;
+                }
+            }
+
+            xtr.ReadEndElement();
+            xtr.Close();
+
+            return settings;
+        }
+
+        #endregion
     }
 }

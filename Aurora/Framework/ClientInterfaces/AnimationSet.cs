@@ -40,7 +40,7 @@ namespace Aurora.Framework.ClientInterfaces
         private readonly List<Animation> m_animations = new List<Animation>();
         private Animation m_implicitDefaultAnimation = new Animation();
         private Animation m_defaultAnimation = new Animation();
-        private readonly Dictionary<string, UUID> m_defaultAnimationOverrides = new Dictionary<string,UUID>();
+        private readonly Dictionary<string, UUID> m_defaultAnimationOverrides = new Dictionary<string, UUID>();
         private readonly Dictionary<string, string> m_defaultAnimationOverridesName = new Dictionary<string, string>();
 
         public AnimationSet(AvatarAnimations animations)

@@ -60,12 +60,12 @@ namespace Aurora.Framework.ClientInterfaces
             foreach (KeyValuePair<string, OSD> kvp in map)
             {
                 ulong regionHandle = ulong.Parse(kvp.Key);
-                OSDArray array = (OSDArray) kvp.Value;
+                OSDArray array = (OSDArray)kvp.Value;
                 List<mapItemReply> replies = new List<mapItemReply>();
                 foreach (OSD o in array)
                 {
                     mapItemReply r = new mapItemReply();
-                    r.FromOSD((OSDMap) o);
+                    r.FromOSD((OSDMap)o);
                     replies.Add(r);
                 }
                 items[regionHandle] = replies;
@@ -89,8 +89,8 @@ namespace Aurora.Framework.ClientInterfaces
         public override OSDMap ToOSD()
         {
             OSDMap map = new OSDMap();
-            map["X"] = (int) x;
-            map["Y"] = (int) y;
+            map["X"] = (int)x;
+            map["Y"] = (int)y;
             map["ID"] = id;
             map["Extra"] = Extra;
             map["Extra2"] = Extra2;
@@ -100,8 +100,8 @@ namespace Aurora.Framework.ClientInterfaces
 
         public override void FromOSD(OSDMap map)
         {
-            x = (uint) (int) map["X"];
-            y = (uint) (int) map["Y"];
+            x = (uint)(int)map["X"];
+            y = (uint)(int)map["Y"];
             id = map["ID"];
             Extra = map["Extra"];
             Extra2 = map["Extra2"];
