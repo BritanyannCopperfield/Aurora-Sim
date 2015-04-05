@@ -31,7 +31,7 @@ using System.Text;
 using System.Threading;
 using Aurora.Framework.Modules;
 using Nini.Config;
-using System.IO;
+using Aurora.Framework.Utilities;
 
 namespace Aurora.Framework.ConsoleFramework
 {
@@ -40,9 +40,10 @@ namespace Aurora.Framework.ConsoleFramework
     /// </summary>
     public class LocalConsole : CommandConsole
     {
+
         private static readonly ConsoleColor[] Colors =
             {
-                // the dark colors don't seem to be visible on some black background terminals like putty
+                // the dark colors don't seem to be visible on some black background terminals like putty :(
                 //ConsoleColor.DarkBlue,
                 //ConsoleColor.DarkGreen,
                 //ConsoleColor.Gray, 
@@ -89,15 +90,20 @@ namespace Aurora.Framework.ConsoleFramework
                                   "Get a general command list", base.Help, false, true);
 
             string logName = "";
+            string logPath = Constants.DEFAULT_DATA_DIR;
             if (source.Configs["Console"] != null)
-                logName = source.Configs["Console"].GetString("LogAppendName", "");
-            InitializeLog(logName);
+            {
+                logName = source.Configs["Console"].GetString("LogAppendName", logName);
+                logPath = source.Configs["Console"].GetString("LogPath", logPath);
+            }
+
+            InitializeLog(logPath, logName);
         }
 
         private static ConsoleColor DeriveColor(string input)
         {
             // it is important to do Abs, hash values can be negative
-            return Colors[(Math.Abs(input.ToUpper().Length)%Colors.Length)];
+            return Colors[(Math.Abs(input.ToUpper().Length) % Colors.Length)];
         }
 
         private void AddToHistory(string text)
@@ -211,10 +217,10 @@ namespace Aurora.Framework.ConsoleFramework
                     return;
 
                 int xc = prompt.Length + cp;
-                int new_x = xc%Console.BufferWidth;
-                int new_y = y + xc/Console.BufferWidth;
-                int end_y = y + (cmdline.Length + prompt.Length)/Console.BufferWidth;
-                if (end_y/Console.BufferWidth >= h)
+                int new_x = xc % Console.BufferWidth;
+                int new_y = y + xc / Console.BufferWidth;
+                int end_y = y + (cmdline.Length + prompt.Length) / Console.BufferWidth;
+                if (end_y / Console.BufferWidth >= h)
                     h++;
                 if (end_y >= Console.BufferHeight) // wrap
                 {
@@ -302,11 +308,11 @@ namespace Aurora.Framework.ConsoleFramework
             if (text != "")
             {
                 int CurrentLine = 0;
-                string[] Lines = text.Split(new char[2] {'\n', '\r'}, StringSplitOptions.RemoveEmptyEntries);
+                string[] Lines = text.Split(new char[2] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
                 //This exists so that we don't have issues with multiline stuff, since something is messed up with the Regex
                 foreach (string line in Lines)
                 {
-                    string[] split = line.Split(new string[2] {"[", "]"}, StringSplitOptions.None);
+                    string[] split = line.Split(new string[2] { "[", "]" }, StringSplitOptions.None);
                     int currentPos = 0;
                     int boxNum = 0;
                     foreach (string s in split)
@@ -364,20 +370,20 @@ namespace Aurora.Framework.ConsoleFramework
         {
             if (Threshold <= level)
             {
-                text = string.Format("{0}:{1}:{2}: {3}",
-                    (DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour : DateTime.Now.Hour.ToString()),
-                    (DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute : DateTime.Now.Minute.ToString()),
-                    (DateTime.Now.Second < 10 ? "0" + DateTime.Now.Second : DateTime.Now.Second.ToString()), text);
                 MainConsole.TriggerLog(level.ToString(), text);
+                string ts = Culture.LocaleLogStamp() + " - ";
+                string fullText = string.Format("{0} {1}", ts, text);
+                MainConsole.TriggerLog(level.ToString(), fullText);
                 if (m_logFile != null)
                 {
-                    m_logFile.WriteLine(text);
+                    m_logFile.WriteLine(fullText);
                     m_logFile.Flush();
                 }
                 lock (cmdline)
                 {
                     if (y == -1)
                     {
+                        WriteColorText(ConsoleColor.DarkCyan, ts);
                         WriteLocalText(text, level);
 
                         return;
@@ -394,6 +400,7 @@ namespace Aurora.Framework.ConsoleFramework
                     y = SetCursorTop(y);
                     SetCursorLeft(0);
 
+                    WriteColorText(ConsoleColor.DarkCyan, ts);
                     WriteLocalText(text, level);
 
                     y = Console.CursorTop;
@@ -409,18 +416,18 @@ namespace Aurora.Framework.ConsoleFramework
 
             bool trailingSpace = cmdline.ToString().EndsWith(" ");
 
-            // Allow? through while typing a URI
+            // Allow ? through while typing a URI
             if (words.Length > 0 && words[words.Length - 1].StartsWith("http") && !trailingSpace)
                 return false;
 
             string[] opts = Commands.FindNextOption(words);
 
             if (opts.Length == 0)
-                Output("No options.", Threshold);
+                OutputNoTime("\n  No options.", Threshold);
             else if (opts[0].StartsWith("Command help:"))
-                Output(opts[0], Threshold);
+                OutputNoTime("\n  " + opts[0], Threshold);
             else
-                Output(String.Format("Options: {0}", String.Join("\n         ", opts)), Threshold);
+                OutputNoTime(String.Format("\n  Options: {0}", String.Join("\n           ", opts)), Threshold);
 
             return true;
         }

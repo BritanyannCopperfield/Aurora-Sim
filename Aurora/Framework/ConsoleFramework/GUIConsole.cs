@@ -48,13 +48,17 @@ namespace Aurora.Framework.ConsoleFramework
         public List<string> m_promptOptions = new List<string>();
         public bool HasProcessedCurrentCommand { get; set; }
 
+        public string LogPath
+        {
+            get { return MainConsole.Instance.LogPath; }
+            set { MainConsole.Instance.LogPath = value; }
+        }
+
         public virtual void Initialize(IConfigSource source, ISimulationBase baseOpenSim)
         {
             if (source.Configs["Console"] == null ||
                 source.Configs["Console"].GetString("Console", String.Empty) != Name)
-            {
                 return;
-            }
 
             baseOpenSim.ApplicationRegistry.RegisterModuleInterface<ICommandConsole>(this);
             MainConsole.Instance = this;
@@ -214,7 +218,7 @@ namespace Aurora.Framework.ConsoleFramework
         {
         }
 
-        public virtual void OutputNoTime()
+        public virtual void OutputNoTime(string text, Level level)
         {
         }
 
@@ -290,7 +294,7 @@ namespace Aurora.Framework.ConsoleFramework
         private void t_Elapsed(object sender, ElapsedEventArgs e)
         {
             //Tell the GUI that we are still here and it needs to keep checking
-            Console.Write((char) 0);
+            Console.Write((char)0);
         }
 
         public Level Threshold { get; set; }
@@ -362,6 +366,10 @@ namespace Aurora.Framework.ConsoleFramework
             Output(string.Format(format, args), level);
         }
 
+        public void FormatNoTime(Level level, string format, params object[] args)
+        {
+            OutputNoTime(string.Format(format, args), level);
+        }
         public void Info(object message)
         {
             Output(message.ToString(), Level.Info);
@@ -369,10 +377,10 @@ namespace Aurora.Framework.ConsoleFramework
 
         public void CleanInfo(object message)
         {
-            OutputNoTime(message ToString(), Level.Info);
+            OutputNoTime(message.ToString(), Level.Info);
         }
 
-        public void CleanInfoFormat(string format, params object[], args)
+        public void CleanInfoFormat(string format, params object[] args)
         {
             OutputNoTime(string.Format(format, args), Level.Error);
         }
@@ -382,9 +390,9 @@ namespace Aurora.Framework.ConsoleFramework
             Console.Write(".");
         }
 
-        public void InfoFormat(string format, params object[], args)
+        public void InfoFormat(string format, params object[] args)
         {
-            Output(string.Format(format, args), Level.Info)
+            Output(string.Format(format, args), Level.Info);
         }
 
         public void Log(Level level, object message)

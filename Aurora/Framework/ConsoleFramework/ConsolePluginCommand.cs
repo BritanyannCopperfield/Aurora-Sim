@@ -54,14 +54,14 @@ namespace Aurora.Framework.ConsoleFramework
 
         /// <summary>
         ///     Construct a new ConsolePluginCommand
-        ///     for use with OpenSim.RegisterConsolePluginCommand(myCmd);
+        ///     for use with RegisterConsolePluginCommand(myCmd);
         /// </summary>
         /// <param name="command">in the form of "showme new commands"</param>
         /// <param name="dlg">ommand delegate used in running</param>
         /// <param name="help">the text displayed in "help showme new commands"</param>
         public ConsolePluginCommand(string command, ConsoleCommand dlg, string help)
         {
-            m_cmdText = command.Split(new[] {' '});
+            m_cmdText = command.Split(new[] { ' ' });
             m_commandDelegate = dlg;
             m_helpText = help;
         }

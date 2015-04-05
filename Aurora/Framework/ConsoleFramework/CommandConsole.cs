@@ -43,7 +43,7 @@ namespace Aurora.Framework.ConsoleFramework
         /// <value>
         ///     Commands organized by keyword in a tree
         /// </value>
-        private readonly CommandSet tree = new CommandSet();
+        readonly CommandSet tree = new CommandSet();
 
         /// <summary>
         ///     Get help for the given help string
@@ -67,20 +67,20 @@ namespace Aurora.Framework.ConsoleFramework
         public void AddCommand(string command, string commandHelp, string infomessage, CommandDelegate fn, bool requiresAScene, bool fireOnceForAllScenes)
         {
             CommandInfo info = new CommandInfo
-                                   {
-                                       command = command,
-                                       commandHelp = commandHelp,
-                                       info = infomessage,
-                                       fireOnceForAllScenes = fireOnceForAllScenes,
-                                       requiresAScene = requiresAScene,
-                                       fn = new List<CommandDelegate> {fn}
-                                   };
+            {
+                command = command,
+                commandHelp = commandHelp,
+                info = infomessage,
+                fireOnceForAllScenes = fireOnceForAllScenes,
+                requiresAScene = requiresAScene,
+                fn = new List<CommandDelegate> { fn }
+            };
             tree.AddCommand(info);
         }
 
         public bool ContainsCommand(string command)
         {
-            return tree.FindCommands(new string[1] {command}).Length > 0;
+            return tree.FindCommands(new string[1] { command }).Length > 0;
         }
 
         public string[] FindNextOption(string[] cmd)
@@ -98,7 +98,7 @@ namespace Aurora.Framework.ConsoleFramework
         /// <summary>
         ///     Encapsulates a command that can be invoked from the console
         /// </summary>
-        private class CommandInfo
+        class CommandInfo
         {
             /// <summary>
             ///     The command for this commandinfo
@@ -135,13 +135,13 @@ namespace Aurora.Framework.ConsoleFramework
 
         #region Nested type: CommandSet
 
-        private class CommandSet
+        class CommandSet
         {
-            private readonly Dictionary<string, CommandInfo> commands = new Dictionary<string, CommandInfo>();
-            private readonly Dictionary<string, CommandSet> commandsets = new Dictionary<string, CommandSet>();
+            readonly Dictionary<string, CommandInfo> commands = new Dictionary<string, CommandInfo>();
+            readonly Dictionary<string, CommandSet> commandsets = new Dictionary<string, CommandSet>();
             public string Path = "";
-            private bool m_allowSubSets = true;
-            private string ourPath = "";
+            bool m_allowSubSets = true;
+            string ourPath = "";
 
             public void Initialize(string path, bool allowSubSets)
             {
@@ -171,7 +171,7 @@ namespace Aurora.Framework.ConsoleFramework
                 {
                     innerPath = innerPath.Remove(0, 1);
                 }
-                string[] commandPath = innerPath.Split(new string[1] {" "}, StringSplitOptions.RemoveEmptyEntries);
+                string[] commandPath = innerPath.Split(new string[1] { " " }, StringSplitOptions.RemoveEmptyEntries);
                 if (commandPath.Length == 1 || !m_allowSubSets)
                 {
                     //Only one command after our path, its ours
@@ -218,7 +218,6 @@ namespace Aurora.Framework.ConsoleFramework
                     }
                     commandOptions.Reverse();
                     commandPath = commandPathList.ToArray();
-                    // MainConsole.Instance.Info("Options: " + string.Join(", ", commandOptions.ToArray()));
                     List<string> cmdList;
                     if (commandPath.Length == 1 || !m_allowSubSets)
                     {
@@ -247,7 +246,7 @@ namespace Aurora.Framework.ConsoleFramework
 
                                 foreach (string s in help)
                                 {
-                                    MainConsole.Instance.Format(Level.Off, s);
+                                    MainConsole.Instance.FormatNoTime(Level.Off, s);
                                 }
                                 return new string[0];
                             }
@@ -270,10 +269,12 @@ namespace Aurora.Framework.ConsoleFramework
                                         {
                                             foreach (CommandDelegate fn in cmd.Value.fn)
                                             {
+                                                cmdList = new List<string>(commandPath);
+                                                cmdList.AddRange(commandOptions);
                                                 if (fn != null)
                                                 {
                                                     foreach (IScene scene in GetScenes(cmd.Value))
-                                                        fn(scene, commandPath);
+                                                        fn(scene, cmdList.ToArray());
                                                 }
                                             }
                                             return new string[0];
@@ -282,8 +283,10 @@ namespace Aurora.Framework.ConsoleFramework
                                 }
                             }
                         }
+                        // unable to determine multi word command
+                        MainConsole.Instance.Warn(" Sorry.. missed that...");
                     }
-                    else if(commandPath.Length > 0)
+                    else if (commandPath.Length > 0)
                     {
                         string cmdToExecute = commandPath[0];
                         if (cmdToExecute == "help")
@@ -320,11 +323,16 @@ namespace Aurora.Framework.ConsoleFramework
                                 {
                                     cmdList = new List<string>(commandPath);
                                     cmdList.AddRange(commandOptions);
-                                    foreach(IScene scene in GetScenes(commands[cmdToExecute]))
+                                    foreach (IScene scene in GetScenes(commands[cmdToExecute]))
                                         fn(scene, cmdList.ToArray());
                                 }
                                 return new string[0];
                             }
+                            else
+                            {
+                                MainConsole.Instance.Warn(" Sorry.. missed that...");
+                            }
+
                         }
                     }
                 }
@@ -332,7 +340,7 @@ namespace Aurora.Framework.ConsoleFramework
                 return new string[0];
             }
 
-            private List<IScene> GetScenes(CommandInfo cmd)
+            List<IScene> GetScenes(CommandInfo cmd)
             {
                 if (cmd.requiresAScene)
                 {
@@ -342,19 +350,21 @@ namespace Aurora.Framework.ConsoleFramework
                         {
                             if (MainConsole.Instance.ConsoleScenes.Count == 1)
                                 return new List<IScene> { MainConsole.Instance.ConsoleScenes[0] };
-                            else
-                                return new List<IScene>();
+
+                            MainConsole.Instance.Warn("[Warning] This command requires a selected region");
+                            return new List<IScene>();
                         }
-                        else
-                            return MainConsole.Instance.ConsoleScenes;
+
+                        return MainConsole.Instance.ConsoleScenes;
                     }
-                    else
-                        return new List<IScene> { MainConsole.Instance.ConsoleScene };
+
+                    return new List<IScene> { MainConsole.Instance.ConsoleScene };
                 }
+
                 if (MainConsole.Instance.ConsoleScene == null)
                     return cmd.fireOnceForAllScenes ? new List<IScene> { null } : MainConsole.Instance.ConsoleScenes;
-                else
-                    return new List<IScene> { MainConsole.Instance.ConsoleScene };
+
+                return new List<IScene> { MainConsole.Instance.ConsoleScene };
             }
 
             public string[] FindCommands(string[] command)
@@ -364,18 +374,15 @@ namespace Aurora.Framework.ConsoleFramework
                 {
                     string innerPath = string.Join(" ", command);
                     if (!_ConsoleIsCaseSensitive)
-                    {
                         innerPath = innerPath.ToLower();
-                    }
+
                     if (ourPath != "")
-                    {
                         innerPath = innerPath.Replace(ourPath, "");
-                    }
+
                     if (innerPath.StartsWith(" "))
-                    {
                         innerPath = innerPath.Remove(0, 1);
-                    }
-                    string[] commandPath = innerPath.Split(new string[1] {" "}, StringSplitOptions.RemoveEmptyEntries);
+
+                    string[] commandPath = innerPath.Split(new string[1] { " " }, StringSplitOptions.RemoveEmptyEntries);
                     if ((commandPath.Length == 1 || !m_allowSubSets))
                     {
                         string fullcommand = string.Join(" ", command, 0, 2 > command.Length ? command.Length : 2);
@@ -387,12 +394,12 @@ namespace Aurora.Framework.ConsoleFramework
                             string cmdToExecute = commandPath[0];
                             if (cmdToExecute == "help")
                             {
-                                cmdToExecute = commandPath[1];
+                                if (commandPath.Length > 1)
+                                    cmdToExecute = commandPath[1];
                             }
                             if (!_ConsoleIsCaseSensitive)
-                            {
                                 cmdToExecute = cmdToExecute.ToLower();
-                            }
+
                             CommandSet downTheTree;
                             if (commandsets.TryGetValue(cmdToExecute, out downTheTree))
                             {
@@ -445,8 +452,9 @@ namespace Aurora.Framework.ConsoleFramework
 
             public List<string> GetHelp(List<string> options)
             {
-                MainConsole.Instance.Info("HTML mode: " + options.Contains("--html"));
+                MainConsole.Instance.Debug("HTML mode: " + options.Contains("--html"));
                 List<string> help = new List<string>();
+
                 if (commandsets.Count != 0)
                 {
                     help.Add("");
@@ -462,16 +470,17 @@ namespace Aurora.Framework.ConsoleFramework
                 {
                     help.Add("");
                     help.Add("------- Help options -------");
-                    help.Add("");
                 }
                 paths.Clear();
 
                 paths.AddRange(
                     commands.Values.Select(
                         command =>
-                        string.Format("-- {0}  [{1}]:   {2}", command.command, command.commandHelp, command.info)));
+                        string.Format("-- {0}:\n      {1}", command.commandHelp, command.info.Replace("\n", "\n        "))));
 
+                help.Add("");
                 help.AddRange(StringUtils.AlphanumericSort(paths));
+                help.Add("");
                 return help;
             }
         }
@@ -489,7 +498,7 @@ namespace Aurora.Framework.ConsoleFramework
 
             int index;
             int startingIndex = -1;
-            string[] unquoted = text.Split(new[] {'"'});
+            string[] unquoted = text.Split(new[] { '"' });
 
             for (index = 0; index < unquoted.Length; index++)
             {
@@ -502,7 +511,7 @@ namespace Aurora.Framework.ConsoleFramework
                 else
                 {
                     startingIndex = 0;
-                    string[] words = unquoted[index].Split(new[] {' '});
+                    string[] words = unquoted[index].Split(new[] { ' ' });
                     result.AddRange(words.Where(w => w != String.Empty));
                 }
             }
@@ -518,8 +527,16 @@ namespace Aurora.Framework.ConsoleFramework
     {
         public bool m_isPrompting;
         public int m_lastSetPromptOption;
-        protected System.IO.TextWriter m_logFile;
+        protected TextWriter m_logFile;
+        protected string m_logPath = Constants.DEFAULT_DATA_DIR;
+
         public List<string> m_promptOptions = new List<string>();
+
+        public string LogPath
+        {
+            get { return m_logPath; }
+            set { m_logPath = value; }
+        }
 
         public virtual void Initialize(IConfigSource source, ISimulationBase baseOpenSim)
         {
@@ -534,14 +551,26 @@ namespace Aurora.Framework.ConsoleFramework
 
             m_Commands.AddCommand("help", "help", "Get a general command list", Help, false, true);
             string logName = "";
+            string logPath = LogPath;
             if (source.Configs["Console"] != null)
-                logName = source.Configs["Console"].GetString("LogAppendName", "");
-            InitializeLog(logName);
+            {
+                logName = source.Configs["Console"].GetString("LogAppendName", logName);
+                logPath = source.Configs["Console"].GetString("LogPath", logPath);
+            }
+
+            InitializeLog(logPath, logName);
         }
 
-        protected void InitializeLog(string filename)
+        protected void InitializeLog(string logPath, string appendName)
         {
-            m_logFile = StreamWriter.Synchronized(new StreamWriter(System.IO.Path.GetFileNameWithoutExtension(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + filename + ".log", true));
+            // check the logPath to ensure correct format
+            if (!logPath.EndsWith("/"))
+                logPath = logPath + "/";
+            m_logPath = logPath;
+
+            string runFilename = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+            string runProcess = Path.GetFileNameWithoutExtension(runFilename);
+            m_logFile = StreamWriter.Synchronized(new StreamWriter(logPath + runProcess + appendName + ".log", true));
         }
 
         public void Dispose()
@@ -554,7 +583,7 @@ namespace Aurora.Framework.ConsoleFramework
             List<string> help = m_Commands.GetHelp(cmd);
 
             foreach (string s in help)
-                Output(s, Level.Off);
+                OutputNoTime(s, Level.Off);
         }
 
         /// <summary>
@@ -643,7 +672,7 @@ namespace Aurora.Framework.ConsoleFramework
             bool itisdone = false;
             string optstr = options.Aggregate(String.Empty, (current, s) => current + (" " + s));
             string temp = InternalPrompt(prompt, defaultresponse, options);
- 
+
             while (!itisdone && options.Count > 0)
             {
                 if (options.Contains(temp))
@@ -670,7 +699,7 @@ namespace Aurora.Framework.ConsoleFramework
             return temp;
         }
 
-        private string InternalPrompt(string prompt, string defaultresponse, List<string> options)
+        string InternalPrompt(string prompt, string defaultresponse, List<string> options)
         {
             string ret = ReadLine(String.Format("{0}{2} [{1}]: ",
                                                 prompt,
@@ -682,6 +711,13 @@ namespace Aurora.Framework.ConsoleFramework
             if (ret == String.Empty)
                 ret = defaultresponse;
 
+            // let's be a little smarter here if we can
+            if (options.Count > 0)
+            {
+                foreach (string option in options)
+                    if (option.StartsWith(ret))
+                        ret = option;
+            }
             return ret;
         }
 
@@ -700,10 +736,7 @@ namespace Aurora.Framework.ConsoleFramework
             if (Threshold <= level)
             {
                 MainConsole.TriggerLog(level.ToString(), text);
-                text = string.Format("{0}:{1}:{2}: {3}",
-                    (DateTime.Now.Hour < 10 ? "0" + DateTime.Now.Hour : DateTime.Now.Hour.ToString()),
-                    (DateTime.Now.Minute < 10 ? "0" + DateTime.Now.Minute : DateTime.Now.Minute.ToString()),
-                    (DateTime.Now.Second < 10 ? "0" + DateTime.Now.Second : DateTime.Now.Second.ToString()), text);
+                text = string.Format("{0} ; {1}", Culture.LocaleLogStamp(), text);
 
                 Console.WriteLine(text);
                 if (m_logFile != null)
@@ -714,11 +747,11 @@ namespace Aurora.Framework.ConsoleFramework
             }
         }
 
-        public virtual void OutputNoTime(string text, level level)
+        public virtual void OutputNoTime(string text, Level level)
         {
             if (Threshold <= level)
             {
-                MainConsole.Triggering(level.ToString(), text);
+                MainConsole.TriggerLog(level.ToString(), text);
                 Console.WriteLine(text);
                 if (m_logFile != null)
                 {
@@ -727,6 +760,7 @@ namespace Aurora.Framework.ConsoleFramework
                 }
             }
         }
+
         public virtual void LockOutput()
         {
         }
@@ -863,6 +897,11 @@ namespace Aurora.Framework.ConsoleFramework
             Output(string.Format(format, args), level);
         }
 
+        public void FormatNoTime(Level level, string format, params object[] args)
+        {
+            OutputNoTime(string.Format(format, args), level);
+        }
+
         public void Info(object message)
         {
             Output(message.ToString(), Level.Info);
@@ -873,7 +912,7 @@ namespace Aurora.Framework.ConsoleFramework
             OutputNoTime(message.ToString(), Level.Info);
         }
 
-        public void CleanInfoFormat(string format, params object[], args)
+        public void CleanInfoFormat(string format, params object[] args)
         {
             OutputNoTime(string.Format(format, args), Level.Error);
         }
@@ -883,7 +922,7 @@ namespace Aurora.Framework.ConsoleFramework
             Console.Write(".");
         }
 
-        public void InfoFormat(string format, params object[], args)
+        public void InfoFormat(string format, params object[] args)
         {
             Output(string.Format(format, args), Level.Info);
         }
