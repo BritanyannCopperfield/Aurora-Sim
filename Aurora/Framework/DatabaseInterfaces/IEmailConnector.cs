@@ -65,7 +65,7 @@ namespace Aurora.Framework.DatabaseInterfaces
         }
     }
 
-    public interface IEmailConnector : IAuroraDataPlugin
+    public interface IEmailConnector : IWhiteCoreDataPlugin
     {
         /// <summary>
         ///     Adds an email to the database for the prim to get later

@@ -143,7 +143,7 @@ namespace Aurora.Framework.DatabaseInterfaces
         // Summary:
         //     The OpenMetaverse.UUID of the Avatar
         public UUID AvatarKey;
-        //
+
         // Summary:
         //     True if user has voice chat enabled
         public bool CanVoiceChat;
@@ -158,19 +158,19 @@ namespace Aurora.Framework.DatabaseInterfaces
         /// </summary>
         public bool RequestedRemoval;
 
-        //
+
         // Summary:
         //     True of Avatar has moderator abilities
         public bool IsModerator;
-        //
+
         // Summary:
         //     True if a moderator has muted this avatars chat
         public bool MuteText;
-        //
+
         // Summary:
         //     True if a moderator has muted this avatars voice
         public bool MuteVoice;
-        //
+
         // Summary:
         //     True if they have been requested to join the session
     }
