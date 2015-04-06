@@ -277,10 +277,6 @@ namespace Aurora.Framework.PresenceInfo
 
     public delegate void RequestTaskInventory(IClientAPI remoteClient, uint localID);
 
-/*    public delegate void UpdateInventoryItem(
-        IClientAPI remoteClient, UUID transactionID, UUID itemID, string name, string description,
-        uint nextOwnerMask);*/
-
     public delegate void UpdateInventoryItem(
         IClientAPI remoteClient, UUID transactionID, UUID itemID, InventoryItemBase itemUpd);
 
@@ -768,7 +764,7 @@ namespace Aurora.Framework.PresenceInfo
             OSDMap map = new OSDMap();
             map["classifiedID"] = classifiedID;
             map["name"] = name;
-            map["classifiedFlags"] = (int) classifiedFlags;
+            map["classifiedFlags"] = (int)classifiedFlags;
             map["creationDate"] = creationDate;
             map["expirationDate"] = expirationDate;
             map["price"] = price;
@@ -780,7 +776,7 @@ namespace Aurora.Framework.PresenceInfo
         {
             classifiedID = map["classifiedID"];
             name = map["name"];
-            classifiedFlags = (byte) (int) map["classifiedFlags"];
+            classifiedFlags = (byte)(int)map["classifiedFlags"];
             creationDate = map["creationDate"];
             expirationDate = map["expirationDate"];
             price = map["price"];
