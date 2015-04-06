@@ -52,11 +52,11 @@ namespace Aurora.Framework.Modules
         bool Default { get; }
 
         /// <summary>
-        ///     Starts up the module and loads configs
+        ///     Starts up the module and loads configuration
         /// </summary>
         /// <param name="configSource"></param>
-        /// <param name="openSim"></param>
-        void Initialise(IConfigSource configSource, ISimulationBase openSim);
+        /// <param name="simBase"></param>
+        void Initialise(IConfigSource configSource, ISimulationBase simBase);
 
         /// <summary>
         ///     Loads the region from all enabled plugins

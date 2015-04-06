@@ -46,6 +46,12 @@ namespace Aurora.Framework.Modules
         string Name { get; }
 
         /// <summary>
+        /// Gets or sets the log path.
+        /// </summary>
+        /// <value>The log path.</value>
+        string LogPath { get; set; }
+
+        /// <summary>
         ///     All commands that are enabled on this console
         /// </summary>
         Commands Commands { get; set; }
@@ -163,12 +169,13 @@ namespace Aurora.Framework.Modules
         void Fatal(object message);
         void FatalFormat(string format, params object[] args);
         void Format(Level level, string format, params object[] args);
+        void FormatNoTime(Level level, string format, params object[] args);
         void Info(object message);
+        void CleanInfo(object message);
+        void CleanInfoFormat(string format, params object[] args);
+        void Ticker();
         void InfoFormat(string format, params object[] args);
         void Log(Level level, object message);
-        void CleanInfo(object message);
-        void CleanInfoFormat(string format, params object[], args);
-        void Ticker();
         void Trace(object message);
         void TraceFormat(string format, params object[] args);
         void Warn(object message);

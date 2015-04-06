@@ -53,7 +53,7 @@ namespace Aurora.Framework.Modules
         /// <summary>
         ///     The event manager for the simulation base
         /// </summary>
-        AuroraEventManager EventManager { get; }
+        WhiteCoreEventManager EventManager { get; }
 
         /// <summary>
         ///     The version string of Aurora
@@ -96,7 +96,7 @@ namespace Aurora.Framework.Modules
         ISimulationBase Copy();
 
         /// <summary>
-        ///     Start the base with the given parametsr
+        ///     Start the base with the given parameters
         /// </summary>
         /// <param name="originalConfigSource">The settings parsed from the command line</param>
         /// <param name="configSource">The .ini config</param>

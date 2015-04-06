@@ -56,6 +56,7 @@ namespace Aurora.Framework.Modules
     public interface IXMLRPC
     {
         int Port { get; }
+        bool ServerStarted();
         UUID OpenXMLRPCChannel(UUID primID, UUID itemID, UUID channelID);
         void CloseXMLRPCChannel(UUID channelKey);
         bool hasRequests();
