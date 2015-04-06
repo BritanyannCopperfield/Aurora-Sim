@@ -64,7 +64,6 @@ namespace Aurora.Framework.Physics
         public void AddCollider(uint localID, ContactPoint contact)
         {
             Cleared = false;
-
             lock (m_objCollisionList)
                 m_objCollisionList[localID] = contact;
         }
@@ -410,7 +409,7 @@ namespace Aurora.Framework.Physics
 
         public override int PhysicsActorType
         {
-            get { return (int) ActorTypes.Ground; }
+            get { return (int)ActorTypes.Ground; }
         }
 
         public override Vector3 RotationalVelocity
@@ -553,7 +552,7 @@ namespace Aurora.Framework.Physics
 
         public override int PhysicsActorType
         {
-            get { return (int) ActorTypes.Unknown; }
+            get { return (int)ActorTypes.Unknown; }
         }
 
         public override Vector3 RotationalVelocity
