@@ -221,9 +221,9 @@ namespace Aurora.Framework.ModuleLoader
                                 {
                                     if (!pluginType.IsAbstract)
                                     {
-                                        if(typeof (T).IsAssignableFrom(pluginType))
+                                        if (typeof(T).IsAssignableFrom(pluginType))
                                         {
-                                            modules.Add((T) Activator.CreateInstance(pluginType));
+                                            modules.Add((T)Activator.CreateInstance(pluginType));
                                         }
                                     }
                                 }
@@ -472,7 +472,7 @@ namespace Aurora.Framework.ModuleLoader
                             }
                             if (typeof(T).IsAssignableFrom(pluginType))
                             {
-                                modules.Add((T) Activator.CreateInstance(pluginType));
+                                modules.Add((T)Activator.CreateInstance(pluginType));
                             }
                         }
                         catch (Exception ex)
@@ -583,7 +583,7 @@ namespace Aurora.Framework.ModuleLoader
                     {
                         if (typeof(T).IsAssignableFrom(pluginType))
                         {
-                            plugins.Add((T) Activator.CreateInstance(pluginType));
+                            plugins.Add((T)Activator.CreateInstance(pluginType));
                         }
                     }
                     catch (Exception)
