@@ -45,7 +45,7 @@ namespace Aurora.Framework.SceneInfo
     public class TaskInventoryDictionary : Dictionary<UUID, TaskInventoryItem>,
                                            ICloneable, IXmlSerializable
     {
-        private static readonly XmlSerializer tiiSerializer = new XmlSerializer(typeof (TaskInventoryItem));
+        private static readonly XmlSerializer tiiSerializer = new XmlSerializer(typeof(TaskInventoryItem));
 
         #region ICloneable Members
 
@@ -57,7 +57,7 @@ namespace Aurora.Framework.SceneInfo
             {
                 foreach (UUID uuid in Keys)
                 {
-                    clone.Add(uuid, (TaskInventoryItem) this[uuid].Clone());
+                    clone.Add(uuid, (TaskInventoryItem)this[uuid].Clone());
                 }
             }
 
@@ -83,7 +83,7 @@ namespace Aurora.Framework.SceneInfo
                 reader.Read();
                 while (tiiSerializer.CanDeserialize(reader))
                 {
-                    TaskInventoryItem item = (TaskInventoryItem) tiiSerializer.Deserialize(reader);
+                    TaskInventoryItem item = (TaskInventoryItem)tiiSerializer.Deserialize(reader);
                     Add(item.ItemID, item);
 
                     //MainConsole.Instance.DebugFormat("[TASK INVENTORY]: Instanted prim item {0}, {1} from xml", item.Name, item.ItemID);
@@ -123,7 +123,7 @@ namespace Aurora.Framework.SceneInfo
 
             lock (this)
             {
-                clone.AddRange(Keys.Select(uuid => (TaskInventoryItem) this[uuid].Clone()));
+                clone.AddRange(Keys.Select(uuid => (TaskInventoryItem)this[uuid].Clone()));
             }
 
             return clone;

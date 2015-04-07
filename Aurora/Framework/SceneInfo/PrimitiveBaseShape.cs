@@ -81,25 +81,43 @@ namespace Aurora.Framework.SceneInfo
         private static readonly byte[] DEFAULT_TEXTURE =
             new Primitive.TextureEntry(new UUID("89556747-24cb-43ed-920b-47caed15465f")).GetBytes();
 
-        [XmlIgnore] private float _flexiDrag;
-        [XmlIgnore] private bool _flexiEntry;
-        [XmlIgnore] private float _flexiForceX;
-        [XmlIgnore] private float _flexiForceY;
-        [XmlIgnore] private float _flexiForceZ;
-        [XmlIgnore] private float _flexiGravity;
-        [XmlIgnore] private int _flexiSoftness;
-        [XmlIgnore] private float _flexiTension;
-        [XmlIgnore] private float _flexiWind;
+        [XmlIgnore]
+        private float _flexiDrag;
+        [XmlIgnore]
+        private bool _flexiEntry;
+        [XmlIgnore]
+        private float _flexiForceX;
+        [XmlIgnore]
+        private float _flexiForceY;
+        [XmlIgnore]
+        private float _flexiForceZ;
+        [XmlIgnore]
+        private float _flexiGravity;
+        [XmlIgnore]
+        private int _flexiSoftness;
+        [XmlIgnore]
+        private float _flexiTension;
+        [XmlIgnore]
+        private float _flexiWind;
         private HollowShape _hollowShape;
-        [XmlIgnore] private float _lightColorA = 1.0f;
-        [XmlIgnore] private float _lightColorB;
-        [XmlIgnore] private float _lightColorG;
-        [XmlIgnore] private float _lightColorR;
-        [XmlIgnore] private float _lightCutoff;
-        [XmlIgnore] private bool _lightEntry;
-        [XmlIgnore] private float _lightFalloff;
-        [XmlIgnore] private float _lightIntensity = 1.0f;
-        [XmlIgnore] private float _lightRadius;
+        [XmlIgnore]
+        private float _lightColorA = 1.0f;
+        [XmlIgnore]
+        private float _lightColorB;
+        [XmlIgnore]
+        private float _lightColorG;
+        [XmlIgnore]
+        private float _lightColorR;
+        [XmlIgnore]
+        private float _lightCutoff;
+        [XmlIgnore]
+        private bool _lightEntry;
+        [XmlIgnore]
+        private float _lightFalloff;
+        [XmlIgnore]
+        private float _lightIntensity = 1.0f;
+        [XmlIgnore]
+        private float _lightRadius;
         private byte _pCode;
 
         private ushort _pathBegin;
@@ -120,23 +138,32 @@ namespace Aurora.Framework.SceneInfo
         private ushort _profileEnd;
         private ushort _profileHollow;
         private ProfileShape _profileShape;
-        [XmlIgnore] private float _projectionAmb;
+        [XmlIgnore]
+        private float _projectionAmb;
 
         // Light Projection Filter
-        [XmlIgnore] private bool _projectionEntry;
-        [XmlIgnore] private float _projectionFOV;
-        [XmlIgnore] private float _projectionFocus;
-        [XmlIgnore] private UUID _projectionTextureID;
+        [XmlIgnore]
+        private bool _projectionEntry;
+        [XmlIgnore]
+        private float _projectionFOV;
+        [XmlIgnore]
+        private float _projectionFocus;
+        [XmlIgnore]
+        private UUID _projectionTextureID;
         private Vector3 _scale;
-        [XmlIgnore] private byte[] _sculptData = Utils.EmptyBytes;
-        [XmlIgnore] private bool _sculptEntry;
-        [XmlIgnore] private UUID _sculptTexture;
-        [XmlIgnore] private byte _sculptType;
+        [XmlIgnore]
+        private byte[] _sculptData = Utils.EmptyBytes;
+        [XmlIgnore]
+        private bool _sculptEntry;
+        [XmlIgnore]
+        private UUID _sculptTexture;
+        [XmlIgnore]
+        private byte _sculptType;
         private byte[] m_textureEntry;
 
         public PrimitiveBaseShape()
         {
-            PCode = (byte) PCodeEnum.Primitive;
+            PCode = (byte)PCodeEnum.Primitive;
             ExtraParams = new byte[1];
             m_textureEntry = DEFAULT_TEXTURE;
         }
@@ -146,7 +173,7 @@ namespace Aurora.Framework.SceneInfo
             if (noShape)
                 return;
 
-            PCode = (byte) PCodeEnum.Primitive;
+            PCode = (byte)PCodeEnum.Primitive;
             ExtraParams = new byte[1];
             m_textureEntry = DEFAULT_TEXTURE;
         }
@@ -157,7 +184,7 @@ namespace Aurora.Framework.SceneInfo
         /// <param name="prim"></param>
         public PrimitiveBaseShape(Primitive prim)
         {
-            PCode = (byte) prim.PrimData.PCode;
+            PCode = (byte)prim.PrimData.PCode;
             ExtraParams = new byte[1];
 
             State = prim.PrimData.State;
@@ -165,14 +192,14 @@ namespace Aurora.Framework.SceneInfo
             PathEnd = Primitive.PackEndCut(prim.PrimData.PathEnd);
             PathScaleX = Primitive.PackPathScale(prim.PrimData.PathScaleX);
             PathScaleY = Primitive.PackPathScale(prim.PrimData.PathScaleY);
-            PathShearX = (byte) Primitive.PackPathShear(prim.PrimData.PathShearX);
-            PathShearY = (byte) Primitive.PackPathShear(prim.PrimData.PathShearY);
+            PathShearX = (byte)Primitive.PackPathShear(prim.PrimData.PathShearX);
+            PathShearY = (byte)Primitive.PackPathShear(prim.PrimData.PathShearY);
             PathSkew = Primitive.PackPathTwist(prim.PrimData.PathSkew);
             ProfileBegin = Primitive.PackBeginCut(prim.PrimData.ProfileBegin);
             ProfileEnd = Primitive.PackEndCut(prim.PrimData.ProfileEnd);
             Scale = prim.Scale;
-            PathCurve = (byte) prim.PrimData.PathCurve;
-            ProfileCurve = (byte) prim.PrimData.ProfileCurve;
+            PathCurve = (byte)prim.PrimData.PathCurve;
+            ProfileCurve = (byte)prim.PrimData.ProfileCurve;
             ProfileHollow = Primitive.PackProfileHollow(prim.PrimData.ProfileHollow);
             PathRadiusOffset = Primitive.PackPathTwist(prim.PrimData.PathRadiusOffset);
             PathRevolutions = Primitive.PackPathRevolutions(prim.PrimData.PathRevolutions);
@@ -186,20 +213,20 @@ namespace Aurora.Framework.SceneInfo
             SculptEntry = (prim.Sculpt.Type != OpenMetaverse.SculptType.None);
             SculptData = prim.Sculpt.GetBytes();
             SculptTexture = prim.Sculpt.SculptTexture;
-            SculptType = (byte) prim.Sculpt.Type;
+            SculptType = (byte)prim.Sculpt.Type;
         }
 
         [ProtoMember(1)]
         public byte ProfileCurve
         {
-            get { return (byte) ((byte) HollowShape | (byte) ProfileShape); }
+            get { return (byte)((byte)HollowShape | (byte)ProfileShape); }
 
             set
             {
                 // Handle hollow shape component
-                byte hollowShapeByte = (byte) (value & 0xf0);
+                byte hollowShapeByte = (byte)(value & 0xf0);
 
-                if (!Enum.IsDefined(typeof (HollowShape), hollowShapeByte))
+                if (!Enum.IsDefined(typeof(HollowShape), hollowShapeByte))
                 {
                     MainConsole.Instance.WarnFormat(
                         "[SHAPE]: Attempt to set a ProfileCurve with a hollow shape value of {0}, which isn't a valid enum.  Replacing with default shape.",
@@ -209,13 +236,13 @@ namespace Aurora.Framework.SceneInfo
                 }
                 else
                 {
-                    this._hollowShape = (HollowShape) hollowShapeByte;
+                    this._hollowShape = (HollowShape)hollowShapeByte;
                 }
 
                 // Handle profile shape component
-                byte profileShapeByte = (byte) (value & 0xf);
+                byte profileShapeByte = (byte)(value & 0xf);
 
-                if (!Enum.IsDefined(typeof (ProfileShape), profileShapeByte))
+                if (!Enum.IsDefined(typeof(ProfileShape), profileShapeByte))
                 {
                     MainConsole.Instance.WarnFormat(
                         "[SHAPE]: Attempt to set a ProfileCurve with a profile shape value of {0}, which isn't a valid enum.  Replacing with square.",
@@ -225,7 +252,7 @@ namespace Aurora.Framework.SceneInfo
                 }
                 else
                 {
-                    this._profileShape = (ProfileShape) profileShapeByte;
+                    this._profileShape = (ProfileShape)profileShapeByte;
                 }
             }
         }
@@ -642,7 +669,7 @@ namespace Aurora.Framework.SceneInfo
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Straight;
+            shape._pathCurve = (byte)Extrusion.Straight;
             shape._profileShape = ProfileShape.Square;
             shape._pathScaleX = 100;
             shape._pathScaleY = 100;
@@ -654,7 +681,7 @@ namespace Aurora.Framework.SceneInfo
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Curve1;
+            shape._pathCurve = (byte)Extrusion.Curve1;
             shape._profileShape = ProfileShape.HalfCircle;
             shape._pathScaleX = 100;
             shape._pathScaleY = 100;
@@ -666,7 +693,7 @@ namespace Aurora.Framework.SceneInfo
         {
             PrimitiveBaseShape shape = Create();
 
-            shape._pathCurve = (byte) Extrusion.Curve1;
+            shape._pathCurve = (byte)Extrusion.Curve1;
             shape._profileShape = ProfileShape.Square;
 
             shape._pathScaleX = 100;
@@ -687,12 +714,12 @@ namespace Aurora.Framework.SceneInfo
 
         public void SetRadius(float radius)
         {
-            _scale.X = _scale.Y = radius*2f;
+            _scale.X = _scale.Y = radius * 2f;
         }
 
         public PrimitiveBaseShape Copy()
         {
-            PrimitiveBaseShape copy = (PrimitiveBaseShape) MemberwiseClone();
+            PrimitiveBaseShape copy = (PrimitiveBaseShape)MemberwiseClone();
             if (Media != null)
             {
                 MediaList dupeMedia = new MediaList();
@@ -751,9 +778,9 @@ namespace Aurora.Framework.SceneInfo
 
         public byte[] ExtraParamsToBytes()
         {
-            ushort FlexiEP = (ushort) ExtraParamType.Flexible;
-            ushort LightEP = (ushort) ExtraParamType.Light;
-            ushort SculptEP = (ushort) ExtraParamType.Sculpt;
+            ushort FlexiEP = (ushort)ExtraParamType.Flexible;
+            ushort LightEP = (ushort)ExtraParamType.Light;
+            ushort SculptEP = (ushort)ExtraParamType.Sculpt;
             ushort ProjectionEP = 0x40;
 
             int i = 0;
@@ -788,7 +815,7 @@ namespace Aurora.Framework.SceneInfo
             byte[] returnbytes = new byte[TotalBytesLength];
 
             // Stick in the number of parameters
-            returnbytes[i++] = (byte) ExtraParamsNum;
+            returnbytes[i++] = (byte)ExtraParamsNum;
 
             if (_flexiEntry)
             {
@@ -797,7 +824,7 @@ namespace Aurora.Framework.SceneInfo
                 Utils.UInt16ToBytes(FlexiEP, returnbytes, i);
                 i += 2;
 
-                Utils.UIntToBytes((uint) FlexiData.Length, returnbytes, i);
+                Utils.UIntToBytes((uint)FlexiData.Length, returnbytes, i);
                 i += 4;
 
                 Array.Copy(FlexiData, 0, returnbytes, i, FlexiData.Length);
@@ -810,7 +837,7 @@ namespace Aurora.Framework.SceneInfo
                 Utils.UInt16ToBytes(LightEP, returnbytes, i);
                 i += 2;
 
-                Utils.UIntToBytes((uint) LightData.Length, returnbytes, i);
+                Utils.UIntToBytes((uint)LightData.Length, returnbytes, i);
                 i += 4;
 
                 Array.Copy(LightData, 0, returnbytes, i, LightData.Length);
@@ -823,7 +850,7 @@ namespace Aurora.Framework.SceneInfo
                 Utils.UInt16ToBytes(SculptEP, returnbytes, i);
                 i += 2;
 
-                Utils.UIntToBytes((uint) SculptData2.Length, returnbytes, i);
+                Utils.UIntToBytes((uint)SculptData2.Length, returnbytes, i);
                 i += 4;
 
                 Array.Copy(SculptData2, 0, returnbytes, i, SculptData2.Length);
@@ -833,12 +860,12 @@ namespace Aurora.Framework.SceneInfo
             {
                 byte[] ProjectionData = GetProjectionBytes();
 
-                returnbytes[i++] = (byte) (ProjectionEP%256);
-                returnbytes[i++] = (byte) ((ProjectionEP >> 8)%256);
-                returnbytes[i++] = (byte) ((ProjectionData.Length)%256);
-                returnbytes[i++] = (byte) ((ProjectionData.Length >> 16)%256);
-                returnbytes[i++] = (byte) ((ProjectionData.Length >> 20)%256);
-                returnbytes[i++] = (byte) ((ProjectionData.Length >> 24)%256);
+                returnbytes[i++] = (byte)(ProjectionEP % 256);
+                returnbytes[i++] = (byte)((ProjectionEP >> 8) % 256);
+                returnbytes[i++] = (byte)((ProjectionData.Length) % 256);
+                returnbytes[i++] = (byte)((ProjectionData.Length >> 16) % 256);
+                returnbytes[i++] = (byte)((ProjectionData.Length >> 20) % 256);
+                returnbytes[i++] = (byte)((ProjectionData.Length >> 24) % 256);
                 Array.Copy(ProjectionData, 0, returnbytes, i, ProjectionData.Length);
                 i += ProjectionData.Length;
             }
@@ -1015,10 +1042,10 @@ namespace Aurora.Framework.SceneInfo
                 _flexiEntry = true;
                 _flexiSoftness = ((data[pos] & 0x80) >> 6) | ((data[pos + 1] & 0x80) >> 7);
 
-                _flexiTension = (data[pos++] & 0x7F)/10.0f;
-                _flexiDrag = (data[pos++] & 0x7F)/10.0f;
-                _flexiGravity = (data[pos++]/10.0f) - 10.0f;
-                _flexiWind = data[pos++]/10.0f;
+                _flexiTension = (data[pos++] & 0x7F) / 10.0f;
+                _flexiDrag = (data[pos++] & 0x7F) / 10.0f;
+                _flexiGravity = (data[pos++] / 10.0f) - 10.0f;
+                _flexiWind = data[pos++] / 10.0f;
                 Vector3 lForce = new Vector3(data, pos);
                 _flexiForceX = lForce.X;
                 _flexiForceY = lForce.Y;
@@ -1045,13 +1072,13 @@ namespace Aurora.Framework.SceneInfo
             int i = 0;
 
             // Softness is packed in the upper bits of tension and drag
-            data[i] = (byte) ((_flexiSoftness & 2) << 6);
-            data[i + 1] = (byte) ((_flexiSoftness & 1) << 7);
+            data[i] = (byte)((_flexiSoftness & 2) << 6);
+            data[i + 1] = (byte)((_flexiSoftness & 1) << 7);
 
-            data[i++] |= (byte) ((byte) (_flexiTension*10.01f) & 0x7F);
-            data[i++] |= (byte) ((byte) (_flexiDrag*10.01f) & 0x7F);
-            data[i++] = (byte) ((_flexiGravity + 10.0f)*10.01f);
-            data[i++] = (byte) (_flexiWind*10.01f);
+            data[i++] |= (byte)((byte)(_flexiTension * 10.01f) & 0x7F);
+            data[i++] |= (byte)((byte)(_flexiDrag * 10.01f) & 0x7F);
+            data[i++] = (byte)((_flexiGravity + 10.0f) * 10.01f);
+            data[i++] = (byte)(_flexiWind * 10.01f);
             Vector3 lForce = new Vector3(_flexiForceX, _flexiForceY, _flexiForceZ);
             lForce.GetBytes().CopyTo(data, i);
 
@@ -1170,40 +1197,39 @@ namespace Aurora.Framework.SceneInfo
         /// <returns></returns>
         public Primitive ToOmvPrimitive(Vector3 position, Quaternion rotation)
         {
-            Primitive prim = new Primitive {Scale = this.Scale, Position = position, Rotation = rotation};
+            Primitive prim = new Primitive { Scale = this.Scale, Position = position, Rotation = rotation };
 
 
             if (this.SculptEntry)
             {
-                prim.Sculpt = new Primitive.SculptData
-                                  {Type = (SculptType) this.SculptType, SculptTexture = this.SculptTexture};
+                prim.Sculpt = new Primitive.SculptData { Type = (SculptType)this.SculptType, SculptTexture = this.SculptTexture };
             }
 
-            prim.PrimData.PathShearX = this.PathShearX < 128 ? this.PathShearX*0.01f : (this.PathShearX - 256)*0.01f;
-            prim.PrimData.PathShearY = this.PathShearY < 128 ? this.PathShearY*0.01f : (this.PathShearY - 256)*0.01f;
-            prim.PrimData.PathBegin = this.PathBegin*2.0e-5f;
-            prim.PrimData.PathEnd = 1.0f - this.PathEnd*2.0e-5f;
+            prim.PrimData.PathShearX = this.PathShearX < 128 ? this.PathShearX * 0.01f : (this.PathShearX - 256) * 0.01f;
+            prim.PrimData.PathShearY = this.PathShearY < 128 ? this.PathShearY * 0.01f : (this.PathShearY - 256) * 0.01f;
+            prim.PrimData.PathBegin = this.PathBegin * 2.0e-5f;
+            prim.PrimData.PathEnd = 1.0f - this.PathEnd * 2.0e-5f;
 
-            prim.PrimData.PathScaleX = (200 - this.PathScaleX)*0.01f;
-            prim.PrimData.PathScaleY = (200 - this.PathScaleY)*0.01f;
+            prim.PrimData.PathScaleX = (200 - this.PathScaleX) * 0.01f;
+            prim.PrimData.PathScaleY = (200 - this.PathScaleY) * 0.01f;
 
-            prim.PrimData.PathTaperX = this.PathTaperX*0.01f;
-            prim.PrimData.PathTaperY = this.PathTaperY*0.01f;
+            prim.PrimData.PathTaperX = this.PathTaperX * 0.01f;
+            prim.PrimData.PathTaperY = this.PathTaperY * 0.01f;
 
-            prim.PrimData.PathTwistBegin = this.PathTwistBegin*0.01f;
-            prim.PrimData.PathTwist = this.PathTwist*0.01f;
+            prim.PrimData.PathTwistBegin = this.PathTwistBegin * 0.01f;
+            prim.PrimData.PathTwist = this.PathTwist * 0.01f;
 
-            prim.PrimData.ProfileBegin = this.ProfileBegin*2.0e-5f;
-            prim.PrimData.ProfileEnd = 1.0f - this.ProfileEnd*2.0e-5f;
-            prim.PrimData.ProfileHollow = this.ProfileHollow*2.0e-5f;
+            prim.PrimData.ProfileBegin = this.ProfileBegin * 2.0e-5f;
+            prim.PrimData.ProfileEnd = 1.0f - this.ProfileEnd * 2.0e-5f;
+            prim.PrimData.ProfileHollow = this.ProfileHollow * 2.0e-5f;
 
             prim.PrimData.profileCurve = this.ProfileCurve;
-            prim.PrimData.ProfileHole = (HoleType) this.HollowShape;
+            prim.PrimData.ProfileHole = (HoleType)this.HollowShape;
 
-            prim.PrimData.PathCurve = (PathCurve) this.PathCurve;
-            prim.PrimData.PathRadiusOffset = 0.01f*this.PathRadiusOffset;
-            prim.PrimData.PathRevolutions = 1.0f + 0.015f*this.PathRevolutions;
-            prim.PrimData.PathSkew = 0.01f*this.PathSkew;
+            prim.PrimData.PathCurve = (PathCurve)this.PathCurve;
+            prim.PrimData.PathRadiusOffset = 0.01f * this.PathRadiusOffset;
+            prim.PrimData.PathRevolutions = 1.0f + 0.015f * this.PathRevolutions;
+            prim.PrimData.PathSkew = 0.01f * this.PathSkew;
 
             prim.PrimData.PCode = OpenMetaverse.PCode.Prim;
             prim.PrimData.State = 0;
@@ -1211,43 +1237,43 @@ namespace Aurora.Framework.SceneInfo
             if (this.FlexiEntry)
             {
                 prim.Flexible = new Primitive.FlexibleData
-                                    {
-                                        Drag = this.FlexiDrag,
-                                        Force = new Vector3(this.FlexiForceX, this.FlexiForceY, this.FlexiForceZ),
-                                        Gravity = this.FlexiGravity,
-                                        Softness = this.FlexiSoftness,
-                                        Tension = this.FlexiTension,
-                                        Wind = this.FlexiWind
-                                    };
+                {
+                    Drag = this.FlexiDrag,
+                    Force = new Vector3(this.FlexiForceX, this.FlexiForceY, this.FlexiForceZ),
+                    Gravity = this.FlexiGravity,
+                    Softness = this.FlexiSoftness,
+                    Tension = this.FlexiTension,
+                    Wind = this.FlexiWind
+                };
             }
 
             if (this.LightEntry)
             {
                 prim.Light = new Primitive.LightData
-                                 {
-                                     Color =
-                                         new Color4(this.LightColorR, this.LightColorG, this.LightColorB,
-                                                    this.LightColorA),
-                                     Cutoff = this.LightCutoff,
-                                     Falloff = this.LightFalloff,
-                                     Intensity = this.LightIntensity,
-                                     Radius = this.LightRadius
-                                 };
+                {
+                    Color =
+                        new Color4(this.LightColorR, this.LightColorG, this.LightColorB,
+                                   this.LightColorA),
+                    Cutoff = this.LightCutoff,
+                    Falloff = this.LightFalloff,
+                    Intensity = this.LightIntensity,
+                    Radius = this.LightRadius
+                };
             }
 
             prim.Textures = this.Textures;
 
             prim.Properties = new Primitive.ObjectProperties
-                                  {
-                                      Name = "Primitive",
-                                      Description = "",
-                                      CreatorID = UUID.Zero,
-                                      GroupID = UUID.Zero,
-                                      OwnerID = UUID.Zero,
-                                      Permissions = new Permissions(),
-                                      SalePrice = 10,
-                                      SaleType = new SaleType()
-                                  };
+            {
+                Name = "Primitive",
+                Description = "",
+                CreatorID = UUID.Zero,
+                GroupID = UUID.Zero,
+                OwnerID = UUID.Zero,
+                Permissions = new Permissions(),
+                SalePrice = 10,
+                SaleType = new SaleType()
+            };
 
             return prim;
         }
@@ -1267,11 +1293,13 @@ namespace Aurora.Framework.SceneInfo
             {
             }
 
-            public MediaList(IEnumerable<MediaEntry> collection) : base(collection)
+            public MediaList(IEnumerable<MediaEntry> collection)
+                : base(collection)
             {
             }
 
-            public MediaList(int capacity) : base(capacity)
+            public MediaList(int capacity)
+                : base(capacity)
             {
             }
 
@@ -1352,7 +1380,7 @@ namespace Aurora.Framework.SceneInfo
 
                         xtr.ReadStartElement("OSMedia");
 
-                        OSDArray osdMeArray = (OSDArray) OSDParser.DeserializeLLSDXml(xtr.ReadInnerXml());
+                        OSDArray osdMeArray = (OSDArray)OSDParser.DeserializeLLSDXml(xtr.ReadInnerXml());
 
                         foreach (
                             MediaEntry me in
@@ -1370,7 +1398,7 @@ namespace Aurora.Framework.SceneInfo
 
         #endregion
 
-        public ulong GetMeshKey (Vector3 size, float lod)
+        public ulong GetMeshKey(Vector3 size, float lod)
         {
             ulong hash = 5381;
 

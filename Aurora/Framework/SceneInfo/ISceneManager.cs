@@ -64,6 +64,18 @@ namespace Aurora.Framework.SceneInfo
         /// </summary>
         void RestartRegion(IScene scene);
 
+        /// <summary>
+        /// Creates and adds a region from supplied info.
+        /// </summary>
+        /// <param name="regionInfo">Region info.</param>
+        bool CreateRegion(RegionInfo regionInfo);
+
+        /// <summary>
+        /// Finds the current region info.
+        /// </summary>
+        /// <returns>The current region info.</returns>
+        Dictionary<string, int> FindCurrentRegionInfo();
+
         void HandleStartupComplete(List<string> data);
 
         IConfigSource ConfigSource { get; }

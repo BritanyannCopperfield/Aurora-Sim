@@ -83,7 +83,7 @@ namespace Aurora.Framework.SceneInfo
         #region Core
 
         RegionInfo RegionInfo { get; set; }
-        AuroraEventManager AuroraEventManager { get; }
+        WhiteCoreEventManager WhiteCoreEventManager { get; }
         EntityManager Entities { get; }
         EventManager EventManager { get; }
         ScenePermissions Permissions { get; }
@@ -101,7 +101,7 @@ namespace Aurora.Framework.SceneInfo
         bool ShouldRunHeartbeat { get; set; }
         bool CloseQuietly { get; set; }
         void Initialize(RegionInfo regionInfo);
-        void Initialize(RegionInfo regionInfo, ISimulationDataStore simulationStore, 
+        void Initialize(RegionInfo regionInfo, ISimulationDataStore simulationStore,
             AgentCircuitManager authen, List<IClientNetworkServer> clientServers);
         void StartHeartbeat();
         void FinishedStartup(string p, List<string> list);

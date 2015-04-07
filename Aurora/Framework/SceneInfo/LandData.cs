@@ -56,11 +56,11 @@ namespace Aurora.Framework.SceneInfo
         private string _description = String.Empty;
         private int _dwell;
 
-        private uint _flags = (uint) ParcelFlags.AllowFly | (uint) ParcelFlags.AllowLandmark |
-                              (uint) ParcelFlags.AllowAPrimitiveEntry |
-                              (uint) ParcelFlags.AllowDeedToGroup | (uint) ParcelFlags.AllowTerraform |
-                              (uint) ParcelFlags.CreateObjects | (uint) ParcelFlags.AllowOtherScripts |
-                              (uint) ParcelFlags.SoundLocal | (uint) ParcelFlags.AllowVoiceChat;
+        private uint _flags = (uint)ParcelFlags.AllowFly | (uint)ParcelFlags.AllowLandmark |
+                              (uint)ParcelFlags.AllowAPrimitiveEntry |
+                              (uint)ParcelFlags.AllowDeedToGroup | (uint)ParcelFlags.AllowTerraform |
+                              (uint)ParcelFlags.CreateObjects | (uint)ParcelFlags.AllowOtherScripts |
+                              (uint)ParcelFlags.SoundLocal | (uint)ParcelFlags.AllowVoiceChat;
 
         private UUID _globalID = UUID.Zero;
         private UUID _groupID = UUID.Zero;
@@ -573,51 +573,51 @@ namespace Aurora.Framework.SceneInfo
         public LandData Copy()
         {
             LandData landData = new LandData
-                                    {
-                                        _AABBMax = _AABBMax,
-                                        _AABBMin = _AABBMin,
-                                        _area = _area,
-                                        _auctionID = _auctionID,
-                                        _authBuyerID = _authBuyerID,
-                                        _category = _category,
-                                        _claimDate = _claimDate,
-                                        _claimPrice = _claimPrice,
-                                        _globalID = _globalID,
-                                        _groupID = _groupID,
-                                        _isGroupOwned = _isGroupOwned,
-                                        _localID = _localID,
-                                        _landingType = _landingType,
-                                        _mediaAutoScale = _mediaAutoScale,
-                                        _mediaID = _mediaID,
-                                        _mediaURL = _mediaURL,
-                                        _musicURL = _musicURL,
-                                        _ownerID = _ownerID,
-                                        _bitmap = (byte[]) _bitmap.Clone(),
-                                        _description = _description,
-                                        _flags = _flags,
-                                        _name = _name,
-                                        _status = _status,
-                                        _passHours = _passHours,
-                                        _passPrice = _passPrice,
-                                        _salePrice = _salePrice,
-                                        _snapshotID = _snapshotID,
-                                        _userLocation = _userLocation,
-                                        _userLookAt = _userLookAt,
-                                        _otherCleanTime = _otherCleanTime,
-                                        _dwell = _dwell,
-                                        _mediaType = _mediaType,
-                                        _mediaDescription = _mediaDescription,
-                                        _mediaWidth = _mediaWidth,
-                                        _mediaHeight = _mediaHeight,
-                                        _mediaLoop = _mediaLoop,
-                                        _MediaLoopSet = _MediaLoopSet,
-                                        _obscureMusic = _obscureMusic,
-                                        _obscureMedia = _obscureMedia,
-                                        _regionID = _regionID,
-                                        _regionHandle = _regionHandle,
-                                        _Maturity = _Maturity,
-                                        _private = _private
-                                    };
+            {
+                _AABBMax = _AABBMax,
+                _AABBMin = _AABBMin,
+                _area = _area,
+                _auctionID = _auctionID,
+                _authBuyerID = _authBuyerID,
+                _category = _category,
+                _claimDate = _claimDate,
+                _claimPrice = _claimPrice,
+                _globalID = _globalID,
+                _groupID = _groupID,
+                _isGroupOwned = _isGroupOwned,
+                _localID = _localID,
+                _landingType = _landingType,
+                _mediaAutoScale = _mediaAutoScale,
+                _mediaID = _mediaID,
+                _mediaURL = _mediaURL,
+                _musicURL = _musicURL,
+                _ownerID = _ownerID,
+                _bitmap = (byte[])_bitmap.Clone(),
+                _description = _description,
+                _flags = _flags,
+                _name = _name,
+                _status = _status,
+                _passHours = _passHours,
+                _passPrice = _passPrice,
+                _salePrice = _salePrice,
+                _snapshotID = _snapshotID,
+                _userLocation = _userLocation,
+                _userLookAt = _userLookAt,
+                _otherCleanTime = _otherCleanTime,
+                _dwell = _dwell,
+                _mediaType = _mediaType,
+                _mediaDescription = _mediaDescription,
+                _mediaWidth = _mediaWidth,
+                _mediaHeight = _mediaHeight,
+                _mediaLoop = _mediaLoop,
+                _MediaLoopSet = _MediaLoopSet,
+                _obscureMusic = _obscureMusic,
+                _obscureMedia = _obscureMedia,
+                _regionID = _regionID,
+                _regionHandle = _regionHandle,
+                _Maturity = _Maturity,
+                _private = _private
+            };
 
 
             landData._parcelAccessList.Clear();
@@ -625,16 +625,16 @@ namespace Aurora.Framework.SceneInfo
             foreach (
                 ParcelManager.ParcelAccessEntry newEntry in
                     _parcelAccessList.Select(entry => new ParcelManager.ParcelAccessEntry
-                                                          {
-                                                              AgentID = entry.AgentID,
-                                                              Flags = entry.Flags,
-                                                              Time = entry.Time
-                                                          }))
+                    {
+                        AgentID = entry.AgentID,
+                        Flags = entry.Flags,
+                        Time = entry.Time
+                    }))
             {
                 landData._parcelAccessList.Add(newEntry);
             }
 
-			return landData;
+            return landData;
         }
 
         #region IDataTransferable
@@ -650,7 +650,7 @@ namespace Aurora.Framework.SceneInfo
             map["AuctionID"] = OSD.FromUInteger(AuctionID);
             map["SalePrice"] = OSD.FromInteger(SalePrice);
             map["Dwell"] = OSD.FromInteger(Dwell);
-            map["Flags"] = OSD.FromInteger((int) Flags);
+            map["Flags"] = OSD.FromInteger((int)Flags);
             map["Name"] = OSD.FromString(Name);
             map["Description"] = OSD.FromString(Description);
             map["UserLocation"] = OSD.FromVector3(UserLocation);
@@ -671,11 +671,11 @@ namespace Aurora.Framework.SceneInfo
             map["MediaURL"] = OSD.FromString(MediaURL);
             map["MusicURL"] = OSD.FromString(MusicURL);
             map["Bitmap"] = OSD.FromBinary(Bitmap);
-            map["Category"] = OSD.FromInteger((int) Category);
+            map["Category"] = OSD.FromInteger((int)Category);
             map["FirstParty"] = OSD.FromBoolean(FirstParty);
             map["ClaimDate"] = OSD.FromInteger(ClaimDate);
             map["ClaimPrice"] = OSD.FromInteger(ClaimPrice);
-            map["Status"] = OSD.FromInteger((int) Status);
+            map["Status"] = OSD.FromInteger((int)Status);
             map["LandingType"] = OSD.FromInteger(LandingType);
             map["PassHours"] = OSD.FromReal(PassHours);
             map["PassPrice"] = OSD.FromInteger(PassPrice);
@@ -699,7 +699,7 @@ namespace Aurora.Framework.SceneInfo
             UserLookAt = map["UserLookAt"].AsVector3();
             Name = map["Name"].AsString();
             Description = map["Description"].AsString();
-            Flags = (uint) map["Flags"].AsInteger();
+            Flags = (uint)map["Flags"].AsInteger();
             Dwell = map["Dwell"].AsInteger();
             AuctionID = map["AuctionID"].AsUInteger();
             Area = map["Area"].AsInteger();
@@ -715,18 +715,18 @@ namespace Aurora.Framework.SceneInfo
             MediaType = map["MediaType"].AsString();
             ObscureMedia = map["ObscureMedia"].AsBoolean();
             ObscureMusic = map["ObscureMusic"].AsBoolean();
-            MediaLoopSet = (float) map["MediaLoopSet"].AsReal();
-            MediaAutoScale = (byte) map["MediaAutoScale"].AsInteger();
+            MediaLoopSet = (float)map["MediaLoopSet"].AsReal();
+            MediaAutoScale = (byte)map["MediaAutoScale"].AsInteger();
             MediaURL = map["MediaURL"].AsString();
             MusicURL = map["MusicURL"].AsString();
             Bitmap = map["Bitmap"].AsBinary();
-            Category = (ParcelCategory) map["Category"].AsInteger();
+            Category = (ParcelCategory)map["Category"].AsInteger();
             FirstParty = map["FirstParty"].AsBoolean();
             ClaimDate = map["ClaimDate"].AsInteger();
             ClaimPrice = map["ClaimPrice"].AsInteger();
-            Status = (ParcelStatus) map["Status"].AsInteger();
-            LandingType = (byte) map["LandingType"].AsInteger();
-            PassHours = (float) map["PassHours"].AsReal();
+            Status = (ParcelStatus)map["Status"].AsInteger();
+            LandingType = (byte)map["LandingType"].AsInteger();
+            PassHours = (float)map["PassHours"].AsReal();
             PassPrice = map["PassPrice"].AsInteger();
             AuthBuyerID = map["AuthBuyerID"].AsUUID();
             OtherCleanTime = map["OtherCleanTime"].AsInteger();
@@ -734,7 +734,7 @@ namespace Aurora.Framework.SceneInfo
             Private = map["Private"].AsBoolean();
             AuctionInfo = new AuctionInfo();
             if (map.ContainsKey("AuctionInfo"))
-                AuctionInfo.FromOSD((OSDMap) map["AuctionInfo"]);
+                AuctionInfo.FromOSD((OSDMap)map["AuctionInfo"]);
 
             if ((IsGroupOwned) && (GroupID != OwnerID)) OwnerID = GroupID;
         }

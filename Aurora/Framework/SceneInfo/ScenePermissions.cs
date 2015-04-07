@@ -235,7 +235,8 @@ namespace Aurora.Framework.SceneInfo
 
         public uint GenerateClientFlags(UUID userID, ISceneChildEntity part)
         {
-            // libomv will moan about PrimFlags.ObjectYouOfficer being obsolete...
+            // libomv will moan about PrimFlags.ObjectYouOfficer being
+            // obsolete...
 #pragma warning disable 0612
             const PrimFlags DEFAULT_FLAGS =
                 PrimFlags.ObjectModify |
@@ -251,7 +252,7 @@ namespace Aurora.Framework.SceneInfo
             if (part == null)
                 return 0;
 
-            uint perms = part.GetEffectiveObjectFlags() | (uint) DEFAULT_FLAGS;
+            uint perms = part.GetEffectiveObjectFlags() | (uint)DEFAULT_FLAGS;
 
             GenerateClientFlagsHandler handlerGenerateClientFlags = OnGenerateClientFlags;
             if (handlerGenerateClientFlags != null)

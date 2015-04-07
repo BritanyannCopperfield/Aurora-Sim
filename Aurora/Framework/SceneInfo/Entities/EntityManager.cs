@@ -81,7 +81,7 @@ namespace Aurora.Framework.SceneInfo.Entities
                 }
                 else
                 {
-                    IScenePresence presence = (IScenePresence) entity;
+                    IScenePresence presence = (IScenePresence)entity;
 
                     lock (m_presenceEntitiesLock)
                     {
@@ -139,7 +139,7 @@ namespace Aurora.Framework.SceneInfo.Entities
                 {
                     lock (m_presenceEntitiesLock)
                     {
-                        m_presenceEntitiesList.Remove((IScenePresence) entity);
+                        m_presenceEntitiesList.Remove((IScenePresence)entity);
                         m_presenceEntities.Remove(entity.UUID);
                     }
                 }
@@ -170,7 +170,7 @@ namespace Aurora.Framework.SceneInfo.Entities
 
                 tmp.AddRange(
                     m_presenceEntities.Values.Where(
-                        entity => (entity.AbsolutePosition - pos).LengthSquared() < radius*radius));
+                        entity => (entity.AbsolutePosition - pos).LengthSquared() < radius * radius));
 
                 return tmp.ToArray();
             }
@@ -191,12 +191,12 @@ namespace Aurora.Framework.SceneInfo.Entities
                 List<ISceneEntity> tmp = new List<ISceneEntity>(m_objectEntities.Count);
 
                 m_objectEntities.ForEach(delegate(ISceneEntity entity)
-                                             {
-                                                 //Add attachments as well, as they might be needed
-                                                 if ((entity.AbsolutePosition - pos).LengthSquared() < radius*radius ||
-                                                     entity.IsAttachment)
-                                                     tmp.Add(entity);
-                                             });
+                {
+                    //Add attachments as well, as they might be needed
+                    if ((entity.AbsolutePosition - pos).LengthSquared() < radius * radius ||
+                        entity.IsAttachment)
+                        tmp.Add(entity);
+                });
                 return tmp.ToArray();
             }
         }
@@ -205,13 +205,15 @@ namespace Aurora.Framework.SceneInfo.Entities
         {
             lock (m_presenceEntitiesLock)
             {
-                return m_presenceEntities.TryGetValue(key, out presence);
+                bool success = m_presenceEntities.TryGetValue(key, out presence);
+                return success;
             }
         }
 
         public virtual bool TryGetValue(UUID key, out IEntity obj)
         {
-            return InternalTryGetValue(key, true, out obj);
+            bool success = InternalTryGetValue(key, true, out obj);
+            return success;
         }
 
         protected virtual bool InternalTryGetValue(UUID key, bool checkRecursive, out IEntity obj)
@@ -246,7 +248,8 @@ namespace Aurora.Framework.SceneInfo.Entities
 
         public virtual bool TryGetValue(uint key, out IEntity obj)
         {
-            return InternalTryGetValue(key, true, out obj);
+            bool success = InternalTryGetValue(key, true, out obj);
+            return success;
         }
 
         protected virtual bool InternalTryGetValue(uint key, bool checkRecursive, out IEntity obj)

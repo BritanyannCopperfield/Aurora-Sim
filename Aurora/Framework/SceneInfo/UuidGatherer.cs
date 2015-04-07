@@ -26,7 +26,6 @@
  */
 
 using Aurora.Framework.ConsoleFramework;
-using Aurora.Framework.Modules;
 using Aurora.Framework.SceneInfo.Entities;
 using Aurora.Framework.Serialization;
 using Aurora.Framework.Services;
@@ -120,14 +119,14 @@ namespace Aurora.Framework.SceneInfo
         /// <param name="scene"></param>
         public void GatherAssetUuids(ISceneEntity sceneObject, IDictionary<UUID, AssetType> assetUuids)
         {
-//            MainConsole.Instance.DebugFormat(
-//                "[ASSET GATHERER]: Getting assets for object {0}, {1}", sceneObject.Name, sceneObject.UUID);
+            // MainConsole.Instance.DebugFormat(
+            //     "[ASSET GATHERER]: Getting assets for object {0}, {1}", sceneObject.Name, sceneObject.UUID);
 
             ISceneChildEntity[] parts = sceneObject.ChildrenEntities().ToArray();
             foreach (ISceneChildEntity part in parts)
             {
-//                MainConsole.Instance.DebugFormat(
-//                    "[ARCHIVER]: Getting part {0}, {1} for object {2}", part.Name, part.UUID, sceneObject.UUID);
+                // MainConsole.Instance.DebugFormat(
+                //     "[ARCHIVER]: Getting part {0}, {1} for object {2}", part.Name, part.UUID, sceneObject.UUID);
 
                 try
                 {
@@ -154,7 +153,7 @@ namespace Aurora.Framework.SceneInfo
                     if (part.Shape.SculptTexture != UUID.Zero)
                         assetUuids[part.Shape.SculptTexture] = AssetType.Texture;
 
-                    TaskInventoryDictionary taskDictionary = (TaskInventoryDictionary) part.TaskInventory.Clone();
+                    TaskInventoryDictionary taskDictionary = (TaskInventoryDictionary)part.TaskInventory.Clone();
 
                     // Now analyze this prim's inventory items to preserve all the uuids that they reference
                     foreach (
@@ -176,7 +175,7 @@ namespace Aurora.Framework.SceneInfo
             }
         }
 
-        
+
         /// <summary>
         /// Gather all of the texture asset UUIDs used to reference "Materials" such as normal and specular maps
         /// </summary>
@@ -204,7 +203,7 @@ namespace Aurora.Framework.SceneInfo
                                 if (normalMapId != UUID.Zero)
                                 {
                                     assetUuids[normalMapId] = AssetType.Texture;
-                                    //MaineConsole.Instance.Info("[UUID Gatherer]: found normal map ID: " + normalMapId.ToString());
+                                    //MainConsole.Instance.Info("[UUID Gatherer]: found normal map ID: " + normalMapId.ToString());
                                 }
                             }
                             if (mat.ContainsKey("SpecMap"))
@@ -213,7 +212,7 @@ namespace Aurora.Framework.SceneInfo
                                 if (specularMapId != UUID.Zero)
                                 {
                                     assetUuids[specularMapId] = AssetType.Texture;
-                                    //MainConsole.Instance.Info("[UUID Gatherer]: found specular map ID: " + specularMapId.ToString());
+                                    //MaineConsole.Instance.Info("[UUID Gatherer]: found specular map ID: " + specularMapId.ToString());
                                 }
                             }
                         }

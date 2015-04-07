@@ -73,21 +73,30 @@ namespace Aurora.Framework.SceneInfo.Entities
             Both = 192
         }
 
-        [ProtoMember(1)] public int CurrentAnimationPosition = 0;
-        [ProtoMember(2)] public bool PingPongForwardMotion = true;
-        [ProtoMember(3)] public Modes CurrentMode = Modes.Forward;
-        [ProtoMember(4)] public int CurrentFrame = 0;
-        [ProtoMember(5)] public float[] TimeList = new float[0];
-        [ProtoMember(6)] public Vector3 InitialPosition = Vector3.Zero;
-        [ProtoMember(7)] public Vector3[] PositionList = new Vector3[0];
-        [ProtoMember(8)] public Quaternion InitialRotation = Quaternion.Identity;
-        [ProtoMember(9)] public Quaternion[] RotationList = new Quaternion[0];
+        [ProtoMember(1)]
+        public int CurrentAnimationPosition = 0;
+        [ProtoMember(2)]
+        public bool PingPongForwardMotion = true;
+        [ProtoMember(3)]
+        public Modes CurrentMode = Modes.Forward;
+        [ProtoMember(4)]
+        public int CurrentFrame = 0;
+        [ProtoMember(5)]
+        public float[] TimeList = new float[0];
+        [ProtoMember(6)]
+        public Vector3 InitialPosition = Vector3.Zero;
+        [ProtoMember(7)]
+        public Vector3[] PositionList = new Vector3[0];
+        [ProtoMember(8)]
+        public Quaternion InitialRotation = Quaternion.Identity;
+        [ProtoMember(9)]
+        public Quaternion[] RotationList = new Quaternion[0];
 
         public override OSDMap ToOSD()
         {
             OSDMap map = new OSDMap();
             map["CurrentAnimationPosition"] = CurrentAnimationPosition;
-            map["CurrentMode"] = (int) CurrentMode;
+            map["CurrentMode"] = (int)CurrentMode;
             OSDArray times = new OSDArray();
             foreach (float time in TimeList)
                 times.Add(time);
@@ -106,18 +115,18 @@ namespace Aurora.Framework.SceneInfo.Entities
         public override void FromOSD(OSDMap map)
         {
             CurrentAnimationPosition = map["CurrentAnimationPosition"];
-            CurrentMode = (Modes) (int) map["CurrentMode"];
-            OSDArray positions = (OSDArray) map["PositionList"];
+            CurrentMode = (Modes)(int)map["CurrentMode"];
+            OSDArray positions = (OSDArray)map["PositionList"];
             List<Vector3> pos = new List<Vector3>();
             foreach (OSD o in positions)
                 pos.Add(o);
             PositionList = pos.ToArray();
-            OSDArray rotations = (OSDArray) map["RotationList"];
+            OSDArray rotations = (OSDArray)map["RotationList"];
             List<Quaternion> rot = new List<Quaternion>();
             foreach (OSD o in rotations)
                 rot.Add(o);
             RotationList = rot.ToArray();
-            OSDArray times = (OSDArray) map["TimeList"];
+            OSDArray times = (OSDArray)map["TimeList"];
             List<float> time = new List<float>();
             foreach (OSD o in times)
                 time.Add(o);

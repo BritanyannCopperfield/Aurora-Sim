@@ -58,8 +58,8 @@ namespace Aurora.Framework.SceneInfo
         private bool m_AllowSetHome = true;
         private bool m_AllowVoice = true;
 
-        private string m_EstateName = "My Estate";
-        private UUID m_EstateOwner = UUID.Zero;
+        private string m_EstateName = Constants.SystemEstateName;
+        private UUID m_EstateOwner = (UUID)Constants.RealEstateOwnerUUID;
 
         private uint m_ParentEstateID = 1;
         private int m_PricePerMeter = 1;
@@ -119,6 +119,7 @@ namespace Aurora.Framework.SceneInfo
         }
 
         // Used by the sim
+
         [ProtoMember(9)]
         public bool UseGlobalTime
         {
@@ -195,6 +196,7 @@ namespace Aurora.Framework.SceneInfo
         public bool DenyMinors { get; set; }
 
         // All those lists...
+
         [ProtoMember(26)]
         public List<UUID> EstateManagers
         {
@@ -225,8 +227,8 @@ namespace Aurora.Framework.SceneInfo
 
         public override void FromOSD(OSDMap v)
         {
-            OSDMap values = (OSDMap) v;
-            EstateID = (uint) values["EstateID"].AsInteger();
+            OSDMap values = (OSDMap)v;
+            EstateID = (uint)values["EstateID"].AsInteger();
             EstateName = values["EstateName"].AsString();
             AbuseEmailToEstateOwner = values["AbuseEmailToEstateOwner"].AsBoolean();
             DenyAnonymous = values["DenyAnonymous"].AsBoolean();
@@ -240,10 +242,10 @@ namespace Aurora.Framework.SceneInfo
             PricePerMeter = values["PricePerMeter"].AsInteger();
             TaxFree = values["TaxFree"].AsBoolean();
             AllowDirectTeleport = values["AllowDirectTeleport"].AsBoolean();
-            ParentEstateID = (uint) values["ParentEstateID"].AsInteger();
+            ParentEstateID = (uint)values["ParentEstateID"].AsInteger();
             SunPosition = values["SunPosition"].AsReal();
             EstateSkipScripts = values["EstateSkipScripts"].AsBoolean();
-            BillableFactor = (float) values["BillableFactor"].AsReal();
+            BillableFactor = (float)values["BillableFactor"].AsReal();
             PublicAccess = values["PublicAccess"].AsBoolean();
             AbuseEmail = values["AbuseEmail"].AsString();
             EstateOwner = values["EstateOwner"].AsUUID();
@@ -259,11 +261,11 @@ namespace Aurora.Framework.SceneInfo
             OSDArray Ban = values["EstateBans"] as OSDArray;
             if (Ban != null)
                 EstateBans = Ban.ConvertAll<EstateBan>((o) =>
-                                                           {
-                                                               EstateBan ban = new EstateBan();
-                                                               ban.FromOSD(o);
-                                                               return ban;
-                                                           });
+                {
+                    EstateBan ban = new EstateBan();
+                    ban.FromOSD(o);
+                    return ban;
+                });
 
             OSDArray Access = values["EstateAccess"] as OSDArray;
             if (Access != null)
@@ -277,7 +279,7 @@ namespace Aurora.Framework.SceneInfo
         public override OSDMap ToOSD()
         {
             OSDMap values = new OSDMap();
-            values["EstateID"] = (int) EstateID;
+            values["EstateID"] = (int)EstateID;
             values["EstateName"] = EstateName;
             values["AbuseEmailToEstateOwner"] = AbuseEmailToEstateOwner;
             values["DenyAnonymous"] = DenyAnonymous;
@@ -291,7 +293,7 @@ namespace Aurora.Framework.SceneInfo
             values["PricePerMeter"] = PricePerMeter;
             values["TaxFree"] = TaxFree;
             values["AllowDirectTeleport"] = AllowDirectTeleport;
-            values["ParentEstateID"] = (int) ParentEstateID;
+            values["ParentEstateID"] = (int)ParentEstateID;
             values["SunPosition"] = SunPosition;
             values["EstateSkipScripts"] = EstateSkipScripts;
             values["BillableFactor"] = BillableFactor;
@@ -409,16 +411,16 @@ namespace Aurora.Framework.SceneInfo
 
         public void SetFromFlags(ulong regionFlags)
         {
-            ResetHomeOnTeleport = ((regionFlags & (ulong) OpenMetaverse.RegionFlags.ResetHomeOnTeleport) ==
-                                   (ulong) OpenMetaverse.RegionFlags.ResetHomeOnTeleport);
-            BlockDwell = ((regionFlags & (ulong) OpenMetaverse.RegionFlags.BlockDwell) ==
-                          (ulong) OpenMetaverse.RegionFlags.BlockDwell);
-            AllowLandmark = ((regionFlags & (ulong) OpenMetaverse.RegionFlags.AllowLandmark) ==
-                             (ulong) OpenMetaverse.RegionFlags.AllowLandmark);
-            AllowParcelChanges = ((regionFlags & (ulong) OpenMetaverse.RegionFlags.AllowParcelChanges) ==
-                                  (ulong) OpenMetaverse.RegionFlags.AllowParcelChanges);
-            AllowSetHome = ((regionFlags & (ulong) OpenMetaverse.RegionFlags.AllowSetHome) ==
-                            (ulong) OpenMetaverse.RegionFlags.AllowSetHome);
+            ResetHomeOnTeleport = ((regionFlags & (ulong)OpenMetaverse.RegionFlags.ResetHomeOnTeleport) ==
+                                   (ulong)OpenMetaverse.RegionFlags.ResetHomeOnTeleport);
+            BlockDwell = ((regionFlags & (ulong)OpenMetaverse.RegionFlags.BlockDwell) ==
+                          (ulong)OpenMetaverse.RegionFlags.BlockDwell);
+            AllowLandmark = ((regionFlags & (ulong)OpenMetaverse.RegionFlags.AllowLandmark) ==
+                             (ulong)OpenMetaverse.RegionFlags.AllowLandmark);
+            AllowParcelChanges = ((regionFlags & (ulong)OpenMetaverse.RegionFlags.AllowParcelChanges) ==
+                                  (ulong)OpenMetaverse.RegionFlags.AllowParcelChanges);
+            AllowSetHome = ((regionFlags & (ulong)OpenMetaverse.RegionFlags.AllowSetHome) ==
+                            (ulong)OpenMetaverse.RegionFlags.AllowSetHome);
         }
     }
 }

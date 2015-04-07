@@ -49,6 +49,12 @@ namespace Aurora.Framework.SceneInfo
         bool SaveBackups { get; set; }
 
         /// <summary>
+        /// Gets or sets the backup filename.
+        /// </summary>
+        /// <value>The backup file.</value>
+        string BackupFile { get; set; }
+
+        /// <summary>
         ///     Initialises the data storage engine
         /// </summary>
         void Initialise();
@@ -109,13 +115,25 @@ namespace Aurora.Framework.SceneInfo
         /// </summary>
         /// <param name="newRegion"></param>
         /// <returns></returns>
-        List<string> FindRegionInfos(out bool newRegion);
+        List<string> FindRegionInfos(out bool newRegion, ISimulationBase simBase);
 
         /// <summary>
         /// Creates a new region
         /// </summary>
         /// <returns></returns>
-        RegionInfo CreateNewRegion(ISimulationBase simBase);
+        RegionInfo CreateNewRegion(ISimulationBase simBase, Dictionary<string, int> currentInfo);
+
+        /// <summary>
+        /// Creates a new region with the passed name
+        /// </summary>
+        /// <returns></returns>
+        RegionInfo CreateNewRegion(ISimulationBase simBase, string regionName, Dictionary<string, int> currentInfo);
+
+        /// <summary>
+        /// Creates a new region using the passed regInfo object
+        /// </summary>
+        /// <returns></returns>
+        RegionInfo CreateNewRegion(ISimulationBase simBase, RegionInfo regionInfo, Dictionary<string, int> currentInfo);
 
         /// <summary>
         ///     Load all region infos available
@@ -124,6 +142,14 @@ namespace Aurora.Framework.SceneInfo
         /// <param name="newRegion"></param>
         /// <returns></returns>
         RegionInfo LoadRegionInfo(string fileName, ISimulationBase simBase);
+
+        /// <summary>
+        ///     Load the region info for a specified region
+        /// </summary>
+        /// <param name="simBase"></param>
+        /// <param name="newRegion"></param>
+        /// <returns></returns>
+        RegionInfo LoadRegionNameInfo(string regionName, ISimulationBase simBase);
 
         /// <summary>
         ///     Set the region ref
@@ -135,6 +161,28 @@ namespace Aurora.Framework.SceneInfo
         ///     Forces the datastore to backup the region
         /// </summary>
         void ForceBackup();
+
+        /// <summary>
+        /// Gets the  filename of the last region backup file.
+        /// </summary>
+        /// <returns>The last backup file name.</returns>
+        /// <param name="regionName">Region name.</param>
+        string GetLastBackupFileName(string regionName);
+
+        /// <summary>
+        /// Restores the last backup.
+        /// </summary>
+        /// <returns><c>true</c>, if last backup was restored, <c>false</c> otherwise.</returns>
+        /// <param name="regionName">Region name.</param>
+        bool RestoreLastBackup(string regionName);
+
+        /// <summary>
+        /// Restores a backup file to a region.
+        /// </summary>
+        /// <returns><c>true</c>, if backup file was restored, <c>false</c> otherwise.</returns>
+        /// <param name="fileName">File name.</param>
+        /// <param name="regionName">Region name.</param>
+        bool RestoreBackupFile(string fileName, string regionName);
 
         /// <summary>
         /// Copies the instance

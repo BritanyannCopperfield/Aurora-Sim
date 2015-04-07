@@ -155,7 +155,7 @@ namespace Aurora.Framework.SceneInfo
 
         public TaskInventoryItem()
         {
-            CreationDate = (uint) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+            CreationDate = (uint)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
         }
 
         [ProtoMember(1)]
@@ -183,7 +183,7 @@ namespace Aurora.Framework.SceneInfo
         }
 
         [ProtoMember(5)]
-        public string CreatorData // = <profile url>;<name>
+        public string CreatorData
         {
             get { return _creatorData; }
             set { _creatorData = value; }
@@ -218,7 +218,7 @@ namespace Aurora.Framework.SceneInfo
                     UUID.TryParse(value, out uuid);
                     _creatorID = uuid;
                 }
-                else // <uuid>[;<endpoint>[;name]]
+                else
                 {
                     string name = "Unknown User";
                     string[] parts = value.Split(';');
