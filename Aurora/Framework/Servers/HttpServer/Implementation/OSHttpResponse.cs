@@ -25,14 +25,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.IO;
 using System.Net;
 using System.Text;
 
 namespace Aurora.Framework.Servers.HttpServer.Implementation
 {
     /// <summary>
-    ///     OSHttpResponse is the OpenSim representation of an HTTP
+    ///     OSHttpResponse is the Aurora representation of an HTTP
     ///     response.
     /// </summary>
     public class OSHttpResponse
@@ -122,11 +121,11 @@ namespace Aurora.Framework.Servers.HttpServer.Implementation
         public void AddCookie(System.Web.HttpCookie cookie)
         {
             _httpResponse.Cookies.Add(new Cookie(cookie.Name, cookie.Value, cookie.Path, cookie.Domain)
-                                          {
-                                              Expires =
-                                                  cookie
-                                                  .Expires
-                                          });
+            {
+                Expires =
+                    cookie
+                    .Expires
+            });
         }
 
         protected HttpListenerResponse _httpResponse;

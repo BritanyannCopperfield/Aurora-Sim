@@ -26,7 +26,6 @@
  */
 
 using System;
-using System.Collections;
 using OpenMetaverse;
 using Aurora.Framework.Servers.HttpServer.Implementation;
 

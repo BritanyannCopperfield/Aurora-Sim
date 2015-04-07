@@ -28,7 +28,6 @@
 using System;
 using System.Collections;
 using System.Threading;
-using Aurora.Framework.Servers.HttpServer.Interfaces;
 using Aurora.Framework.Servers.HttpServer.Implementation;
 using System.Text;
 using Aurora.Framework.ConsoleFramework;
@@ -70,13 +69,12 @@ namespace Aurora.Framework.Servers.HttpServer
                 m_PollServiceWorkerThreads[i] = new PollServiceWorkerThread(m_pollTimeout);
                 m_PollServiceWorkerThreads[i].ReQueue += ReQueueEvent;
 
-                m_workerThreads[i] = new Thread(m_PollServiceWorkerThreads[i].ThreadStart)
-                                         {Name = String.Format("PollServiceWorkerThread{0}", i)};
+                m_workerThreads[i] = new Thread(m_PollServiceWorkerThreads[i].ThreadStart) { Name = String.Format("PollServiceWorkerThread{0}", i) };
                 m_workerThreads[i].Start();
             }
 
             //start watcher threads
-            m_watcherThread = new Thread(ThreadStart) {Name = "PollServiceWatcherThread"};
+            m_watcherThread = new Thread(ThreadStart) { Name = "PollServiceWatcherThread" };
             m_watcherThread.Start();
         }
 
@@ -116,7 +114,7 @@ namespace Aurora.Framework.Servers.HttpServer
 
                 // MainConsole.Instance.DebugFormat("[POLL SERVICE REQUEST MANAGER]: Processing {0} requests", m_requests.Count);
 
-                int reqperthread = (int) (m_requests.Count/m_WorkerThreadCount) + 1;
+                int reqperthread = (int)(m_requests.Count / m_WorkerThreadCount) + 1;
 
                 // For Each WorkerThread
                 for (int tc = 0; tc < m_WorkerThreadCount && m_requests.Count > 0; tc++)
@@ -126,7 +124,7 @@ namespace Aurora.Framework.Servers.HttpServer
                     {
                         try
                         {
-                            m_PollServiceWorkerThreads[tc].Enqueue((PollServiceHttpRequest) m_requests.Dequeue());
+                            m_PollServiceWorkerThreads[tc].Enqueue((PollServiceHttpRequest)m_requests.Dequeue());
                         }
                         catch (InvalidOperationException)
                         {
@@ -144,13 +142,13 @@ namespace Aurora.Framework.Servers.HttpServer
             m_running = false;
             foreach (object o in m_requests)
             {
-                PollServiceHttpRequest req = (PollServiceHttpRequest) o;
+                PollServiceHttpRequest req = (PollServiceHttpRequest)o;
 
                 OSHttpResponse response = new OSHttpResponse(req.Context);
 
                 byte[] buffer = req.PollServiceArgs.NoEvents(req.RequestID, req.PollServiceArgs.Id, response);
 
-                
+
                 req.Context.Response.SendChunked = false;
                 req.Context.Response.ContentEncoding = Encoding.UTF8;
 

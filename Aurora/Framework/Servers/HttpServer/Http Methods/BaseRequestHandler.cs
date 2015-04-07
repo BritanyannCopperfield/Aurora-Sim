@@ -92,7 +92,7 @@ namespace Aurora.Framework.Servers.HttpServer
         {
             string param = GetParam(path);
 
-            return param.Split(new char[] {'/', '?', '&'}, StringSplitOptions.RemoveEmptyEntries);
+            return param.Split(new char[] { '/', '?', '&' }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         public abstract byte[] Handle(string path, Stream request,

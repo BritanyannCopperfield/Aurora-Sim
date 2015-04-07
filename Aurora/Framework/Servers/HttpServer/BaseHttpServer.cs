@@ -26,18 +26,14 @@
  */
 
 using Aurora.Framework.ConsoleFramework;
-using Aurora.Framework.Modules;
 using Aurora.Framework.Servers.HttpServer.Implementation;
 using Aurora.Framework.Servers.HttpServer.Interfaces;
 using Nwc.XmlRpc;
-using OpenMetaverse.StructuredData;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Xml;
 
@@ -49,7 +45,7 @@ namespace Aurora.Framework.Servers.HttpServer
 
         protected HttpListenerManager m_internalServer;
         protected Dictionary<string, XmlRpcMethod> m_rpcHandlers = new Dictionary<string, XmlRpcMethod>();
-        
+
         protected Dictionary<string, IStreamedRequestHandler> m_streamHandlers =
             new Dictionary<string, IStreamedRequestHandler>();
 
@@ -69,6 +65,10 @@ namespace Aurora.Framework.Servers.HttpServer
             get { return m_PollServiceManager; }
         }
 
+        /// <summary>
+        /// Gets the server port.
+        /// </summary>
+        /// <value>The port.</value>
         public uint Port
         {
             get { return m_port; }
@@ -79,18 +79,30 @@ namespace Aurora.Framework.Servers.HttpServer
             get { return m_isSecure; }
         }
 
-        public IPAddress ListenIPAddress
+        /// <summary>
+        /// Gets or sets the listen IP address.
+        /// </summary>
+        /// <value>The listen IP address.</value>
+        private IPAddress ListenIPAddress
         {
             get { return m_listenIPAddress; }
             set { m_listenIPAddress = value; }
         }
 
+        /// <summary>
+        /// The hostname (external IP or dns name) that this server is on (without http(s)://)
+        /// </summary>
+        /// <value>The name of the host.</value>
         public string HostName
         {
             get { return m_hostName; }
             set { m_hostName = value; }
         }
 
+        /// <summary>
+        /// The hostname (external IP or dns name) that this server is on (with http(s)://)
+        /// </summary>
+        /// <value>The full name of the host.</value>
         public string FullHostName
         {
             get
@@ -112,7 +124,7 @@ namespace Aurora.Framework.Servers.HttpServer
                 string protocol = "http://";
                 if (Secure)
                     protocol = "https://";
-                return protocol + m_hostName + ":" + m_port.ToString();
+                return protocol + m_hostName + ":" + m_port;
             }
         }
 
@@ -457,7 +469,7 @@ namespace Aurora.Framework.Servers.HttpServer
 
             try
             {
-                xmlRprcRequest = (XmlRpcRequest) (new XmlRpcRequestDeserializer()).Deserialize(requestBody);
+                xmlRprcRequest = (XmlRpcRequest)(new XmlRpcRequestDeserializer()).Deserialize(requestBody);
             }
             catch (XmlException e)
             {
@@ -606,7 +618,7 @@ namespace Aurora.Framework.Servers.HttpServer
             }
             catch (Exception e)
             {
-                if (e is HttpListenerException && ((HttpListenerException) e).Message == "Access is denied")
+                if (e is HttpListenerException && ((HttpListenerException)e).Message == "Access is denied")
                     MainConsole.Instance.Error("[BASE HTTP SERVER]: You must run this program as an administrator.");
                 else
                 {

@@ -56,28 +56,28 @@ namespace Aurora.Framework.Servers.HttpServer
                                                                         delegate(string path, Stream request,
                                                                                  OSHttpRequest httpRequest,
                                                                                  OSHttpResponse httpResponse)
-                                                                            {
-                                                                                MainServer.Instance.RemoveStreamHandler
-                                                                                    ("GET", "/index.php?method=" + methodName + secret2);
-                                                                                return SetUpWebpage(httpResponse, url,
-                                                                                                    html, variables);
-                                                                            }));
+                                                                        {
+                                                                            MainServer.Instance.RemoveStreamHandler
+                                                                                ("GET", "/index.php?method=" + methodName + secret2);
+                                                                            return SetUpWebpage(httpResponse, url,
+                                                                                                html, variables);
+                                                                        }));
             MainServer.Instance.AddStreamHandler(new GenericStreamHandler("GET",
                                                                         "/index.php?method=" + methodName + secret,
                                                                         delegate(string path, Stream request,
                                                                                  OSHttpRequest httpRequest,
                                                                                  OSHttpResponse httpResponse)
-                                                                            {
-                                                                                MainServer.Instance.RemoveStreamHandler(
-                                                                                    "GET", "/index.php?method=" + methodName +
-                                                                                    secret);
-                                                                                return HandleResponse(httpRequest,
-                                                                                                      httpResponse,
-                                                                                                      request,
-                                                                                                      urlToAppend,
-                                                                                                      variables,
-                                                                                                      eventDelegate);
-                                                                            }));
+                                                                        {
+                                                                            MainServer.Instance.RemoveStreamHandler(
+                                                                                "GET", "/index.php?method=" + methodName +
+                                                                                secret);
+                                                                            return HandleResponse(httpRequest,
+                                                                                                  httpResponse,
+                                                                                                  request,
+                                                                                                  urlToAppend,
+                                                                                                  variables,
+                                                                                                  eventDelegate);
+                                                                        }));
             return navUrl;
         }
 

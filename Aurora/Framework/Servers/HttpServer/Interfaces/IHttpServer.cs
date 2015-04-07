@@ -26,12 +26,10 @@
  */
 
 
-using Aurora.Framework.Servers.HttpServer.Implementation;
-
 namespace Aurora.Framework.Servers.HttpServer.Interfaces
 {
     /// <summary>
-    ///     Interface to Aurora's built in HTTP server.  Use this to register handlers for given URLs.
+    ///     Interface to WhiteCore's built in HTTP server.  Use this to register handlers for given URLs.
     /// </summary>
     public interface IHttpServer
     {

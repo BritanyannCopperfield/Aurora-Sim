@@ -159,6 +159,7 @@ namespace Aurora.Framework.Servers.HttpServer.Implementation
         /// <value>
         ///     POST request values, if applicable
         /// </value>
+        //        public Hashtable Form { get; private set; }
         public string RawUrl
         {
             get { return _request.RawUrl; }
@@ -230,7 +231,7 @@ namespace Aurora.Framework.Servers.HttpServer.Implementation
                         // Read the file data
                         var buffer = new byte[element.Length];
                         InputStream.Seek(element.Start, SeekOrigin.Begin);
-                        InputStream.Read(buffer, 0, (int) element.Length);
+                        InputStream.Read(buffer, 0, (int)element.Length);
 
                         // Generate a filename
                         var originalFileName = element.Filename;
@@ -253,12 +254,12 @@ namespace Aurora.Framework.Servers.HttpServer.Implementation
                         File.WriteAllBytes(element.Filename, buffer);
 
                         var file = new HttpFile
-                                       {
-                                           Name = element.Name,
-                                           OriginalFileName = originalFileName,
-                                           ContentType = element.ContentType,
-                                           TempFileName = element.Filename
-                                       };
+                        {
+                            Name = element.Name,
+                            OriginalFileName = originalFileName,
+                            ContentType = element.ContentType,
+                            TempFileName = element.Filename
+                        };
                         Files.Add(element.Name, file);
                     }
                 }
