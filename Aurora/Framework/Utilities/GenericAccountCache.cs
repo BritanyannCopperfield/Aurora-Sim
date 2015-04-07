@@ -27,7 +27,6 @@
 
 using System.Collections.Generic;
 using OpenMetaverse;
-using Aurora.Framework.ConsoleFramework;
 
 namespace Aurora.Framework.Utilities
 {
@@ -39,7 +38,7 @@ namespace Aurora.Framework.Utilities
 
     public class GenericAccountCache<T> where T : BaseCacheAccount
     {
-        private double CACHE_EXPIRATION_SECONDS = 6*60*1000;
+        private double CACHE_EXPIRATION_SECONDS = 6 * 60 * 1000;
         // 6 hour cache on useraccounts, since they should not change
 
         private bool m_allowNullCaching = true;

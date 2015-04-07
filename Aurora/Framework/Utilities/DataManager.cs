@@ -50,11 +50,11 @@ namespace Aurora.Framework.Utilities
         /// <returns></returns>
         public static T RequestPlugin<T>() where T : IAuroraDataPlugin
         {
-            if (Plugins.ContainsKey(typeof (T).Name))
+            if (Plugins.ContainsKey(typeof(T).Name))
             {
                 IAuroraDataPlugin Plugin;
-                Plugins.TryGetValue(typeof (T).Name, out Plugin);
-                return (T) Plugin;
+                Plugins.TryGetValue(typeof(T).Name, out Plugin);
+                return (T)Plugin;
             }
             //Return null if we can't find it
             return default(T);
@@ -71,7 +71,7 @@ namespace Aurora.Framework.Utilities
             {
                 IAuroraDataPlugin Plugin;
                 Plugins.TryGetValue(name, out Plugin);
-                return (T) Plugin;
+                return (T)Plugin;
             }
             //Return null if we can't find it
             return default(T);

@@ -27,17 +27,22 @@
 
 using System;
 using System.Text.RegularExpressions;
+using System.IO;
+using Aurora.Framework.ConsoleFramework;
+using System.Collections.Generic;
 
 namespace Aurora.Framework.Utilities
 {
     public class PathHelpers
     {
-        private const string usernameVar = "%username%";
+        const string usernameVar = "%username%";
+        const string winHomedriveVar = "%homedrive%";           // should the be  "%HOMEDRIVE%%HOMEPATH%" ?
+        const string nixHomeVar = "~/";
 
         public static string PathUsername(string Path) //supports using %username% in place of username
         {
             if (Path.IndexOf(usernameVar, StringComparison.CurrentCultureIgnoreCase) == -1)
-                //does not contain username var
+            //does not contain username var
             {
                 return Path;
             }
@@ -45,38 +50,196 @@ namespace Aurora.Framework.Utilities
             {
                 string userName = Environment.UserName; //check system for current username
                 return Regex.Replace(Path, usernameVar, userName, RegexOptions.IgnoreCase);
-                    //return Path with the system username
+                //return Path with the system username
             }
         }
 
-        private const string HomedriveVar = "%homedrive%";
 
-        public static string PathHomeDrive(string Path) //supports for %homedrive%, gives the drive letter on Windows
+        public static string PathHomeDrive(string fName)
         {
-            if (Path.IndexOf(HomedriveVar, StringComparison.CurrentCultureIgnoreCase) == -1)
-                //does not contain username var
-            {
-                return Path;
-            }
-            else
-            {
-                if (Util.IsLinux)
-                {
-                    return Path;
-                }
-                else
-                {
-                    string DriveLetter = Environment.GetEnvironmentVariable("HOMEDRIVE");
+            // supports for %homedrive%, gives the drive letter on Windows
+            // ~/ on *nix
 
-                    return Regex.Replace(Path, HomedriveVar, DriveLetter, RegexOptions.IgnoreCase);
-                }
+            if (fName.IndexOf(winHomedriveVar, StringComparison.CurrentCultureIgnoreCase) != -1)
+            {
+                string DriveLetter = Environment.GetEnvironmentVariable("HOMEDRIVE");
+                fName = Regex.Replace(fName, winHomedriveVar, DriveLetter, RegexOptions.IgnoreCase);
             }
+
+            // *nix then ?
+            if (fName.IndexOf(nixHomeVar, StringComparison.CurrentCultureIgnoreCase) != -1)
+            {
+                string homePath = Environment.GetEnvironmentVariable("HOME") + "/";
+                fName = Regex.Replace(fName, nixHomeVar, homePath, RegexOptions.IgnoreCase);
+            }
+
+            return fName;
         }
 
         public static string ComputeFullPath(string Path)
-            //single function that calls the functions that help compute a full url Path
+        //single function that calls the functions that help compute a full url Path
         {
             return PathHomeDrive(PathUsername(Path));
+        }
+
+        /// <summary>
+        /// Verifies and corrects the OS path.
+        /// </summary>
+        /// <returns>The OS path.</returns>
+        /// <param name="filename">Filename.</param>
+        public static string VerifyOSPath(string filename)
+        {
+            return Utilities.IsLinuxOs ? filename.Replace('\\', '/') : filename.Replace('/', '\\');
+        }
+
+        /// <summary>
+        /// Verifies a file for writeing setting some defaults if needed.
+        /// </summary>
+        /// <returns>The write file.</returns>
+        /// <param name="fileName">File name.</param>
+        /// <param name="defaultExt">Default ext.</param>
+        /// <param name="defaultDir">Default dir.</param>
+        /// <param name="createPath">If set to <c>true</c> create path.</param>
+        public static string VerifyWriteFile(string fileName, string defaultExt, string defaultDir, bool createPath)
+        {
+            // some file sanity checks when saving 
+            string extension = Path.GetExtension(fileName);
+            if (!defaultExt.StartsWith("."))
+                defaultExt = "." + defaultExt;
+
+            if (extension == string.Empty)
+            {
+                fileName = fileName + defaultExt;
+            }
+
+            // check for user directories
+            fileName = ComputeFullPath(fileName);
+
+            string filePath = Path.GetDirectoryName(fileName);
+            if (filePath == "")
+            {
+                if (defaultDir == String.Empty)
+                    defaultDir = "./";
+
+                fileName = VerifyOSPath(Path.Combine(defaultDir, fileName));
+
+            }
+
+            // check if the directory exists
+            if (!Directory.Exists(defaultDir))
+            {
+                if (createPath)
+                    Directory.CreateDirectory(defaultDir);
+                else
+                {
+                    MainConsole.Instance.Info("[Error]: The folder specified, '" + defaultDir + "' does not exist!");
+                    return "";
+                }
+            }
+
+            // last check...
+            if (File.Exists(fileName))
+            {
+                if (MainConsole.Instance.Prompt("[Warning]: The file '" + fileName + "' exists. Overwrite?", "yes") != "yes")
+                    return "";
+
+                File.Delete(fileName);
+            }
+
+            return fileName;
+        }
+
+        /// <summary>
+        /// Verifies file for reading, setting some defaults if needed.
+        /// </summary>
+        /// <returns>The read file.</returns>
+        /// <param name="fileName">File name.</param>
+        /// <param name="extensions">Extensions.</param>
+        /// <param name="defaultDir">Default dir.</param>
+        public static string VerifyReadFile(string fileName, List<string> extensions, string defaultDir)
+        {
+            foreach (var ext in extensions)
+            {
+
+                var fName = VerifyReadFile(fileName, ext, defaultDir, false);
+                if (fName != "")
+                    return fName;
+            }
+
+            MainConsole.Instance.Info("[Error]: The file '" + fileName + "' cannot be found.");
+            return "";
+        }
+
+        /// <summary>
+        /// Verifies file for reading, setting some defaults if needed.
+        /// </summary>
+        /// <returns>The read file.</returns>
+        /// <param name="fileName">File name.</param>
+        /// <param name="defaultExt">Default ext.</param>
+        /// <param name="defaultDir">Default dir.</param>
+        public static string VerifyReadFile(string fileName, string defaultExt, string defaultDir)
+        {
+            return VerifyReadFile(fileName, defaultExt, defaultDir, true);
+        }
+
+        /// <summary>
+        /// Verifies file for reading, setting some defaults if needed.
+        /// </summary>
+        /// <returns>The read file.</returns>
+        /// <param name="fileName">File name.</param>
+        /// <param name="defaultExt">Default ext.</param>
+        /// <param name="defaultDir">Default dir.</param>
+        /// <param name="showErrors">Show error messages.</param>
+        public static string VerifyReadFile(string fileName, string defaultExt, string defaultDir, bool showErrors)
+        {
+            // some sanity checks...
+            string extension = Path.GetExtension(fileName).ToLower();
+            if (!defaultExt.StartsWith("."))
+                defaultExt = "." + defaultExt;
+            bool extOK = extension.Equals(defaultExt);
+
+            if (!extOK)
+            {
+                if (extension == string.Empty)
+                {
+                    fileName = fileName + defaultExt;
+                }
+                else
+                {
+                    if (showErrors)
+                        MainConsole.Instance.Info("Usage: the filename should be a '" + defaultExt + "' file");
+                    return "";
+                }
+            }
+
+            // check for user directories
+            fileName = ComputeFullPath(fileName);
+
+            string filePath = Path.GetDirectoryName(fileName);
+            if (filePath == "")
+            {
+                if (defaultDir == String.Empty)
+                    defaultDir = "./";
+
+                if (!Directory.Exists(defaultDir))
+                {
+                    if (showErrors)
+                        MainConsole.Instance.Info("[Error]: The folder specified, '" + defaultDir + "' does not exist!");
+                    return "";
+                }
+
+                fileName = VerifyOSPath(Path.Combine(defaultDir, fileName));
+            }
+
+            // last check...
+            if (!File.Exists(fileName))
+            {
+                if (showErrors)
+                    MainConsole.Instance.Info("[Error]: The file '" + fileName + "' cannot be found.");
+                return "";
+            }
+
+            return fileName;
         }
     }
 }

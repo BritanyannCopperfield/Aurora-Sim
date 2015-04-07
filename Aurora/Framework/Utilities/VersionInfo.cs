@@ -27,7 +27,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 
 namespace Aurora.Framework.Utilities
 {
@@ -37,7 +36,6 @@ namespace Aurora.Framework.Utilities
 
         public enum Flavour
         {
-            Unknown,
             Dev,
             Prerelease,
             RC1,
@@ -48,12 +46,9 @@ namespace Aurora.Framework.Utilities
 
         #endregion
 
-        public const string VERSION_NUMBER = "0.8.1.0";
+        public const string VERSION_NUMBER = "0.8.1";
         public const Flavour VERSION_FLAVOUR = Flavour.Dev;
         public const string VERSION_NAME = "Aurora";
-
-        public const int VERSIONINFO_VERSION_LENGTH = 27;
-
 
         public static string Version
         {
@@ -63,46 +58,13 @@ namespace Aurora.Framework.Utilities
         public static string GetVersionString(string versionNumber, Flavour flavour)
         {
             string versionString = VERSION_NAME + " " + versionNumber + " " + flavour;
-            versionString = versionString.PadRight(VERSIONINFO_VERSION_LENGTH);
 
-            // Add commit hash and date information if available
-            // The commit hash and date are stored in a file bin/.version
-            // This file can automatically created by a post
-            // commit script in the opensim git master repository or
-            // by issuing the follwoing command from the top level
-            // directory of the opensim repository
-            // git log -n 1 --pretty="format:%h-%ci" >bin/.version
-            // For the full git commit hash use %H instead of %h
+            // Check if there's a custom .version file with the commit hash in it
+            // Else return the standard versionString.
+
             string gitCommitFileName = ".version";
 
-            string pathToGitFile = Path.Combine(Environment.CurrentDirectory,
-                                                Path.Combine("..\\", Path.Combine(".git", "logs")));
-
-            if (Directory.Exists(pathToGitFile))
-            {
-                string gitFile = Path.Combine(pathToGitFile, "HEAD");
-                if (File.Exists(gitFile))
-                {
-                    try
-                    {
-                        string[] lines = File.ReadAllLines(gitFile);
-                        string lastLine = lines[lines.Length - 1];
-                        string[] splitLastLine = lastLine.Split(new string[2] {" ", "\t"},
-                                                                StringSplitOptions.RemoveEmptyEntries);
-                        versionString = "Aurora-" + splitLastLine[1].Substring(0, 6)
-                                        /*First 6 digits of the commit hash*/+
-                                        " " + splitLastLine[5] /*Time zone info*/;
-                        FileStream s = File.Open(gitCommitFileName, FileMode.Create);
-                        byte[] data = Encoding.UTF8.GetBytes(versionString);
-                        s.Write(data, 0, data.Length);
-                        s.Close();
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-            else if (File.Exists(gitCommitFileName))
+            if (File.Exists(gitCommitFileName))
             {
                 StreamReader CommitFile = File.OpenText(gitCommitFileName);
                 versionString = CommitFile.ReadLine();

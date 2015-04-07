@@ -46,28 +46,28 @@ namespace Aurora.Framework.Utilities
             {
                 if (file == "" || !System.IO.File.Exists(file))
                     return null;
-                System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof (T));
+                System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(T));
                 var stream = System.IO.File.OpenRead(file);
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
                 doc.Load(stream);
                 FileSaving config;
-                if (typeof (T).Name != "opencv_storage")
+                if (typeof(T).Name != "opencv_storage")
                 {
                     System.IO.MemoryStream r =
                         new System.IO.MemoryStream(
                             System.Text.Encoding.UTF8.GetBytes(xmlHeader + doc.DocumentElement.InnerXml));
-                    config = (FileSaving) x.Deserialize(r);
+                    config = (FileSaving)x.Deserialize(r);
                 }
                 else
                 {
                     stream.Close();
                     stream = System.IO.File.OpenRead(file);
-                    config = (FileSaving) x.Deserialize(stream);
+                    config = (FileSaving)x.Deserialize(stream);
                 }
 
                 stream.Close();
                 config.fileName = file;
-                return (T) config;
+                return (T)config;
             }
             catch
             {
@@ -98,7 +98,7 @@ namespace Aurora.Framework.Utilities
                 {
                     stream.Position = 0;
                     byte[] bs = new byte[stream.Length];
-                    ((System.IO.MemoryStream) stream).Read(bs, 0, bs.Length);
+                    ((System.IO.MemoryStream)stream).Read(bs, 0, bs.Length);
                     string s = xmlHeader + "<opencv_storage>" +
                                System.Text.Encoding.UTF8.GetString(bs).Replace(xmlHeader, "") + "</opencv_storage>";
                     System.IO.File.WriteAllText(file, s);

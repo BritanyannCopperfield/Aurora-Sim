@@ -56,7 +56,7 @@ namespace Aurora.Framework.Utilities
         {
             lock (m_lock)
             {
-                m_heartbeats.Add(new InternalHeartbeat {heartBeat = hb, millisecondTimeOut = millisecondTimeOut});
+                m_heartbeats.Add(new InternalHeartbeat { heartBeat = hb, millisecondTimeOut = millisecondTimeOut });
             }
         }
 
@@ -81,8 +81,7 @@ namespace Aurora.Framework.Utilities
             m_timesToIterate = timesToIterate;
             m_sleepTime = sleepTime;
 
-            m_thread = new Thread(Run)
-                           {IsBackground = true, Name = "ThreadMonitor", Priority = ThreadPriority.Normal};
+            m_thread = new Thread(Run) { IsBackground = true, Name = "ThreadMonitor", Priority = ThreadPriority.Normal };
             m_thread.Start();
         }
 
@@ -167,13 +166,13 @@ namespace Aurora.Framework.Utilities
             {
                 //The action to fire
                 FireEvent wrappedAction = delegate(Heartbeat en)
-                                              {
-                                                  // Set this culture for the thread 
-                                                  // to en-US to avoid number parsing issues
-                                                  Culture.SetCurrentCulture();
-                                                  en();
-                                                  RetVal = true;
-                                              };
+                {
+                    // Set this culture for the thread 
+                    // to en-US to avoid number parsing issues
+                    Culture.SetCurrentCulture();
+                    en();
+                    RetVal = true;
+                };
 
                 //Async the action (yeah, this is bad, but otherwise we can't abort afaik)
                 IAsyncResult result = wrappedAction.BeginInvoke(enumerator, null, null);

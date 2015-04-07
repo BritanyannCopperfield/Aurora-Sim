@@ -40,26 +40,20 @@ namespace Aurora.Framework.Utilities
         days = 4,
         weeks = 5,
         months = 6,
-        years = 7,
-        decades = 8,
-        centuries = 9,
-        millennium = 10,
-        Kilenniums = 11,
-        Centrenniums = 12,
-        Megaannum = 13
+        years = 7
     }
 
     public class SchedulerItem : IDataTransferable
     {
         public SchedulerItem()
         {
-            SimpleInitilize();
+            SimpleInitialize();
         }
 
         public SchedulerItem(string sName, string sParams, bool runOnce, DateTime startTime, int runEvery,
                              RepeatType runEveryType, UUID schedulefor)
         {
-            SimpleInitilize();
+            SimpleInitialize();
             FireFunction = sName;
             FireParams = sParams;
             RunOnce = runOnce;
@@ -77,25 +71,24 @@ namespace Aurora.Framework.Utilities
             TimeSpan ts = DateTime.UtcNow - fromTime;
             if (TimeToRun > DateTime.UtcNow)
                 return;
+            // This part needs to be removed/rewritten and replaced with a basic 7 days timer
             switch (RunEveryType)
             {
                 case RepeatType.second:
                     TimeToRun = fromTime.AddSeconds(RunEvery);
                     break;
                 case RepeatType.minute:
-                    {
-                        TimeToRun = fromTime.AddMinutes(RunEvery*Math.Ceiling(ts.TotalMinutes/RunEvery));
-                        break;
-                    }
+                    TimeToRun = fromTime.AddMinutes(RunEvery * Math.Ceiling(ts.TotalMinutes / RunEvery));
+                    break;
                 case RepeatType.hours:
-                    TimeToRun = fromTime.AddHours(RunEvery*Math.Ceiling(ts.Duration().TotalHours/RunEvery));
+                    TimeToRun = fromTime.AddHours(RunEvery * Math.Ceiling(ts.Duration().TotalHours / RunEvery));
                     break;
                 case RepeatType.days:
-                    TimeToRun = fromTime.AddDays(RunEvery*Math.Ceiling(ts.Duration().TotalDays/RunEvery));
+                    TimeToRun = fromTime.AddDays(RunEvery * Math.Ceiling(ts.Duration().TotalDays / RunEvery));
                     break;
                 case RepeatType.weeks:
-                    RunEvery = RunEvery*7;
-                    TimeToRun = fromTime.AddDays(RunEvery*Math.Ceiling(ts.Duration().TotalDays/RunEvery));
+                    int Week = RunEvery * 7;
+                    TimeToRun = fromTime.AddDays(Week * Math.Ceiling(ts.Duration().TotalDays / Week));
                     break;
                 case RepeatType.months:
                     TimeToRun = fromTime.AddMonths(RunEvery);
@@ -111,15 +104,15 @@ namespace Aurora.Framework.Utilities
         }
 
 
-        private void SimpleInitilize()
+        private void SimpleInitialize()
         {
             id = UUID.Random().ToString();
             RunOnce = true;
             RunEvery = 0;
-            HistoryReciept = false;
+            HistoryReceipt = false;
             FireFunction = string.Empty;
             FireParams = string.Empty;
-            HisotryKeep = false;
+            HistoryKeep = false;
             HistoryLastID = "";
             Enabled = false;
             ScheduleFor = UUID.Zero;
@@ -133,13 +126,13 @@ namespace Aurora.Framework.Utilities
 
         public bool Enabled { get; set; }
 
-        public bool HisotryKeep { get; set; }
+        public bool HistoryKeep { get; set; }
 
         public string FireParams { get; set; }
 
         public string FireFunction { get; set; }
 
-        public bool HistoryReciept { get; set; }
+        public bool HistoryReceipt { get; set; }
 
         public bool RunOnce { get; set; }
 
@@ -161,10 +154,10 @@ namespace Aurora.Framework.Utilities
                                          {"HistoryLastID", HistoryLastID},
                                          {"TimeToRun", TimeToRun},
                                          {"Enabled", Enabled},
-                                         {"HisotryKeep", HisotryKeep},
+                                         {"HistoryKeep", HistoryKeep},
                                          {"FireParams", FireParams},
                                          {"FireFunction", FireFunction},
-                                         {"HistoryReciept", HistoryReciept},
+                                         {"HistoryReceipt", HistoryReceipt},
                                          {"RunOnce", RunOnce},
                                          {"RunEvery", RunEvery},
                                          {"CreateTime", CreateTime},
@@ -182,14 +175,14 @@ namespace Aurora.Framework.Utilities
             HistoryLastID = map["HistoryLastID"].AsString();
             TimeToRun = map["TimeToRun"].AsDate();
             Enabled = map["Enabled"].AsBoolean();
-            HisotryKeep = map["HisotryKeep"].AsBoolean();
+            HistoryKeep = map["HistoryKeep"].AsBoolean();
             FireParams = map["FireParams"].AsString();
             FireFunction = map["FireFunction"].AsString();
-            HistoryReciept = map["HistoryReciept"].AsBoolean();
+            HistoryReceipt = map["HistoryReceipt"].AsBoolean();
             RunOnce = map["RunOnce"].AsBoolean();
             RunEvery = map["RunEvery"].AsInteger();
             CreateTime = map["CreateTime"].AsDate();
-            RunEveryType = (RepeatType) map["RunEveryType"].AsInteger();
+            RunEveryType = (RepeatType)map["RunEveryType"].AsInteger();
             StartTime = map["StartTime"].AsDate();
             ScheduleFor = map["ScheduleFor"].AsUUID();
         }

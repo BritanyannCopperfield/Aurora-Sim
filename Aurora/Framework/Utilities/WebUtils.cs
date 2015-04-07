@@ -26,24 +26,21 @@
  */
 
 using Aurora.Framework.ConsoleFramework;
-using Aurora.Framework.Modules;
-using Nwc.XmlRpc;
-using OpenMetaverse;
 using OpenMetaverse.StructuredData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 #if NET_4_5
 using System.Net.Http;
 using System.Threading.Tasks;
-#endif
-using System.Web;
-using System.Xml;
+#else
+using System.Net;
 using Aurora.Framework.Servers.HttpServer;
+#endif
+using System.Xml;
 
 namespace Aurora.Framework.Utilities
 {
@@ -339,7 +336,7 @@ namespace Aurora.Framework.Utilities
             if (string.IsNullOrEmpty(accept))
                 return new string[0];
 
-            string[] types = accept.Split(new[] {','});
+            string[] types = accept.Split(new[] { ',' });
             if (types.Length > 0)
             {
                 List<string> list = new List<string>(types);
@@ -352,9 +349,9 @@ namespace Aurora.Framework.Utilities
                 string[] result = new string[tlist.Count];
                 for (int i = 0; i < tlist.Count; i++)
                 {
-                    string mime = (string) tlist[i];
-                    string[] parts = mime.Split(new[] {';'});
-                    string[] pair = parts[0].Split(new[] {'/'});
+                    string mime = (string)tlist[i];
+                    string[] parts = mime.Split(new[] { ';' });
+                    string[] pair = parts[0].Split(new[] { '/' });
                     if (pair.Length == 2)
                         result[i] = pair[1].ToLower();
                     else // oops, we don't know what this is...
@@ -376,9 +373,10 @@ namespace Aurora.Framework.Utilities
                 OSD buffer = OSDParser.DeserializeJson(data);
                 if (buffer.Type == OSDType.Map)
                 {
-                    OSDMap args = (OSDMap) buffer;
+                    OSDMap args = (OSDMap)buffer;
                     return args;
                 }
+                // uh?
                 if (doLogMessages)
                     MainConsole.Instance.Warn(("[WebUtils]: Got OSD of unexpected type " + buffer.Type.ToString()));
                 return null;
@@ -419,11 +417,11 @@ namespace Aurora.Framework.Utilities
 
                 if (o is String)
                 {
-                    string mime = (string) o;
-                    string[] parts = mime.Split(new[] {';'});
+                    string mime = (string)o;
+                    string[] parts = mime.Split(new[] { ';' });
                     if (parts.Length > 1)
                     {
-                        string[] kvp = parts[1].Split(new[] {'='});
+                        string[] kvp = parts[1].Split(new[] { '=' });
                         if (kvp.Length == 2 && kvp[0] == "q")
                         {
                             float qvalue = 1F;
@@ -493,7 +491,7 @@ namespace Aurora.Framework.Utilities
                         elem.Attributes.Append(type);
 #if (!ISWIN)
                         Dictionary<string, object> value = new Dictionary<string, object>();
-                        foreach (KeyValuePair<string, string> pair in ((Dictionary<string, string>) kvp.Value))
+                        foreach (KeyValuePair<string, string> pair in ((Dictionary<string, string>)kvp.Value))
                             value.Add(pair.Key, pair.Value);
 #else
                         Dictionary<string, object> value = ((Dictionary<string, string>)kvp.Value).ToDictionary<KeyValuePair<string, string>, string, object>(pair => pair.Key, pair => pair.Value);

@@ -52,10 +52,10 @@ namespace Aurora.Framework.Utilities
             // MainConsole.Instance.DebugFormat("[SCENE BASE]: Registering interface {0}", typeof(M));
 
             List<Object> l = null;
-            if (!ModuleInterfaces.TryGetValue(typeof (T), out l))
+            if (!ModuleInterfaces.TryGetValue(typeof(T), out l))
             {
                 l = new List<Object>();
-                ModuleInterfaces.Add(typeof (T), l);
+                ModuleInterfaces.Add(typeof(T), l);
             }
 
             if (l.Count > 0)
@@ -78,7 +78,7 @@ namespace Aurora.Framework.Utilities
         public void UnregisterModuleInterface<T>(T mod)
         {
             List<Object> l;
-            if (ModuleInterfaces.TryGetValue(typeof (T), out l))
+            if (ModuleInterfaces.TryGetValue(typeof(T), out l))
             {
                 l.Remove(mod);
             }
@@ -87,14 +87,14 @@ namespace Aurora.Framework.Utilities
         public void StackModuleInterface<T>(T mod)
         {
             List<Object> l;
-            l = ModuleInterfaces.ContainsKey(typeof (T)) ? ModuleInterfaces[typeof (T)] : new List<Object>();
+            l = ModuleInterfaces.ContainsKey(typeof(T)) ? ModuleInterfaces[typeof(T)] : new List<Object>();
 
             if (l.Contains(mod))
                 return;
 
             l.Add(mod);
 
-            ModuleInterfaces[typeof (T)] = l;
+            ModuleInterfaces[typeof(T)] = l;
         }
 
         /// <summary>
@@ -103,9 +103,9 @@ namespace Aurora.Framework.Utilities
         /// <returns>null if there is no registered module implementing that interface</returns>
         public T RequestModuleInterface<T>()
         {
-            if (ModuleInterfaces.ContainsKey(typeof (T)) &&
-                (ModuleInterfaces[typeof (T)].Count > 0))
-                return (T) ModuleInterfaces[typeof (T)][0];
+            if (ModuleInterfaces.ContainsKey(typeof(T)) &&
+                (ModuleInterfaces[typeof(T)].Count > 0))
+                return (T)ModuleInterfaces[typeof(T)][0];
             else
                 return default(T);
         }
@@ -113,10 +113,10 @@ namespace Aurora.Framework.Utilities
         public bool TryRequestModuleInterface<T>(out T iface)
         {
             iface = default(T);
-            if (ModuleInterfaces.ContainsKey(typeof (T)) &&
-                (ModuleInterfaces[typeof (T)].Count > 0))
+            if (ModuleInterfaces.ContainsKey(typeof(T)) &&
+                (ModuleInterfaces[typeof(T)].Count > 0))
             {
-                iface = (T) ModuleInterfaces[typeof (T)][0];
+                iface = (T)ModuleInterfaces[typeof(T)][0];
                 return true;
             }
             else
@@ -129,13 +129,13 @@ namespace Aurora.Framework.Utilities
         /// <returns>an empty array if there are no registered modules implementing that interface</returns>
         public T[] RequestModuleInterfaces<T>()
         {
-            if (ModuleInterfaces.ContainsKey(typeof (T)))
+            if (ModuleInterfaces.ContainsKey(typeof(T)))
             {
-                return ModuleInterfaces[typeof (T)].Select(o => (T) o).ToArray();
+                return ModuleInterfaces[typeof(T)].Select(o => (T)o).ToArray();
             }
             else
             {
-                return new[] {default(T)};
+                return new[] { default(T) };
             }
         }
 

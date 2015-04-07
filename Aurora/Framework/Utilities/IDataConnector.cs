@@ -204,7 +204,7 @@ namespace Aurora.Framework.Utilities
         Integer30,
         UInteger11,
         UInteger30,
-        String,        
+        String,
         String10,
         String16,
         String30,
@@ -228,7 +228,7 @@ namespace Aurora.Framework.Utilities
         Float,
         Binary32,
         Binary64,
-        Unknown        
+        Unknown
     }
 
     public enum ColumnType
@@ -249,7 +249,7 @@ namespace Aurora.Framework.Utilities
         Boolean,
         UUID,
         Binary,
-        Unknown        
+        Unknown
     }
 
     public class ColumnTypeDef
@@ -301,9 +301,6 @@ namespace Aurora.Framework.Utilities
         public static readonly ColumnTypeDef Binary32 = new ColumnTypeDef(ColumnType.Binary, 32);
         public static readonly ColumnTypeDef Binary64 = new ColumnTypeDef(ColumnType.Binary, 64);
         public static readonly ColumnTypeDef Unknown = new ColumnTypeDef(ColumnType.Unknown);
-
-
-        
 
         #endregion
 
@@ -366,6 +363,7 @@ namespace Aurora.Framework.Utilities
     {
         public string[] Fields { get; set; }
         public IndexType Type { get; set; }
+        public int IndexSize { get; set; }
 
         public override bool Equals(object obj)
         {

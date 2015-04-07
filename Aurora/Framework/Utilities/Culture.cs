@@ -52,5 +52,62 @@ namespace Aurora.Framework.Utilities
         {
             Thread.CurrentThread.CurrentCulture = m_cultureInfo;
         }
+
+        /// <summary>
+        /// The base system culture info before it is locked to "en_US".
+        ///   Used for log date/time formatting
+        /// </summary>
+        public static CultureInfo SystemCultureInfo
+        { get; set; }
+
+        /// <summary>
+        /// Returns a formatted date string depending upon the system Locale.
+        /// </summary>
+        /// <returns>Local date string.</returns>
+        public static string LocaleDate(DateTime userDateTime)
+        {
+            return LocaleDate(userDateTime, null);
+        }
+
+        /// <summary>
+        /// Returns a formatted date string depending upon the system Locale.
+        /// </summary>
+        /// <returns>The localised date.</returns>
+        /// <param name="userDateTime">User date time.</param>
+        /// <param name="dtFormat">DateTime format if required.</param>
+        public static string LocaleDate(DateTime userDateTime, string dtFormat)
+        {
+            const string defFormat = "MMM dd, yyyy";
+            if (dtFormat == null)
+                dtFormat = defFormat;
+
+            string dt;
+            if (userDateTime > DateTime.MinValue)
+                dt = userDateTime.ToString(dtFormat, Culture.SystemCultureInfo);
+            else
+                dt = DateTime.Now.ToString(dtFormat, Culture.SystemCultureInfo);
+            return dt;
+        }
+
+        /// <summary>
+        /// Returns a formatted date time string depending upon the system Locale.
+        /// </summary>
+        /// <returns>Local time & date string.</returns>
+        public static string LocaleTimeDate()
+        {
+            string dt = DateTime.Now.ToString("hh:mm:ss MMM dd", Culture.SystemCultureInfo);
+            return dt;
+        }
+
+        /// <summary>
+        /// Returns a formatted date time string depending upon the system Locale.
+        /// Used for logging
+        /// </summary>
+        /// <returns>Local date time string.</returns>
+        public static string LocaleLogStamp()
+        {
+            string ts = DateTime.Now.ToString("MMM dd hh:mm:ss", Culture.SystemCultureInfo);
+            return ts;
+        }
     }
 }

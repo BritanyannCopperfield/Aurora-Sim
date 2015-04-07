@@ -39,6 +39,8 @@ using System.Text;
 using System.Windows.Forms;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Servers;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace Aurora.Framework.Utilities
 {
@@ -48,15 +50,16 @@ namespace Aurora.Framework.Utilities
         private static int EncryptIterations = 2;
         private static int KeySize = 256;
         private static string CachedExternalIP = "";
+        public static string HostName = "";
 
         /// <summary>
-        ///     Get the URL to the release notes for the current version of Aurora
+        ///     Get the URL to the release notes for the current version of WhiteCore
         /// </summary>
         /// <returns></returns>
         public static string GetServerReleaseNotesURL()
         {
-            return (MainServer.Instance.Secure ? "https://" : "http://") + GetExternalIp() +
-                   ":" + MainServer.Instance.Port.ToString() + "/AuroraServerRelease" + AuroraServerVersion() + ".html";
+            return (MainServer.Instance.Secure ? "https://" : "http://") + MainServer.Instance.HostName +
+                   ":" + MainServer.Instance.Port.ToString() + "/WhiteCoreServerRelease" + WhiteCoreServerVersion() + ".html";
         }
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace Aurora.Framework.Utilities
         /// <returns></returns>
         public static string GetAddress()
         {
-            return (MainServer.Instance.Secure ? "https://" : "http://") + GetExternalIp() + ":" +
+            return (MainServer.Instance.Secure ? "https://" : "http://") + MainServer.Instance.HostName + ":" +
                    MainServer.Instance.Port.ToString();
         }
 
@@ -75,7 +78,7 @@ namespace Aurora.Framework.Utilities
         /// <returns></returns>
         public static string AuroraServerVersion()
         {
-            return "1.0";
+            return VersionInfo.VERSION_NUMBER;
         }
 
         public static void SetEncryptorType(string type)
@@ -151,10 +154,10 @@ namespace Aurora.Framework.Utilities
 
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
-            byte[] keyBytes = password.GetBytes(KeySize/8);
+            byte[] keyBytes = password.GetBytes(KeySize / 8);
 
             // Create uninitialized Rijndael encryption object.
-            RijndaelManaged symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            RijndaelManaged symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -245,10 +248,10 @@ namespace Aurora.Framework.Utilities
 
             // Use the password to generate pseudo-random bytes for the encryption
             // key. Specify the size of the key in bytes (instead of bits).
-            byte[] keyBytes = password.GetBytes(KeySize/8);
+            byte[] keyBytes = password.GetBytes(KeySize / 8);
 
             // Create uninitialized Rijndael encryption object.
-            RijndaelManaged symmetricKey = new RijndaelManaged {Mode = CipherMode.CBC};
+            RijndaelManaged symmetricKey = new RijndaelManaged { Mode = CipherMode.CBC };
 
             // It is reasonable to set encryption mode to Cipher Block Chaining
             // (CBC). Use default options for other symmetric key parameters.
@@ -318,7 +321,7 @@ namespace Aurora.Framework.Utilities
                     externalIp = utf8.GetString(webClient.DownloadData("http://checkip.dyndns.org/"));
                     //Remove the HTML stuff
                     externalIp =
-                        externalIp.Remove(0, 76).Split(new string[1] {"</body>"}, StringSplitOptions.RemoveEmptyEntries)
+                        externalIp.Remove(0, 76).Split(new string[1] { "</body>" }, StringSplitOptions.RemoveEmptyEntries)
                             [0];
                     NetworkUtils.InternetSuccess();
                 }
@@ -379,7 +382,7 @@ namespace Aurora.Framework.Utilities
         {
             int size = BitConverter.ToInt32(data, data.Length - 4);
             byte[] uncompressedData = new byte[size];
-            MemoryStream memStream = new MemoryStream(data, start, (data.Length - start)) {Position = 0};
+            MemoryStream memStream = new MemoryStream(data, start, (data.Length - start)) { Position = 0 };
             GZipStream gzStream = new GZipStream(memStream, CompressionMode.Decompress);
 
             try
@@ -397,7 +400,7 @@ namespace Aurora.Framework.Utilities
 
 
         /// <summary>
-        ///     Download the file from downloadLink and save it to Aurora + Version +
+        ///     Download the file from downloadLink and save it to WhiteCore + Version +
         /// </summary>
         /// <param name="downloadLink">Link to the download</param>
         /// <param name="filename">Name to put the download in</param>
@@ -477,7 +480,7 @@ namespace Aurora.Framework.Utilities
             buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             form.ClientSize = new Size(396, 107);
-            form.Controls.AddRange(new Control[] {label, textBox, buttonOk, buttonCancel});
+            form.Controls.AddRange(new Control[] { label, textBox, buttonOk, buttonCancel });
             form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterScreen;
@@ -521,7 +524,7 @@ namespace Aurora.Framework.Utilities
             buttonCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 
             form.ClientSize = new Size(396, 107);
-            form.Controls.AddRange(new Control[] {label, buttonOk, buttonCancel});
+            form.Controls.AddRange(new Control[] { label, buttonOk, buttonCancel });
             form.ClientSize = new Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
             form.FormBorderStyle = FormBorderStyle.FixedDialog;
             form.StartPosition = FormStartPosition.CenterScreen;
@@ -533,5 +536,299 @@ namespace Aurora.Framework.Utilities
             DialogResult dialogResult = form.ShowDialog();
             return dialogResult;
         }
+
+        /// <summary>
+        /// Determines whether a string is a valid email address.
+        /// </summary>
+        /// <returns><c>true</c> if the string is a valid email address; otherwise, <c>false</c>.</returns>
+        /// <param name="address">Address.</param>
+        public static bool IsValidEmail(string address)
+        {
+            const string EMailpatternStrict = @"^(([^<>()[\]\\.,;:\s@\""]+"
+                                              + @"(\.[^<>()[\]\\.,;:\s@\""]+)*)|(\"".+\""))@"
+                                              + @"((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}"
+                                              + @"\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+"
+                                              + @"[a-zA-Z]{2,}))$";
+            Regex EMailreStrict = new Regex(EMailpatternStrict);
+            return EMailreStrict.IsMatch(address);
+        }
+
+        public static bool IsSystemUser(OpenMetaverse.UUID userID)
+        {
+            var userId = userID.ToString();
+            return (userId == Constants.GovernorUUID ||
+                     userId == Constants.RealEstateOwnerUUID ||
+                     userId == Constants.LibraryOwner
+            );
+        }
+
+        public static bool IsLinuxOs
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+
+        public static bool Is64BitOs
+        {
+            get
+            {
+                return Environment.Is64BitOperatingSystem;
+            }
+        }
+
+        public static DateTime GetNextWeekday(DateTime start, DayOfWeek day)
+        {
+            // The (... + 7) % 7 ensures we end up with a value in the range [0, 6]
+            int daysToAdd = ((int)day - (int)start.DayOfWeek + 7) % 7;
+            return start.AddDays(daysToAdd);
+        }
+
+        public static class RandomPassword
+        {
+            private static Random rand = new Random();
+
+            private static readonly char[] VOWELS = new char[] { 'a', 'e', 'i', 'o', 'u' };
+            private static readonly char[] CONSONANTS = new char[] { 'b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z' };
+            private static readonly char[] SYMBOLS = new char[] { '*', '?', '/', '\\', '%', '$', '#', '@', '!', '~' };
+            private static readonly char[] NUMBERS = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+            /// <summary>
+            /// Generates a random, human-readable password.
+            /// </summary>
+            /// <param name="numSyllables">Number of syllables the password will contain</param>
+            /// <param name="numNumeric">Number of numbers the password will contain</param>
+            /// <param name="numSymbols">Number of symbols the password will contain</param>
+            /// <returns></returns>
+            public static string Generate(int numSyllables, int numNumeric, int numSymbols)
+            {
+                StringBuilder pw = new StringBuilder();
+                for (int i = 0; i < numSyllables; i++)
+                {
+                    pw.Append(MakeSyllable());
+
+                    if (numNumeric > 0 && ((rand.Next() % 2) == 0))
+                    {
+                        pw.Append(MakeNumeric());
+                        numNumeric--;
+                    }
+
+                    if (numSymbols > 0 && ((rand.Next() % 2) == 0))
+                    {
+                        pw.Append(MakeSymbol());
+                        numSymbols--;
+                    }
+                }
+
+                while (numNumeric > 0)
+                {
+                    pw.Append(MakeNumeric());
+                    numNumeric--;
+                }
+
+                while (numSymbols > 0)
+                {
+                    pw.Append(MakeSymbol());
+                    numSymbols--;
+                }
+
+                return pw.ToString();
+            }
+
+            private static char MakeSymbol()
+            {
+                return SYMBOLS[rand.Next(SYMBOLS.Length)];
+            }
+
+            private static char MakeNumeric()
+            {
+                return NUMBERS[rand.Next(NUMBERS.Length)];
+            }
+
+            private static string MakeSyllable()
+            {
+                int len = rand.Next(3, 5); // will return either 3 or 4
+
+                StringBuilder syl = new StringBuilder();
+                for (int i = 0; i < len; i++)
+                {
+                    char c;
+                    if (i == 1) // the second should be a vowel, all else a consonant
+                        c = VOWELS[rand.Next(VOWELS.Length)];
+                    else
+                        c = CONSONANTS[rand.Next(CONSONANTS.Length)];
+
+                    // only first character can be uppercase
+                    if (i == 0 && (rand.Next() % 2) == 0)
+                        c = Char.ToUpper(c);
+
+                    // append
+                    syl.Append(c);
+                }
+
+                return syl.ToString();
+            }
+        }
+
+        public class MarkovNameGenerator
+        {
+            //constructor
+            public string FirstName(IEnumerable<string> sampleNames, int order, int minLength)
+            {
+                //fix parameter values
+                if (order < 1)
+                    order = 1;
+                if (minLength < 1)
+                    minLength = 1;
+
+                _order = order;
+                _minLength = minLength;
+
+                //split comma delimited lines
+                foreach (string line in sampleNames)
+                {
+                    string[] tokens = line.Split(',');
+                    foreach (string word in tokens)
+                    {
+                        string upper = word.Trim().ToUpper();
+                        if (upper.Length < order + 1)
+                            continue;
+                        _samples.Add(upper);
+                    }
+                }
+
+                //Build chains            
+                foreach (string word in _samples)
+                {
+                    for (int letter = 0; letter < word.Length - order; letter++)
+                    {
+                        string token = word.Substring(letter, order);
+                        List<char> entry = null;
+                        if (_chains.ContainsKey(token))
+                            entry = _chains[token];
+                        else
+                        {
+                            entry = new List<char>();
+                            _chains[token] = entry;
+                        }
+                        entry.Add(word[letter + order]);
+                    }
+                }
+
+                return NextName;
+            }
+
+            //Get the next random name
+            public string NextName
+            {
+                get
+                {
+                    //get a random token somewhere in middle of sample word                
+                    string s = "";
+                    do
+                    {
+                        int n = _rnd.Next(_samples.Count);
+                        int nameLength = _samples[n].Length;
+                        s = _samples[n].Substring(_rnd.Next(0, _samples[n].Length - _order), _order);
+                        while (s.Length < nameLength)
+                        {
+                            string token = s.Substring(s.Length - _order, _order);
+                            char c = GetLetter(token);
+                            if (c != '?')
+                                s += GetLetter(token);
+                            else
+                                break;
+                        }
+
+                        if (s.Contains(" "))
+                        {
+                            string[] tokens = s.Split(' ');
+                            s = "";
+                            for (int t = 0; t < tokens.Length; t++)
+                            {
+                                if (tokens[t] == "")
+                                    continue;
+                                if (tokens[t].Length == 1)
+                                    tokens[t] = tokens[t].ToUpper();
+                                else
+                                    tokens[t] = tokens[t].Substring(0, 1) + tokens[t].Substring(1).ToLower();
+                                if (s != "")
+                                    s += " ";
+                                s += tokens[t];
+                            }
+                        }
+                        else
+                            s = s.Substring(0, 1) + s.Substring(1).ToLower();
+                    }
+                    while (_used.Contains(s) || s.Length < _minLength);
+                    _used.Add(s);
+                    return s;
+                }
+            }
+
+            //Reset the used names
+            public void Reset()
+            {
+                _used.Clear();
+            }
+
+            //private members
+            private Dictionary<string, List<char>> _chains = new Dictionary<string, List<char>>();
+            private List<string> _samples = new List<string>();
+            private List<string> _used = new List<string>();
+            private Random _rnd = new Random();
+            private int _order;
+            private int _minLength;
+
+            //Get a random letter from the chain
+            private char GetLetter(string token)
+            {
+                if (!_chains.ContainsKey(token))
+                    return '?';
+                List<char> letters = _chains[token];
+                int n = _rnd.Next(letters.Count);
+                return letters[n];
+            }
+        }
+
+        public static string[] RegionNames = {
+            "Aldburg", "Almaida", "Alqualonde", "Andunie", "Annuminas", "Armenelos", "Avallone",
+            "Belegost", "Bree", "Brithombar", "Budgeford", 
+            "Calembel", "Caras Galadhon", "Carn Dum", "Combe", 
+            "Dale", "Dol Amroth", "Dol Guldur", "Dunharrow",
+            "Edhellond", "Eglarest", "Eldalonde", "Ephel Brandir", "Esgaroth", "Ethring",
+            "Forlond", "Formenos", "Fornost", "Framsburg",
+            "Galabas", "Goblin Town", "Gondolin", 
+            "Harlond", "Havens of Sirion", "Havens of the Falas", "Hobbiton", "Hyarastorni",
+            "Linhir", "Minas Morgul", "Minas Tirith", "Mithlond", "Moria", "Nindamos", "Nogrod",
+            "Obel Halad", "Ondosto", "Osgiliath", "Pelargir", "Rivendell", "Romenna", "Scary",
+            "Stock", "Tarnost", "Tharbad", "Tighfield", "Tirion", "Umbar", "Undertowers",
+            "Upbourn", "Valmar", "Vinyamar", "Waymeet" 
+        };
+
+        public static string[] UserNames = {
+            "Ada", "Aelgifu", "Aelith", "Almaric", "Amber", "Angerbotha", "Anselm", "Arathalion",
+            "Arwen", "Assi", "Autumn", "Avice", "Badacin", "Balcardil", "Banjo", "Bebba", "Belladonna",
+            "Beofrith", "Beornwyn", "Beregond", "Bimbli", "Bonirun", "Boromir", "Brand", "Brodhrimgiel",
+            "Carahir", "Celebrian", "Ceolwine", "Chalcedony", "Citrine", "Coina", "Copal", "Cugwelion",
+            "Cwenthryth", "Daunless", "Dodpecil", "Dondercar", "Dora", "Draugwing", "Drogo", "Durduilorn",
+            "Effie", "Egil", "Einar", "Eistein", "Ellie", "Elrond", "Engeram", "Eomer", "Eowyn", "Erkenbrand",
+            "Esau", "Escferth", "Ethelflaed", "Ethelhild", "Eustace", "Faerindeth", "Faith", "Flame", "Florian",
+            "Frogo", "Fulke", "Galadriel", "Garnet", "Gili", "Gilraen", "Giluen", "Grimwald", "Guilford",
+            "Guluin", "Haematite", "Hamodoc", "Haneding", "Hawise", "Helm", "Hengest", "Herb", "Hereswith",
+            "Herewulf", "Hirithelion", "Hrolfur", "Hugh", "Hunun", "Idhil", "Ilirgar", "Ines", "Ioreth",
+            "Isolde", "Ivandur", "Izagar", "Jewel", "Ketil", "Khazakal", "Kvelki", "Ladboroc", "Lazuli",
+            "Legolas", "Leo", "Leofwen", "Leofwyn", "Livina", "Lorund", "Lothlariel", "Lotho", "Luta",
+            "Manham", "Manwise", "Maribel", "Maude", "Merewenna", "Meriadoc", "Mortardur", "Nauriel",
+            "Naurmiriel", "Nora", "Norlyg", "Oddtuna", "Osric", "Paladin", "Pato", "Peridot", "Petronilla",
+            "Philbo", "Polo", "Ranulf", "Rhodonite", "Richenda", "Ringal", "Rob", "Rorin", "Ruby", "Rufus",
+            "Ruindil", "Ruthedhail", "Sabelina", "Saexburgha", "Sarabelle", "Sardonyx", "Saul", "Sawny",
+            "Sedryneth", "Snorin", "Snorkuld", "Snorri", "Sombur", "Soronthalion", "Spamfast", "Spirit",
+            "Stathard", "Sunstone", "Thadhronthael", "Theolaf", "Tholrondir", "Thorstein", "Thrili",
+            "Tindomelos", "Tourmaline", "Trali", "Tulip", "Turid", "Tuxton", "Ulfraed", "Voquo",
+            "Warin", "Wilbordic", "Wilf", "Wulfwaru", "Yule"
+        };
     }
 }

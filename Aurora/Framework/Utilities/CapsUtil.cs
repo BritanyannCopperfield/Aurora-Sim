@@ -53,9 +53,9 @@ namespace Aurora.Framework.Utilities
         public static string GetCapsPathFromCapsSeed(string capsSeedPath)
         {
             capsSeedPath = !capsSeedPath.StartsWith("/CAPS/")
-                               ? capsSeedPath.Split(new string[1] {"/CAPS/"}, StringSplitOptions.RemoveEmptyEntries)[1]
+                               ? capsSeedPath.Split(new string[1] { "/CAPS/" }, StringSplitOptions.RemoveEmptyEntries)[1]
                                : capsSeedPath.Remove(0, 6);
-            //Now remove the trailing /
+            //Now remove the trailing
             capsSeedPath = capsSeedPath.Remove(capsSeedPath.Length - 5, 5);
 
             return capsSeedPath;
@@ -69,6 +69,9 @@ namespace Aurora.Framework.Utilities
         {
             UUID caps = UUID.Random();
             string capsPath = caps.ToString();
+            // I'm commenting this, rather than delete, to keep as historical record.
+            // The caps seed is now a full UUID string that gets added four more digits
+            // for producing certain CAPs URLs in Aurora
             return capsPath;
         }
 

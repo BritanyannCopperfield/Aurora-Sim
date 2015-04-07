@@ -70,7 +70,7 @@ namespace Aurora.Framework.Utilities
         /// <returns></returns>
         public Packet GetPacket(PacketType type)
         {
-            int t = (int) type;
+            int t = (int)type;
             Packet packet;
 
             if (!packetPoolEnabled)
@@ -115,7 +115,7 @@ namespace Aurora.Framework.Utilities
             {
                 if (decoded_header[7] == 0xFF)
                 {
-                    id = (ushort) ((decoded_header[8] << 8) + decoded_header[9]);
+                    id = (ushort)((decoded_header[8] << 8) + decoded_header[9]);
                     freq = PacketFrequency.Low;
                 }
                 else
@@ -166,15 +166,15 @@ namespace Aurora.Framework.Utilities
             {
                 switch (packet.Type)
                 {
-                        // List pooling packets here
+                    // List pooling packets here
 
                     case PacketType.ObjectUpdate:
                         lock (m_poolLock)
                         {
                             //Special case, this packet gets sent as a ObjectUpdate for both compressed and non compressed
-                            int t = (int) packet.Type;
+                            int t = (int)packet.Type;
                             if (packet is ObjectUpdateCompressedPacket)
-                                t = (int) PacketType.ObjectUpdateCompressed;
+                                t = (int)PacketType.ObjectUpdateCompressed;
 
 #if Debug
                             MainConsole.Instance.Info("[PacketPool]: Returning " + type);
@@ -187,7 +187,7 @@ namespace Aurora.Framework.Utilities
                                 (pool[t]).Push(packet);
                         }
                         return true;
-                        //Outgoing packets:
+                    //Outgoing packets:
                     case PacketType.ObjectUpdateCompressed:
                     case PacketType.ObjectUpdateCached:
                     case PacketType.ImprovedTerseObjectUpdate:
@@ -198,7 +198,7 @@ namespace Aurora.Framework.Utilities
                     case PacketType.StartPingCheck:
                     case PacketType.CompletePingCheck:
                     case PacketType.InventoryDescendents:
-                        //Incoming packets:
+                    //Incoming packets:
                     case PacketType.AgentUpdate:
                     case PacketType.AgentAnimation:
                     case PacketType.AvatarAnimation:
@@ -213,7 +213,7 @@ namespace Aurora.Framework.Utilities
                     case PacketType.TransferPacket:
                         lock (m_poolLock)
                         {
-                            int t = (int) packet.Type;
+                            int t = (int)packet.Type;
 
 #if Debug
                             MainConsole.Instance.Info("[PacketPool]: Returning " + type);
@@ -227,7 +227,7 @@ namespace Aurora.Framework.Utilities
                         }
                         return true;
 
-                        // Other packets wont pool
+                    // Other packets wont pool
                     default:
                         break;
                 }
@@ -241,14 +241,14 @@ namespace Aurora.Framework.Utilities
             {
                 Stack<Object> s;
 
-                if (DataBlocks.TryGetValue(typeof (T), out s))
+                if (DataBlocks.TryGetValue(typeof(T), out s))
                 {
                     if (s.Count > 0)
-                        return (T) s.Pop();
+                        return (T)s.Pop();
                 }
                 else
                 {
-                    DataBlocks[typeof (T)] = new Stack<Object>();
+                    DataBlocks[typeof(T)] = new Stack<Object>();
                 }
                 return new T();
             }
@@ -261,11 +261,11 @@ namespace Aurora.Framework.Utilities
 
             lock (DataBlocks)
             {
-                if (!DataBlocks.ContainsKey(typeof (T)))
-                    DataBlocks[typeof (T)] = new Stack<Object>();
+                if (!DataBlocks.ContainsKey(typeof(T)))
+                    DataBlocks[typeof(T)] = new Stack<Object>();
 
-                if (DataBlocks[typeof (T)].Count < 50)
-                    DataBlocks[typeof (T)].Push(block);
+                if (DataBlocks[typeof(T)].Count < 50)
+                    DataBlocks[typeof(T)].Push(block);
             }
         }
     }

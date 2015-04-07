@@ -114,7 +114,7 @@ namespace Aurora.Framework.Utilities
         internal void SetAsCompleted(bool completedSynchronously)
         {
             m_completed = 1;
-            m_completedSynchronously = completedSynchronously ? (byte) 1 : (byte) 0;
+            m_completedSynchronously = completedSynchronously ? (byte)1 : (byte)0;
 
             SignalCompletion();
         }
@@ -122,7 +122,7 @@ namespace Aurora.Framework.Utilities
         internal void HandleException(Exception e, bool completedSynchronously)
         {
             m_completed = 1;
-            m_completedSynchronously = completedSynchronously ? (byte) 1 : (byte) 0;
+            m_completedSynchronously = completedSynchronously ? (byte)1 : (byte)0;
             m_exception = e;
 
             SignalCompletion();
@@ -147,7 +147,7 @@ namespace Aurora.Framework.Utilities
                 m_waitHandle = null; // Allow early GC
             }
 
-            // Operation is done: if an exception occured, throw it
+            // Operation is done: if an exception occurred, throw it
             if (m_exception != null) throw m_exception;
         }
 

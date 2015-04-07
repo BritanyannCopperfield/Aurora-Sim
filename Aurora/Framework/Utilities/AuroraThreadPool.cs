@@ -136,16 +136,16 @@ namespace Aurora.Framework.Utilities
                         if (Threads[i] == null)
                         {
                             Thread thread = new Thread(ThreadStart)
-                                                {
-                                                    Priority = m_info.priority,
-                                                    Name =
-                                                        (m_info.Name == "" ? "AuroraThreadPool" : m_info.Name) + "#" +
-                                                        i.ToString(),
-                                                    IsBackground = true
-                                                };
+                            {
+                                Priority = m_info.priority,
+                                Name =
+                                    (m_info.Name == "" ? "WhiteCoreThreadPool" : m_info.Name) + "#" +
+                                    i.ToString(),
+                                IsBackground = true
+                            };
                             try
                             {
-                                thread.Start(new[] {i});
+                                thread.Start(new[] { i });
                                 Threads[i] = thread;
                                 Sleeping[i] = 0;
                                 nthreads++;
@@ -192,7 +192,7 @@ namespace Aurora.Framework.Utilities
             }
             try
             {
-                if(thread != null)
+                if (thread != null)
                     thread.Abort("Shutdown");
             }
             catch
