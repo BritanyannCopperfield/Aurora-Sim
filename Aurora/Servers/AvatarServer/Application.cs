@@ -30,10 +30,6 @@ using System.Collections.Generic;
 using Aurora.Framework.Services;
 using Aurora.Simulation.Base;
 using Aurora.Framework.Modules;
-using System.Reflection;
-
-[assembly: AssemblyVersion("0.8.1")]
-[assembly: AssemblyFileVersion("0.8.1")]
 
 namespace Aurora.Servers.AvatarServer
 {

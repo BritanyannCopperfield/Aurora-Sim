@@ -30,12 +30,8 @@ using Aurora.Framework.Services;
 using Aurora.Simulation.Base;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-[assembly: AssemblyVersion("0.8.1")]
-[assembly: AssemblyFileVersion("0.8.1")]
-
-namespace Aurora.Servers.AssetServer
+namespace Aurora.Servers.GridServer
 {
     /// <summary>
     ///     Starting class for the Aurora Server

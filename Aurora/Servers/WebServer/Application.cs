@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -25,13 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections.Generic;
-using Aurora.Framework.Services;
 using Aurora.Simulation.Base;
-using Aurora.Framework.Modules;
 
-namespace Aurora.Servers.AssetServer
+namespace Aurora.Server.WebServer
 {
     /// <summary>
     ///     Starting class for the Aurora Server
@@ -40,19 +36,7 @@ namespace Aurora.Servers.AssetServer
     {
         public static void Main(string[] args)
         {
-            BaseApplication.BaseMain(args, "Aurora.AssetServer.ini",
-                                     new MinimalSimulationBase("Aurora.AssetServer ",
-                                                               new List<Type> { typeof(IAssetDataPlugin) },
-                                                               new List<Type> 
-                                                               {
-                                                                    typeof (IAssetService),
-                                                                    typeof (ISyncMessagePosterService),
-                                                                    typeof (ISyncMessageRecievedService),
-                                                                    typeof (IExternalCapsHandler),
-                                                                    typeof (IConfigurationService),
-                                                                    typeof (IGridServerInfoService),
-                                                                    typeof (IJ2KDecoder)
-                                                               }));
+            BaseApplication.BaseMain(args, "Aurora.WebServer.ini", new AuroraBase());
         }
     }
 }
