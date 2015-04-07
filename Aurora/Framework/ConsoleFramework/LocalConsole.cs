@@ -29,8 +29,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using Aurora.Framework.Modules;
 using Nini.Config;
+using Aurora.Framework.Modules;
 using Aurora.Framework.Utilities;
 
 namespace Aurora.Framework.ConsoleFramework
@@ -59,21 +59,21 @@ namespace Aurora.Framework.ConsoleFramework
                 ConsoleColor.Cyan
             };
 
-        private readonly List<string> history = new List<string>();
+        readonly List<string> history = new List<string>();
 
-        private StringBuilder cmdline = new StringBuilder();
-        private int cp;
-        private bool echo = true;
-        private int h = 1;
+        StringBuilder cmdline = new StringBuilder();
+        int cp;
+        bool echo = true;
+        int h = 1;
         protected string prompt = "# ";
-        private int y = -1;
+        int y = -1;
 
         public override string Name
         {
             get { return "LocalConsole"; }
         }
 
-        public override void Initialize(IConfigSource source, ISimulationBase baseOpenSim)
+        public override void Initialize(IConfigSource source, ISimulationBase simBase)
         {
             if (source.Configs["Console"] != null)
             {
@@ -83,7 +83,7 @@ namespace Aurora.Framework.ConsoleFramework
             else
                 return;
 
-            baseOpenSim.ApplicationRegistry.RegisterModuleInterface<ICommandConsole>(this);
+            simBase.ApplicationRegistry.RegisterModuleInterface<ICommandConsole>(this);
             MainConsole.Instance = this;
 
             m_Commands.AddCommand("help", "help",
@@ -100,13 +100,13 @@ namespace Aurora.Framework.ConsoleFramework
             InitializeLog(logPath, logName);
         }
 
-        private static ConsoleColor DeriveColor(string input)
+        static ConsoleColor DeriveColor(string input)
         {
             // it is important to do Abs, hash values can be negative
             return Colors[(Math.Abs(input.ToUpper().Length) % Colors.Length)];
         }
 
-        private void AddToHistory(string text)
+        void AddToHistory(string text)
         {
             while (history.Count >= 100)
                 history.RemoveAt(0);
@@ -124,7 +124,7 @@ namespace Aurora.Framework.ConsoleFramework
         /// <returns>
         ///     The new cursor row.
         /// </returns>
-        private int SetCursorTop(int top)
+        int SetCursorTop(int top)
         {
             // From at least mono 2.4.2.3, window resizing can give mono an invalid row and column values.  If we try
             // to set a cursor row position with a currently invalid column, mono will throw an exception.
@@ -209,7 +209,7 @@ namespace Aurora.Framework.ConsoleFramework
             return left;
         }
 
-        private void Show()
+        void Show()
         {
             lock (cmdline)
             {
@@ -278,7 +278,7 @@ namespace Aurora.Framework.ConsoleFramework
             Monitor.Exit(cmdline);
         }
 
-        private void WriteColorText(ConsoleColor color, string sender)
+        void WriteColorText(ConsoleColor color, string sender)
         {
             try
             {
@@ -302,7 +302,7 @@ namespace Aurora.Framework.ConsoleFramework
             }
         }
 
-        private void WriteLocalText(string text, Level level)
+        void WriteLocalText(string text, Level level)
         {
             string logtext = "";
             if (text != "")
@@ -410,7 +410,7 @@ namespace Aurora.Framework.ConsoleFramework
             }
         }
 
-        private bool ContextHelp()
+        bool ContextHelp()
         {
             string[] words = Parser.Parse(cmdline.ToString());
 

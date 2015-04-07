@@ -25,14 +25,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework.Modules;
-using Aurora.Framework.SceneInfo;
-using Aurora.Framework.Utilities;
-using Nini.Config;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using Nini.Config;
+using Aurora.Framework.Modules;
+using Aurora.Framework.SceneInfo;
+using Aurora.Framework.Utilities;
 
 namespace Aurora.Framework.ConsoleFramework
 {
@@ -54,13 +54,13 @@ namespace Aurora.Framework.ConsoleFramework
             set { MainConsole.Instance.LogPath = value; }
         }
 
-        public virtual void Initialize(IConfigSource source, ISimulationBase baseOpenSim)
+        public virtual void Initialize(IConfigSource source, ISimulationBase simBase)
         {
             if (source.Configs["Console"] == null ||
                 source.Configs["Console"].GetString("Console", String.Empty) != Name)
                 return;
 
-            baseOpenSim.ApplicationRegistry.RegisterModuleInterface<ICommandConsole>(this);
+            simBase.ApplicationRegistry.RegisterModuleInterface<ICommandConsole>(this);
             MainConsole.Instance = this;
 
             m_Commands.AddCommand("help", "help", "Get a general command list", Help, false, true);

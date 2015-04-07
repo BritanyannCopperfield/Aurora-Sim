@@ -25,7 +25,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
 using System.Collections.Generic;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.SceneInfo;
@@ -82,8 +81,8 @@ namespace Aurora.Framework.Modules
         ///     Set up this console
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="baseOpenSim"></param>
-        void Initialize(IConfigSource source, ISimulationBase baseOpenSim);
+        /// <param name="simBase"></param>
+        void Initialize(IConfigSource source, ISimulationBase simBase);
 
         /// <summary>
         ///     Locks other threads from inserting text onto the console until the other threads are done
