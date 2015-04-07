@@ -98,7 +98,7 @@ namespace Aurora.Framework.Serialization
 
         public static Stream URIFetch(Uri uri)
         {
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
 
             request.ContentLength = 0;
             request.KeepAlive = false;

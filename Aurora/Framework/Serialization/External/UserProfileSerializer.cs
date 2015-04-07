@@ -42,7 +42,7 @@ namespace Aurora.Framework.Serialization.External
         public static string Serialize(UUID userID, string firstName, string lastName)
         {
             StringWriter sw = new StringWriter();
-            XmlTextWriter xtw = new XmlTextWriter(sw) {Formatting = Formatting.Indented};
+            XmlTextWriter xtw = new XmlTextWriter(sw) { Formatting = Formatting.Indented };
             xtw.WriteStartDocument();
 
             xtw.WriteStartElement("user_profile");
@@ -52,6 +52,7 @@ namespace Aurora.Framework.Serialization.External
             xtw.WriteElementString("name", firstName + " " + lastName);
             xtw.WriteElementString("id", userID.ToString());
             xtw.WriteElementString("about", "");
+
             xtw.WriteEndElement();
 
             xtw.Close();

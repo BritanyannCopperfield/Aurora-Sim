@@ -71,7 +71,7 @@ namespace Aurora.Framework.Serialization.External
             landData.Area = Convert.ToInt32(xtr.ReadElementString("Area"));
             landData.AuctionID = Convert.ToUInt32(xtr.ReadElementString("AuctionID"));
             landData.AuthBuyerID = UUID.Parse(xtr.ReadElementString("AuthBuyerID"));
-            landData.Category = (ParcelCategory) Convert.ToSByte(xtr.ReadElementString("Category"));
+            landData.Category = (ParcelCategory)Convert.ToSByte(xtr.ReadElementString("Category"));
             landData.ClaimDate = Convert.ToInt32(xtr.ReadElementString("ClaimDate"));
             landData.ClaimPrice = Convert.ToInt32(xtr.ReadElementString("ClaimPrice"));
             landData.GlobalID = UUID.Parse(xtr.ReadElementString("GlobalID"));
@@ -82,7 +82,7 @@ namespace Aurora.Framework.Serialization.External
             landData.Flags = Convert.ToUInt32(xtr.ReadElementString("Flags"));
             landData.LandingType = Convert.ToByte(xtr.ReadElementString("LandingType"));
             landData.Name = xtr.ReadElementString("Name");
-            landData.Status = (ParcelStatus) Convert.ToSByte(xtr.ReadElementString("Status"));
+            landData.Status = (ParcelStatus)Convert.ToSByte(xtr.ReadElementString("Status"));
             landData.LocalID = Convert.ToInt32(xtr.ReadElementString("LocalID"));
             landData.MediaAutoScale = Convert.ToByte(xtr.ReadElementString("MediaAutoScale"));
             landData.MediaID = UUID.Parse(xtr.ReadElementString("MediaID"));
@@ -104,7 +104,7 @@ namespace Aurora.Framework.Serialization.External
                     xtr.ReadStartElement("ParcelAccessEntry");
                     pae.AgentID = UUID.Parse(xtr.ReadElementString("AgentID"));
                     xtr.ReadElementString("Time");
-                    pae.Flags = (AccessList) Convert.ToUInt32(xtr.ReadElementString("AccessList"));
+                    pae.Flags = (AccessList)Convert.ToUInt32(xtr.ReadElementString("AccessList"));
                     pae.Time = DateTime.UtcNow;
                     xtr.ReadEndElement();
 
@@ -134,7 +134,7 @@ namespace Aurora.Framework.Serialization.External
         public static string Serialize(LandData landData)
         {
             StringWriter sw = new StringWriter();
-            XmlTextWriter xtw = new XmlTextWriter(sw) {Formatting = Formatting.Indented};
+            XmlTextWriter xtw = new XmlTextWriter(sw) { Formatting = Formatting.Indented };
 
             xtw.WriteStartDocument();
             xtw.WriteStartElement("LandData");
@@ -142,7 +142,7 @@ namespace Aurora.Framework.Serialization.External
             xtw.WriteElementString("Area", Convert.ToString(landData.Area));
             xtw.WriteElementString("AuctionID", Convert.ToString(landData.AuctionID));
             xtw.WriteElementString("AuthBuyerID", landData.AuthBuyerID.ToString());
-            xtw.WriteElementString("Category", Convert.ToString((sbyte) landData.Category));
+            xtw.WriteElementString("Category", Convert.ToString((sbyte)landData.Category));
             xtw.WriteElementString("ClaimDate", Convert.ToString(landData.ClaimDate));
             xtw.WriteElementString("ClaimPrice", Convert.ToString(landData.ClaimPrice));
             xtw.WriteElementString("GlobalID", landData.GlobalID.ToString());
@@ -153,7 +153,7 @@ namespace Aurora.Framework.Serialization.External
             xtw.WriteElementString("Flags", Convert.ToString(landData.Flags));
             xtw.WriteElementString("LandingType", Convert.ToString(landData.LandingType));
             xtw.WriteElementString("Name", landData.Name);
-            xtw.WriteElementString("Status", Convert.ToString((sbyte) landData.Status));
+            xtw.WriteElementString("Status", Convert.ToString((sbyte)landData.Status));
             xtw.WriteElementString("LocalID", landData.LocalID.ToString());
             xtw.WriteElementString("MediaAutoScale", Convert.ToString(landData.MediaAutoScale));
             xtw.WriteElementString("MediaID", landData.MediaID.ToString());
@@ -167,7 +167,7 @@ namespace Aurora.Framework.Serialization.External
                 xtw.WriteStartElement("ParcelAccessEntry");
                 xtw.WriteElementString("AgentID", pal.AgentID.ToString());
                 xtw.WriteElementString("Time", pal.Time.ToString("s"));
-                xtw.WriteElementString("AccessList", Convert.ToString((uint) pal.Flags));
+                xtw.WriteElementString("AccessList", Convert.ToString((uint)pal.Flags));
                 xtw.WriteEndElement();
             }
             xtw.WriteEndElement();

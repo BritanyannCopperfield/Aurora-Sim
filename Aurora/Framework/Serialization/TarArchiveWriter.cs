@@ -124,7 +124,7 @@ namespace Aurora.Framework.Serialization
 
             while (d > 0)
             {
-                oString = Convert.ToString((byte) '0' + d & 7) + oString;
+                oString = Convert.ToString((byte)'0' + d & 7) + oString;
                 d >>= 3;
             }
 
@@ -146,8 +146,8 @@ namespace Aurora.Framework.Serialization
         /// <param name="fileType"></param>
         protected void WriteEntry(string filePath, byte[] data, char fileType)
         {
-//            MainConsole.Instance.DebugFormat(
-//                "[TAR ARCHIVE WRITER]: Data for {0} is {1} bytes", filePath, (null == data ? "null" : data.Length.ToString()));
+            // MainConsole.Instance.DebugFormat(
+            //     "[TAR ARCHIVE WRITER]: Data for {0} is {1} bytes", filePath, (null == data ? "null" : data.Length.ToString()));
 
             byte[] header = new byte[512];
 
@@ -181,7 +181,7 @@ namespace Aurora.Framework.Serialization
             Array.Copy(lastModTimeBytes, 0, header, 136, 11);
 
             // entry type indicator (1)
-            header[156] = m_asciiEncoding.GetBytes(new[] {fileType})[0];
+            header[156] = m_asciiEncoding.GetBytes(new[] { fileType })[0];
 
             Array.Copy(m_asciiEncoding.GetBytes("0000000"), 0, header, 329, 7);
             Array.Copy(m_asciiEncoding.GetBytes("0000000"), 0, header, 337, 7);
@@ -209,9 +209,9 @@ namespace Aurora.Framework.Serialization
                 if (data.Length > 0)
                     m_bw.Write(data);
 
-                if (data.Length%512 != 0)
+                if (data.Length % 512 != 0)
                 {
-                    int paddingRequired = 512 - (data.Length%512);
+                    int paddingRequired = 512 - (data.Length % 512);
 
                     //MainConsole.Instance.DebugFormat("[TAR ARCHIVE WRITER]: Padding data with {0} bytes", paddingRequired);
 

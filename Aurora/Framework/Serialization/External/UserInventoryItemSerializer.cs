@@ -132,7 +132,7 @@ namespace Aurora.Framework.Serialization.External
         public static string Serialize(InventoryItemBase inventoryItem)
         {
             StringWriter sw = new StringWriter();
-            XmlTextWriter writer = new XmlTextWriter(sw) {Formatting = Formatting.Indented};
+            XmlTextWriter writer = new XmlTextWriter(sw) { Formatting = Formatting.Indented };
             writer.WriteStartDocument();
 
             writer.WriteStartElement("InventoryItem");
