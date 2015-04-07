@@ -87,13 +87,13 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
                 if (!m_childFolders.ContainsKey(folderID))
                 {
                     InventoryFolderImpl subFold = new InventoryFolderImpl
-                                                      {
-                                                          Name = folderName,
-                                                          ID = folderID,
-                                                          Type = (short) type,
-                                                          ParentID = this.ID,
-                                                          Owner = Owner
-                                                      };
+                    {
+                        Name = folderName,
+                        ID = folderID,
+                        Type = (short)type,
+                        ParentID = this.ID,
+                        Owner = Owner
+                    };
                     m_childFolders.Add(subFold.ID, subFold);
 
                     return subFold;
@@ -331,7 +331,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
             if (path == PATH_DELIMITER)
                 return this;
 
-            string[] components = path.Split(new[] {PATH_DELIMITER}, 2, StringSplitOptions.None);
+            string[] components = path.Split(new[] { PATH_DELIMITER }, 2, StringSplitOptions.None);
 
             lock (m_childFolders)
             {
@@ -362,7 +362,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
         /// <returns>null if the item is not found</returns>
         public InventoryItemBase FindItemByPath(string path)
         {
-            string[] components = path.Split(new[] {PATH_DELIMITER}, 2, StringSplitOptions.None);
+            string[] components = path.Split(new[] { PATH_DELIMITER }, 2, StringSplitOptions.None);
 
             if (components.Length == 1)
             {

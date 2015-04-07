@@ -34,7 +34,7 @@ using Nini.Config;
 namespace Aurora.Framework.Services
 {
     /// <summary>
-    ///     Aurora-Sim Application Plugin framework interface
+    ///     WhiteCore-Sim Application Plugin framework interface
     /// </summary>
     public interface IApplicationPlugin
     {
@@ -299,7 +299,7 @@ namespace Aurora.Framework.Services
         {
             get
             {
-                uint total = (uint) (
+                uint total = (uint)(
                                         andFilters.Count +
                                         orFilters.Count +
                                         orMultiFilters.Count +
@@ -344,7 +344,7 @@ namespace Aurora.Framework.Services
         public string ToSQL(char prepared, out Dictionary<string, object> ps)
         {
             ps = new Dictionary<string, object>();
-            Dictionary<string, object>[] pss = {ps};
+            Dictionary<string, object>[] pss = { ps };
             string query = "";
             List<string> parts;
             uint i = 0;
@@ -676,7 +676,7 @@ namespace Aurora.Framework.Services
         /// <param name="Alias"></param>
         public void AddTable(string Name, string Alias)
         {
-            AddTable(new QueryTable() {TableName = Name, TableAlias = Alias});
+            AddTable(new QueryTable() { TableName = Name, TableAlias = Alias });
         }
 
         /// <summary>
@@ -688,7 +688,7 @@ namespace Aurora.Framework.Services
         /// <param name="toJoinOn"></param>
         public void AddTable(string Name, string Alias, JoinType jType, string[,] toJoinOn)
         {
-            AddTable(new QueryTable() {JoinOn = toJoinOn, TableAlias = Alias, TableName = Name, TypeJoin = jType});
+            AddTable(new QueryTable() { JoinOn = toJoinOn, TableAlias = Alias, TableName = Name, TypeJoin = jType });
         }
 
         public string ToSQL()
@@ -704,7 +704,7 @@ namespace Aurora.Framework.Services
                         returnValue += " INNER JOIN " + t.TableName + " AS " + t.TableAlias + " ";
                     else
                         returnValue += " OUTER JOIN " + t.TableName + " AS " + t.TableAlias + " ";
-                    for (int loop = 0; loop < t.JoinOn.Length/2; loop++)
+                    for (int loop = 0; loop < t.JoinOn.Length / 2; loop++)
                     {
                         if (loop != 0)
                             returnValue += " AND ";

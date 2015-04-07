@@ -39,7 +39,6 @@ using Aurora.Framework.Servers.HttpServer.Implementation;
 using Aurora.Framework.Servers.HttpServer.Interfaces;
 using Aurora.Framework.Utilities;
 using Nini.Config;
-using OpenMetaverse;
 using OpenMetaverse.StructuredData;
 
 namespace Aurora.Framework.Services
@@ -115,7 +114,7 @@ namespace Aurora.Framework.Services
             {
                 IConfigSource source = registry.RequestModuleInterface<ISimulationBase>().ConfigSource;
                 IConfig config;
-                if ((config = source.Configs["AuroraConnectors"]) != null)
+                if ((config = source.Configs["WhiteCoreConnectors"]) != null)
                 {
                     m_doRemoteCalls = config.Contains(name + "DoRemoteCalls")
                                           ? config.GetBoolean(name + "DoRemoteCalls", false)
@@ -208,7 +207,7 @@ namespace Aurora.Framework.Services
 
             return GetResponse(method, map, serverURL);
         }
-        
+
         public void DoRemoteCallPost(bool forced, string url, params object[] o)
         {
             MethodInfo method;
@@ -312,8 +311,8 @@ namespace Aurora.Framework.Services
         private void GetReflection(int upStack, StackTrace stackTrace, out MethodInfo method,
                                    out CanBeReflected reflection)
         {
-            method = (MethodInfo) stackTrace.GetFrame(upStack).GetMethod();
-            reflection = (CanBeReflected) Attribute.GetCustomAttribute(method, typeof (CanBeReflected));
+            method = (MethodInfo)stackTrace.GetFrame(upStack).GetMethod();
+            reflection = (CanBeReflected)Attribute.GetCustomAttribute(method, typeof(CanBeReflected));
             if (reflection != null && reflection.NotReflectableLookUpAnotherTrace)
                 GetReflection(upStack + 1, stackTrace, out method, out reflection);
         }
@@ -327,7 +326,7 @@ namespace Aurora.Framework.Services
                 return false;
             try
             {
-                response = (OSDMap) OSDParser.DeserializeJson(resp);
+                response = (OSDMap)OSDParser.DeserializeJson(resp);
             }
             catch
             {
@@ -360,7 +359,7 @@ namespace Aurora.Framework.Services
                 List<string> alreadyRunPlugins = new List<string>();
                 List<ConnectorBase> connectors = conn == null
                                                      ? ConnectorRegistry.Connectors
-                                                     : new List<ConnectorBase>() {conn};
+                                                     : new List<ConnectorBase>() { conn };
                 foreach (ConnectorBase plugin in connectors)
                 {
                     if (alreadyRunPlugins.Contains(plugin.PluginName))
@@ -369,17 +368,17 @@ namespace Aurora.Framework.Services
                     foreach (MethodInfo method in plugin.GetType().GetMethods())
                     {
                         CanBeReflected reflection =
-                            (CanBeReflected) Attribute.GetCustomAttribute(method, typeof (CanBeReflected));
+                            (CanBeReflected)Attribute.GetCustomAttribute(method, typeof(CanBeReflected));
                         if (reflection != null)
                         {
                             string methodName = reflection.RenamedMethod == "" ? method.Name : reflection.RenamedMethod;
                             List<MethodImplementation> methods = new List<MethodImplementation>();
                             MethodImplementation imp = new MethodImplementation()
-                                                           {
-                                                               Method = method,
-                                                               Reference = plugin,
-                                                               Attribute = reflection
-                                                           };
+                            {
+                                Method = method,
+                                Reference = plugin,
+                                Attribute = reflection
+                            };
                             if (!m_methods.TryGetValue(methodName, out methods))
                                 m_methods.Add(methodName, (methods = new List<MethodImplementation>()));
 
@@ -403,7 +402,7 @@ namespace Aurora.Framework.Services
             }
             catch (Exception ex)
             {
-                MainConsole.Instance.Warn("[ServerHandler]: Error occured: " + ex.ToString());
+                MainConsole.Instance.Warn("[ServerHandler]: Error occurred: " + ex.ToString());
             }
             return MainServer.BadRequest;
         }
@@ -423,11 +422,11 @@ namespace Aurora.Framework.Services
                         int paramNum = 0;
                         foreach (ParameterInfo param in paramInfo)
                         {
-                            if (param.ParameterType == typeof (bool) && !args.ContainsKey(param.Name))
+                            if (param.ParameterType == typeof(bool) && !args.ContainsKey(param.Name))
                                 parameters[paramNum++] = false;
                             else if (args[param.Name].Type == OSDType.Unknown)
                                 parameters[paramNum++] = null;
-                            else if (param.ParameterType == typeof (OSD))
+                            else if (param.ParameterType == typeof(OSD))
                                 parameters[paramNum++] = args[param.Name];
                             else
                                 parameters[paramNum++] = Util.OSDToObject(args[param.Name], param.ParameterType);
@@ -445,7 +444,7 @@ namespace Aurora.Framework.Services
                 }
                 catch (Exception ex)
                 {
-                    MainConsole.Instance.WarnFormat("[ServerHandler]: Error occured for method {0}: {1}", method,
+                    MainConsole.Instance.WarnFormat("[ServerHandler]: Error occurred for method {0}: {1}", method,
                                                     ex.ToString());
                 }
             }

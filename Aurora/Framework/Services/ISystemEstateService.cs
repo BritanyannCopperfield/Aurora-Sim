@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -25,38 +25,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Collections.Generic;
+using OpenMetaverse;
 
 namespace Aurora.Framework.Services
 {
-    public interface IGridInfo
+    public interface ISystemEstateService
     {
-        string GridName { get; }
-        string GridNick { get; }
-        string GridLoginURI { get; }
-        string GridWelcomeURI { get; }
-        string GridEconomyURI { get; }
-        string GridAboutURI { get; }
-        string GridHelpURI { get; }
-        string GridRegisterURI { get; }
-        string GridForgotPasswordURI { get; }
-        string GridMapTileURI { get; set; }
-        string AgentAppearanceURI { get; set; }
-        string GridWebProfileURI { get; }
-        string GridSearchURI { get; }
-        string GridDestinationURI { get; }
-        string GridMarketplaceURI { get; }
-        string GridTutorialURI { get; }
-        string GridSnapshotConfigURI { get; }
+        /// <summary>
+        ///     The System Real Estate owner's UUID
+        /// </summary>
+        UUID SystemEstateOwnerUUID { get; }
 
-        void UpdateGridInfo();
-    }
+        /// <summary>
+        ///     The system Real Estate owner's name
+        /// </summary>
+        string SystemEstateOwnerName { get; }
 
-    public interface IGridServerInfoService
-    {
-        List<string> GetGridURIs(string key);
-        string GetGridURI(string key);
-        Dictionary<string, List<string>> RetrieveAllGridURIs(bool secure);
-        void AddURI(string key, string value);
+         /// <summary>
+        ///     The system Estate name
+        /// </summary>
+        string SystemEstateName { get; }
+
+
     }
 }

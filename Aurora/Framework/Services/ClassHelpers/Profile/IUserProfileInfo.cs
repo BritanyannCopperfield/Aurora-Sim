@@ -119,14 +119,14 @@ namespace Aurora.Framework.Services.ClassHelpers.Profile
         public override void FromOSD(OSDMap map)
         {
             PrincipalID = map["PrincipalID"].AsUUID();
-            Flags = (IAgentFlags) map["Flags"].AsInteger();
+            Flags = (IAgentFlags)map["Flags"].AsInteger();
             MaxMaturity = Convert.ToInt32(map["MaxMaturity"].AsInteger());
             MaturityRating = Convert.ToInt32(map["MaturityRating"].AsInteger());
             Language = map["Language"].AsString();
             AcceptTOS = map["AcceptTOS"].AsBoolean();
             LanguageIsPublic = map["LanguageIsPublic"].AsBoolean();
             if (map.ContainsKey("OtherAgentInformation"))
-                OtherAgentInformation = (OSDMap) OSDParser.DeserializeLLSDXml(map["OtherAgentInformation"].AsString());
+                OtherAgentInformation = (OSDMap)OSDParser.DeserializeLLSDXml(map["OtherAgentInformation"].AsString());
         }
     }
 
@@ -212,7 +212,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Profile
         /// <summary>
         ///     The group that the user is assigned to, ex: Premium
         /// </summary>
-        public string MembershipGroup = String.Empty;
+        public string MembershipGroup = "Guest";
 
         /// <summary>
         ///     All of the notes of the user
@@ -296,19 +296,19 @@ namespace Aurora.Framework.Services.ClassHelpers.Profile
 
             //Interests
             Interests = new ProfileInterests
-                            {
-                                WantToMask = map["WantToMask"].AsUInteger(),
-                                WantToText = map["WantToText"].AsString(),
-                                CanDoMask = map["CanDoMask"].AsUInteger(),
-                                CanDoText = map["CanDoText"].AsString(),
-                                Languages = map["Languages"].AsString()
-                            };
+            {
+                WantToMask = map["WantToMask"].AsUInteger(),
+                WantToText = map["WantToText"].AsString(),
+                CanDoMask = map["CanDoMask"].AsUInteger(),
+                CanDoText = map["CanDoText"].AsString(),
+                Languages = map["Languages"].AsString()
+            };
             //End interests
 
             try
             {
                 if (map.ContainsKey("Notes"))
-                    Notes = (OSDMap) OSDParser.DeserializeJson(map["Notes"].AsString());
+                    Notes = (OSDMap)OSDParser.DeserializeJson(map["Notes"].AsString());
             }
             catch
             {
@@ -399,7 +399,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Profile
             SimName = map["SimName"].AsString();
             GlobalPos = map["GlobalPos"].AsVector3();
             ParcelName = map["ParcelName"].AsString();
-            ClassifiedFlags = (byte) map["ClassifiedFlags"].AsInteger();
+            ClassifiedFlags = (byte)map["ClassifiedFlags"].AsInteger();
             PriceForListing = map["PriceForListing"].AsInteger();
         }
     }

@@ -75,8 +75,8 @@ namespace Aurora.Framework.Services
 
         AvatarAppearance BakeAppearance(UUID agentID, int cof_version);
     }
-    
-    public interface IAvatarData : IAuroraDataPlugin
+
+    public interface IAvatarData : IWhiteCoreDataPlugin
     {
         AvatarAppearance Get(UUID PrincipalID);
         bool Store(UUID PrincipalID, AvatarAppearance data);

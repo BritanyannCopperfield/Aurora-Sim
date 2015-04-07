@@ -76,8 +76,8 @@ namespace Aurora.Framework.Services
     {
         /// <summary>
         ///     This is fired when a message from the ISyncMessagePosterService
-        ///     has been received either by the IAsyncMessagePosterService for Aurora
-        ///     or the ISyncMessagePosterService for Aurora.Server
+        ///     has been received either by the IAsyncMessagePosterService for WhiteCore
+        ///     or the ISyncMessagePosterService for WhiteCore.Server
         ///     Notes on this event:
         ///     This is subscribed to by many events and many events will not be dealing with the request.
         ///     If you do not wish to send a response back to the poster, return null, otherwise, return a
@@ -116,7 +116,7 @@ namespace Aurora.Framework.Services
         {
             Success = map["Success"];
             CircuitData = new AgentCircuitData();
-            CircuitData.FromOSD((OSDMap) map["CircuitData"]);
+            CircuitData.FromOSD((OSDMap)map["CircuitData"]);
             SeedCap = map["SeedCap"];
             Reason = map["Reason"];
         }

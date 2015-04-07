@@ -57,22 +57,22 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
 
         public override void FromOSD(OSDMap map)
         {
-            OSDArray items = (OSDArray) map["Items"];
+            OSDArray items = (OSDArray)map["Items"];
             Items = items.ConvertAll<InventoryItemBase>((osd) =>
-                                                            {
-                                                                InventoryItemBase item = new InventoryItemBase();
-                                                                item.FromOSD((OSDMap) osd);
-                                                                return item;
-                                                            }
+            {
+                InventoryItemBase item = new InventoryItemBase();
+                item.FromOSD((OSDMap)osd);
+                return item;
+            }
                 );
-            OSDArray folders = (OSDArray) map["Folders"];
+            OSDArray folders = (OSDArray)map["Folders"];
             Folders = folders.ConvertAll<InventoryFolderBase>((osd) =>
-                                                                  {
-                                                                      InventoryFolderBase folder =
-                                                                          new InventoryFolderBase();
-                                                                      folder.FromOSD((OSDMap) osd);
-                                                                      return folder;
-                                                                  }
+            {
+                InventoryFolderBase folder =
+                    new InventoryFolderBase();
+                folder.FromOSD((OSDMap)osd);
+                return folder;
+            }
                 );
             UserID = map["UserID"];
             FolderID = map["FolderID"];

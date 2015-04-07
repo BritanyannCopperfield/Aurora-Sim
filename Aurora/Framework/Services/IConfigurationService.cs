@@ -26,6 +26,7 @@
  */
 
 using System.Collections.Generic;
+
 namespace Aurora.Framework.Services
 {
     /// <summary>

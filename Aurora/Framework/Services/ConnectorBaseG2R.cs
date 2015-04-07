@@ -45,7 +45,7 @@ namespace Aurora.Framework.Services
 
         public override void FromOSD(OSDMap retVal)
         {
-            URLS = (OSDMap) retVal["URLS"];
+            URLS = (OSDMap)retVal["URLS"];
             SessionID = retVal["SessionID"].AsString();
         }
     }

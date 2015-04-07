@@ -38,8 +38,8 @@ namespace Aurora.Framework.Services
         public string Email;
         public string Name { get; set; }
         public UUID PrincipalID { get; set; }
-        public int UserFlags;
-        public int UserLevel;
+        public int UserFlags = Constants.USER_FLAG_GUEST;
+        public int UserLevel = Constants.USER_NORMAL;
 
         public UserAccount()
         {
@@ -112,7 +112,7 @@ namespace Aurora.Framework.Services
             if (map.ContainsKey("ScopeID"))
                 ScopeID = map["ScopeID"];
             if (map.ContainsKey("AllScopeIDs"))
-                AllScopeIDs = ((OSDArray) map["AllScopeIDs"]).ConvertAll<UUID>(o => o);
+                AllScopeIDs = ((OSDArray)map["AllScopeIDs"]).ConvertAll<UUID>(o => o);
             if (map.ContainsKey("UserLevel"))
                 UserLevel = map["UserLevel"];
             if (map.ContainsKey("UserFlags"))
@@ -124,6 +124,11 @@ namespace Aurora.Framework.Services
 
     public interface IUserAccountService
     {
+        /// <summary>
+        /// Returns true if the service is remote.
+        /// </summary>
+        bool RemoteCalls();
+
         IUserAccountService InnerService { get; }
 
         /// <summary>
@@ -239,7 +244,7 @@ namespace Aurora.Framework.Services
     /// <summary>
     ///     An interface for connecting to the user accounts datastore
     /// </summary>
-    public interface IUserAccountData : IAuroraDataPlugin
+    public interface IUserAccountData : IWhiteCoreDataPlugin
     {
         string Realm { get; }
         UserAccount[] Get(List<UUID> scopeIDs, string[] fields, string[] values);

@@ -39,7 +39,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
         private UUID m_assetID;
         private int m_assetType;
         private uint m_basePermissions;
-        private int m_creationDate = (int) (DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+        private int m_creationDate = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
         private string m_creatorData = string.Empty;
         private string m_creatorId;
         private UUID m_creatorIdAsUuid = UUID.Zero;
@@ -126,7 +126,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
             set { m_creatorIdAsUuid = value; }
         }
 
-        public string CreatorData // = <profile url>;<name>
+        public string CreatorData
         {
             get { return m_creatorData; }
             set { m_creatorData = value; }
@@ -158,7 +158,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
                 {
                     m_creatorId = value;
                 }
-                else // <uuid>[;<endpoint>[;name]]
+                else
                 {
                     string name = "Unknown User";
                     string[] parts = value.Split(';');
@@ -339,7 +339,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
             map["NextPermissions"] = NextPermissions;
             map["Owner"] = Owner;
             map["SalePrice"] = SalePrice;
-            map["SaleType"] = (int) SaleType;
+            map["SaleType"] = (int)SaleType;
             return map;
         }
 
@@ -366,7 +366,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Inventory
             this.NextPermissions = map["NextPermissions"];
             this.Owner = map["Owner"];
             this.SalePrice = map["SalePrice"];
-            this.SaleType = (byte) (int) map["SaleType"];
+            this.SaleType = (byte)(int)map["SaleType"];
         }
 
         #endregion

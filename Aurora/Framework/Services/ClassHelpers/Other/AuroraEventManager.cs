@@ -40,7 +40,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Other
     /// <summary>
     ///     A generic event manager that fires one event for many generic events
     /// </summary>
-    public class AuroraEventManager
+    public class WhiteCoreEventManager
     {
         private readonly Dictionary<string, List<OnGenericEventHandler>> m_events =
             new Dictionary<string, List<OnGenericEventHandler>>();
@@ -75,7 +75,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Other
         ///     param is an object[], with o[0] a ISceneChildEntity and o[1] the flag that was changed
         ///     SetAppearance - An avatar has updated their appearance
         ///     param is an object[], with o[0] the UUID of the avatar and o[1] the AvatarData that is to be updated
-        ///     GridRegionSuccessfullyRegistered - Aurora.Server, A region has registered with the grid service
+        ///     GridRegionSuccessfullyRegistered - WhiteCore.Server, A region has registered with the grid service
         ///     param is an object[], with o[0] the OSDMap which will be sent to the new region, o[1] the SessionID, o[2] the GridRegion that registered
         ///     Backup - The 'backup' console command was triggered, everything should backup
         ///     no params

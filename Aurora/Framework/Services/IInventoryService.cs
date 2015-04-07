@@ -79,6 +79,36 @@ namespace Aurora.Framework.Services
         InventoryFolderBase GetRootFolder(UUID userID);
 
         /// <summary>
+        ///  Does an inventory folder exist.
+        /// </summary>
+        /// <returns><c>true</c>, if exists, <c>false</c> otherwise.</returns>
+        /// <param name="folderID">Folder ID.</param>
+        bool FolderExists(UUID folderID);
+
+        /// <summary>
+        ///     Checks if an item exists inside a folder
+        /// </summary>
+        /// <param name="folderID"></param>
+        /// <param name="itemID"></param>
+        /// <returns></returns>
+        bool FolderItemExists(UUID folderID, UUID itemID);
+
+        /// <summary>
+        ///  check if an inventory item exists.
+        /// </summary>
+        /// <returns><c>true</c>, if exists, <c>false</c> otherwise.</returns>
+        /// <param name="itemID">Item II.</param>
+        bool ItemExists(UUID itemID);
+
+        /// <summary>
+        /// Gets an exsting user folder.
+        /// </summary>
+        /// <returns>The user folder.</returns>
+        /// <param name="principalID">Principal I.</param>
+        /// <param name="folderName">Folder name.</param>
+        List<string> GetUserFolderID(UUID principalID, string folderName);
+
+        /// <summary>
         ///     Gets a folder by name for the given user
         /// </summary>
         /// <param name="userID"></param>
@@ -148,7 +178,7 @@ namespace Aurora.Framework.Services
         bool MoveFolder(InventoryFolderBase folder);
 
         /// <summary>
-        ///     Delete an item from the user's inventory
+        ///     Delete a folder from the user's inventory
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="folderIDs"></param>
@@ -156,7 +186,7 @@ namespace Aurora.Framework.Services
         bool DeleteFolders(UUID userID, List<UUID> folderIDs);
 
         /// <summary>
-        ///     Force Deletes a folder (LOCAL ONLY)
+        ///     Force Deletes a folder 
         /// </summary>
         /// <param name="folder"></param>
         /// <returns></returns>
@@ -274,6 +304,13 @@ namespace Aurora.Framework.Services
         void MoveItemsAsync(UUID agentID, List<InventoryItemBase> items, NoParam success);
 
         /// <summary>
+        /// Adds an item async to the temporary cache only.
+        ///  - used for non persistent inventory items eg NPC attachments
+        /// </summary>
+        /// <param name="item">Item.</param>
+        void AddCacheItemAsync(InventoryItemBase item);
+
+        /// <summary>
         ///     Gives an inventory item to another user asychronously
         /// </summary>
         /// <param name="recipient"></param>
@@ -305,8 +342,12 @@ namespace Aurora.Framework.Services
 
     public delegate void GiveItemParam(InventoryItemBase item);
 
-    public interface IInventoryData : IAuroraDataPlugin
+    public interface IInventoryData : IWhiteCoreDataPlugin
     {
+        bool FolderExists(UUID folderID);
+        bool FolderItemExists(UUID folderID, UUID itemID);
+        bool ItemExists(UUID itemID);
+        List<string> GetUserFolderID(UUID principalID, string folderName);
         List<InventoryFolderBase> GetFolders(string[] fields, string[] vals);
         List<InventoryItemBase> GetItems(UUID avatarID, string[] fields, string[] vals);
         OSDArray GetLLSDItems(string[] fields, string[] vals);

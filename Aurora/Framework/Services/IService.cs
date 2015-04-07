@@ -31,7 +31,7 @@ using Nini.Config;
 namespace Aurora.Framework.Services
 {
     /// <summary>
-    ///     IService is a module that loads up by default and is loaded on every startup by either OpenSim.exe or Aurora.Server.exe
+    ///     IService is a module that loads up by default and is loaded on every startup by either WhiteCore.exe or WhiteCore.Server.exe
     ///     It loads modules including IAssetService and others
     /// </summary>
     public interface IService
@@ -39,7 +39,7 @@ namespace Aurora.Framework.Services
         /// <summary>
         ///     Set up and register the module
         ///     NOTE: Do NOT load module interfaces from this method, wait until PostInit runs
-        ///     NOTE: This is normally used to set up the 'base' services, ones that should be used in standalone or Aurora.Server
+        ///     NOTE: This is normally used to set up the 'base' services, ones that should be used in standalone or WhiteCore.Server
         /// </summary>
         /// <param name="config">Config file</param>
         /// <param name="registry">Place to register the modules into</param>

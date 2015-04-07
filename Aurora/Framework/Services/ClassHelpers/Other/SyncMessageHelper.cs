@@ -89,7 +89,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Other
 
         public static OSDMap UpdateEstateInfo(uint EstateID, UUID RegionID)
         {
-            OSDMap llsdBody = new OSDMap {{"EstateID", EstateID}, {"RegionID", RegionID}};
+            OSDMap llsdBody = new OSDMap { { "EstateID", EstateID }, { "RegionID", RegionID } };
 
             return buildEvent("UpdateEstateInfo", llsdBody, UUID.Zero, UUID.Zero);
         }
@@ -146,7 +146,7 @@ namespace Aurora.Framework.Services.ClassHelpers.Other
 
         public static OSDMap CancelTeleport(UUID AgentID, UUID requestingRegion)
         {
-            OSDMap llsdBody = new OSDMap {{"AgentID", AgentID}, {"RequestingRegion", requestingRegion}};
+            OSDMap llsdBody = new OSDMap { { "AgentID", AgentID }, { "RequestingRegion", requestingRegion } };
 
             return buildEvent("CancelTeleport", llsdBody, AgentID, requestingRegion);
         }

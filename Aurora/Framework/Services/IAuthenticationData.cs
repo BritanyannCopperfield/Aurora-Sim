@@ -40,7 +40,7 @@ namespace Aurora.Framework.Services
     /// <summary>
     ///     An interface for connecting to the authentication datastore
     /// </summary>
-    public interface IAuthenticationData : IAuroraDataPlugin
+    public interface IAuthenticationData : IWhiteCoreDataPlugin
     {
         AuthData Get(UUID principalID, string authType);
 

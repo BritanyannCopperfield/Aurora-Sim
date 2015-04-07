@@ -32,7 +32,7 @@ namespace Aurora.Framework.Services
     /// <summary>
     ///     An interface for connecting to the friends datastore
     /// </summary>
-    public interface IFriendsData : IAuroraDataPlugin
+    public interface IFriendsData : IWhiteCoreDataPlugin
     {
         /// <summary>
         ///     Adds/updates a friend in the database

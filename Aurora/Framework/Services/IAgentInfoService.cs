@@ -111,7 +111,7 @@ namespace Aurora.Framework.Services
             LastLogin = retVal["LastLogin"].AsDate();
             LastLogout = retVal["LastLogout"].AsDate();
             if (retVal["Info"].Type == OSDType.Map)
-                Info = (OSDMap) retVal["Info"];
+                Info = (OSDMap)retVal["Info"];
         }
     }
 
@@ -195,7 +195,7 @@ namespace Aurora.Framework.Services
         void Initialize(IConfigSource config, IRegistryCore registry);
     }
 
-    public interface IAgentInfoConnector : IAuroraDataPlugin
+    public interface IAgentInfoConnector : IWhiteCoreDataPlugin
     {
         bool Set(UserInfo info);
         void Update(string userID, Dictionary<string, object> values);
@@ -204,9 +204,11 @@ namespace Aurora.Framework.Services
         UserInfo Get(string userID, bool checkOnlineStatus, out bool onlineStatusChanged);
 
         uint RecentlyOnline(uint secondsAgo, bool stillOnline);
+        uint OnlineUsers(uint secondsAgo);
 
         List<UserInfo> RecentlyOnline(uint secondsAgo, bool stillOnline, Dictionary<string, bool> sort, uint start,
                                       uint count);
+        List<UserInfo> CurrentlyOnline(uint secondsAgo, Dictionary<string, bool> sort, uint start, uint count);
 
         List<UserInfo> GetByCurrentRegion(string regionID);
     }

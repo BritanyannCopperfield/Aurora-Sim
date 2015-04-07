@@ -265,13 +265,13 @@ namespace Aurora.Framework.Services
         public override void FromOSD(OSDMap map)
         {
             Error = map["Error"];
-            OSDArray n = (OSDArray) map["Neighbors"];
+            OSDArray n = (OSDArray)map["Neighbors"];
             Neighbors = n.ConvertAll<GridRegion>((osd) =>
-                                                     {
-                                                         GridRegion r = new GridRegion();
-                                                         r.FromOSD((OSDMap) osd);
-                                                         return r;
-                                                     });
+            {
+                GridRegion r = new GridRegion();
+                r.FromOSD((OSDMap)osd);
+                return r;
+            });
             SessionID = map["SessionID"];
             RegionFlags = map["RegionFlags"];
             if (map.ContainsKey("Region"))
@@ -280,7 +280,7 @@ namespace Aurora.Framework.Services
                 Region.FromOSD((OSDMap)map["Region"]);
             }
             if (map.ContainsKey("URIs"))
-                URIs = ((OSDMap)map["URIs"]).ConvertMap<List<string>>((o)=>((OSDArray)o).ConvertAll<string>((oo)=>oo));
+                URIs = ((OSDMap)map["URIs"]).ConvertMap<List<string>>((o) => ((OSDArray)o).ConvertAll<string>((oo) => oo));
         }
     }
 
@@ -335,23 +335,63 @@ namespace Aurora.Framework.Services
         public string ExternalHostName { get; set; }
         [ProtoMember(22)]
         public int InternalPort { get; set; }
+        [ProtoMember(23)]
+        public string RegionTerrain { get; set; }
+        [ProtoMember(24)]
+        public uint RegionArea { get; set; }
 
         public bool IsOnline
         {
-            get { return (Flags & (int) RegionFlags.RegionOnline) == 1; }
+            get { return (Flags & (int)RegionFlags.RegionOnline) != 0; }
             set
             {
                 if (value)
-                    Flags |= (int) RegionFlags.RegionOnline;
+                    Flags |= (int)RegionFlags.RegionOnline;
                 else
-                    Flags &= (int) RegionFlags.RegionOnline;
+                    Flags &= (int)RegionFlags.RegionOnline;
+            }
+        }
+
+        public bool IsHgRegion
+        {
+            get { return (Flags & (int)RegionFlags.Hyperlink) != 0; }
+            set
+            {
+                if (value)
+                    Flags |= (int)RegionFlags.Hyperlink;
+                else
+                    Flags &= (int)RegionFlags.Hyperlink;
+            }
+        }
+
+        public bool IsForeign   // TODO: used for IWC connection?? maybe add new
+        {
+            get { return (Flags & (int)RegionFlags.Foreign) != 0; }
+            set
+            {
+                if (value)
+                    Flags |= (int)RegionFlags.Foreign;
+                else
+                    Flags &= (int)RegionFlags.Foreign;
             }
         }
 
         /// <summary>
         ///     A well-formed URI for the host region server (namely "http://" + ExternalHostName + : + HttpPort)
         /// </summary>
-        public string ServerURI { get { return "http://" + ExternalHostName + ":" + HttpPort; } }
+        public string ServerURI
+        {
+            get { return "http://" + ExternalHostName + ":" + HttpPort; }	// this returns the main server port- gridserver??
+        }
+
+        /// <summary>
+        /// Gets the region URI.
+        /// </summary>
+        /// <value>The region URI.</value>
+        public string RegionURI
+        {
+            get { return "http://" + ExternalHostName + ":" + InternalPort; }
+        }
 
         public GridRegion()
         {
@@ -382,7 +422,9 @@ namespace Aurora.Framework.Services
             ScopeID = ConvertFrom.ScopeID;
             AllScopeIDs = ConvertFrom.AllScopeIDs;
             SessionID = ConvertFrom.GridSecureSessionID;
-            Flags |= (int) RegionFlags.RegionOnline;
+            Flags |= ConvertFrom.RegionFlags; // not sure why we don't pass all the flags??
+            RegionTerrain = ConvertFrom.RegionTerrain;
+            RegionArea = ConvertFrom.RegionArea;
         }
 
         #region Definition of equality
@@ -467,7 +509,7 @@ namespace Aurora.Framework.Services
             map["regionMapTexture"] = TerrainImage;
             map["regionTerrainTexture"] = TerrainMapImage;
             map["ParcelMapImage"] = ParcelMapImage;
-            map["access"] = (int) Access;
+            map["access"] = (int)Access;
             map["owner_uuid"] = EstateOwner;
             map["sizeX"] = RegionSizeX;
             map["sizeY"] = RegionSizeY;
@@ -478,6 +520,8 @@ namespace Aurora.Framework.Services
             map["AllScopeIDs"] = AllScopeIDs.ToOSDArray();
             map["Flags"] = Flags;
             map["EstateOwner"] = EstateOwner;
+            map["regionTerrain"] = RegionTerrain;
+            map["regionArea"] = RegionArea;
 
             // We send it along too so that it doesn't need resolved on the other end
             if (ExternalEndPoint != null)
@@ -529,7 +573,7 @@ namespace Aurora.Framework.Services
                 ParcelMapImage = map["ParcelMapImage"].AsUUID();
 
             if (map.ContainsKey("access"))
-                Access = (byte) map["access"].AsInteger();
+                Access = (byte)map["access"].AsInteger();
 
             if (map.ContainsKey("owner_uuid"))
                 EstateOwner = map["owner_uuid"].AsUUID();
@@ -559,7 +603,7 @@ namespace Aurora.Framework.Services
                 ScopeID = map["ScopeID"].AsUUID();
 
             if (map.ContainsKey("AllScopeIDs"))
-                AllScopeIDs = ((OSDArray) map["AllScopeIDs"]).ConvertAll<UUID>(o => o);
+                AllScopeIDs = ((OSDArray)map["AllScopeIDs"]).ConvertAll<UUID>(o => o);
 
             if (map.ContainsKey("remoteEndPointIP"))
             {
@@ -567,6 +611,11 @@ namespace Aurora.Framework.Services
                 int port = map["remoteEndPointPort"].AsInteger();
                 m_remoteEndPoint = new IPEndPoint(add, port);
             }
+            if (map.ContainsKey("regionTerrain"))
+                RegionTerrain = map["regionTerrain"].AsString();
+            if (map.ContainsKey("regionArea"))
+                RegionArea = (uint)map["regionArea"].AsInteger();
+
         }
 
         #endregion

@@ -55,7 +55,7 @@ namespace Aurora.Framework.Services
         public override void FromOSD(OSDMap map)
         {
             AgentInfo = new IAgentInfo();
-            AgentInfo.FromOSD((OSDMap) (map["AgentInfo"]));
+            AgentInfo.FromOSD((OSDMap)(map["AgentInfo"]));
             UserAccount = new UserAccount();
             UserAccount.FromOSD((OSDMap)(map["UserAccount"]));
             if (!map.ContainsKey("ActiveGroup"))
@@ -65,34 +65,34 @@ namespace Aurora.Framework.Services
                 ActiveGroup = new GroupMembershipData();
                 ActiveGroup.FromOSD((OSDMap)(map["ActiveGroup"]));
             }
-            GroupMemberships = ((OSDArray) map["GroupMemberships"]).ConvertAll<GroupMembershipData>((o) =>
-                                                                                                        {
-                                                                                                            GroupMembershipData
-                                                                                                                group =
-                                                                                                                    new GroupMembershipData
-                                                                                                                        ();
-                                                                                                            group
-                                                                                                                .FromOSD
-                                                                                                                ((OSDMap
-                                                                                                                 ) o);
-                                                                                                            return group;
-                                                                                                        });
-            OfflineMessages = ((OSDArray) map["OfflineMessages"]).ConvertAll<GridInstantMessage>((o) =>
-                                                                                                     {
-                                                                                                         GridInstantMessage
-                                                                                                             group =
-                                                                                                                 new GridInstantMessage
-                                                                                                                     ();
-                                                                                                         group.FromOSD(
-                                                                                                             (OSDMap) o);
-                                                                                                         return group;
-                                                                                                     });
-            MuteList = ((OSDArray) map["MuteList"]).ConvertAll<MuteList>((o) =>
-                                                                             {
-                                                                                 MuteList group = new MuteList();
-                                                                                 group.FromOSD((OSDMap) o);
-                                                                                 return group;
-                                                                             });
+            GroupMemberships = ((OSDArray)map["GroupMemberships"]).ConvertAll<GroupMembershipData>((o) =>
+            {
+                GroupMembershipData
+                    group =
+                        new GroupMembershipData
+                            ();
+                group
+                    .FromOSD
+                    ((OSDMap
+                     )o);
+                return group;
+            });
+            OfflineMessages = ((OSDArray)map["OfflineMessages"]).ConvertAll<GridInstantMessage>((o) =>
+            {
+                GridInstantMessage
+                    group =
+                        new GridInstantMessage
+                            ();
+                group.FromOSD(
+                    (OSDMap)o);
+                return group;
+            });
+            MuteList = ((OSDArray)map["MuteList"]).ConvertAll<MuteList>((o) =>
+            {
+                MuteList group = new MuteList();
+                group.FromOSD((OSDMap)o);
+                return group;
+            });
 
             if (map.ContainsKey("Appearance"))
             {
@@ -103,10 +103,10 @@ namespace Aurora.Framework.Services
                 FriendOnlineStatuses = ((OSDArray)map["FriendOnlineStatuses"]).ConvertAll<UUID>((o) => { return o; });
             if (map.ContainsKey("Friends"))
                 Friends = ((OSDArray)map["Friends"]).ConvertAll<FriendInfo>((o) =>
-                { 
+                {
                     FriendInfo f = new FriendInfo();
                     f.FromOSD((OSDMap)o);
-                    return f; 
+                    return f;
                 });
         }
 
@@ -120,7 +120,7 @@ namespace Aurora.Framework.Services
             map["GroupMemberships"] = GroupMemberships.ToOSDArray();
             map["OfflineMessages"] = OfflineMessages.ToOSDArray();
             map["MuteList"] = MuteList.ToOSDArray();
-            if(Appearance != null)
+            if (Appearance != null)
                 map["Appearance"] = Appearance.ToOSD();
             map["FriendOnlineStatuses"] = FriendOnlineStatuses.ToOSDArray();
             map["Friends"] = Friends.ToOSDArray();
@@ -291,7 +291,7 @@ namespace Aurora.Framework.Services
             Success = map["Success"];
             Reason = map["Reason"];
             RequestedUDPPort = map["RequestedUDPPort"];
-            if(map.ContainsKey("CapsURIs"))
+            if (map.ContainsKey("CapsURIs"))
                 CapsURIs = (OSDMap)map["CapsURIs"];
             OurIPForClient = map["OurIPForClient"];
         }
@@ -569,7 +569,7 @@ namespace Aurora.Framework.Services
                 return;
 
             System.IO.MemoryStream stream = new System.IO.MemoryStream(ObjectBlob);
-            Aurora.Framework.Serialization.SceneEntitySerializer.SceneObjectSerializer.FromXml2Format(ref stream, Scene);
+            WhiteCore.Framework.Serialization.SceneEntitySerializer.SceneObjectSerializer.FromXml2Format(ref stream, Scene);
             stream.Close();
             ObjectBlob = null;
         }
