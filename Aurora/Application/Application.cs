@@ -26,15 +26,11 @@
  */
 
 using Aurora.Simulation.Base;
-using System.Reflection;
-
-[assembly: AssemblyVersion("0.8.1")]
-[assembly: AssemblyFileVersion("0.8.1")]
 
 namespace Aurora
 {
     /// <summary>
-    ///     Starting class for the OpenSimulator Region
+    ///     Starting class for the Aurora Region
     /// </summary>
     public class Application
     {
