@@ -30,6 +30,7 @@ using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
 using Aurora.Simulation.Base;
 
+
 namespace Aurora.Server
 {
     public class AuroraBase : SimulationBase
@@ -43,11 +44,11 @@ namespace Aurora.Server
 
             //Fix the default prompt
             if (MainConsole.Instance != null)
-			{
-				MainConsole.Instance.DefaultPrompt = "Aurora.Server ";
-				MainConsole.Instance.Info ("[AURORASTARTUP]: Startup completed in " +
-					(DateTime.Now - this.StartupTime).TotalSeconds);
-			}
+            {
+                MainConsole.Instance.DefaultPrompt = "Aurora.Server ";
+                MainConsole.Instance.Info("[AuroraSTARTUP]: Startup completed in " +
+                    (DateTime.Now - this.StartupTime).TotalSeconds);
+            }
         }
 
         public override ISimulationBase Copy()
