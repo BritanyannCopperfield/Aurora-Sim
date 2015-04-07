@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+﻿/*
+ * Copyright (c) Contributors, http://aurora-sim.org
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -25,48 +25,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace Aurora.ClientStack
-{
-    /// <summary>
-    ///     A circular buffer and hashset for tracking incoming packet sequence
-    ///     numbers
-    /// </summary>
-    public sealed class IncomingPacketHistoryCollection
-    {
-        private readonly int m_capacity;
-        private readonly HashSet<uint> m_hashSet;
-        private readonly uint[] m_items;
-        private int m_first;
-        private int m_next;
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
 
-        public IncomingPacketHistoryCollection(int capacity)
-        {
-            m_capacity = capacity;
-            m_items = new uint[capacity];
-            m_hashSet = new HashSet<uint>();
-        }
+[assembly: AssemblyTitle("Aurora.ClientStack")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Aurora.ClientStack")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-        public bool TryEnqueue(uint ack)
-        {
-            lock (m_hashSet)
-            {
-                if (m_hashSet.Add(ack))
-                {
-                    m_items[m_next] = ack;
-                    m_next = (m_next + 1) % m_capacity;
-                    if (m_next == m_first)
-                    {
-                        m_hashSet.Remove(m_items[m_first]);
-                        m_first = (m_first + 1) % m_capacity;
-                    }
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
 
-                    return true;
-                }
-            }
+[assembly: ComVisible(false)]
 
-            return false;
-        }
-    }
-}
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+
+[assembly: Guid("269c99ff-0740-4886-8593-7527903090bf")]
+
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+
+[assembly: AssemblyVersion("0.8.1.*")]

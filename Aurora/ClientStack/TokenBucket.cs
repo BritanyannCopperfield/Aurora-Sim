@@ -99,14 +99,14 @@ namespace Aurora.ClientStack
         /// </remarks>
         public float DripRate
         {
-            get { return tokensPerMS*1000; }
+            get { return tokensPerMS * 1000; }
             set
             {
                 if (value == 0)
                     tokensPerMS = 0;
                 else
                 {
-                    float bpms = (int) (value/1000.0f);
+                    float bpms = (int)(value / 1000.0f);
 
                     tokensPerMS = bpms <= 0.5f ? .5f : bpms;
                 }
@@ -234,7 +234,7 @@ namespace Aurora.ClientStack
                 return false;
             }
 
-            int dripAmount = (int) (deltaMS*tokensPerMS);
+            int dripAmount = (int)(deltaMS * tokensPerMS);
 
             content = Math.Min(content + dripAmount, maxBurst);
             lastDrip = now;

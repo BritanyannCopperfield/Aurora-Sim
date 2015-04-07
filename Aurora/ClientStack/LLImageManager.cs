@@ -142,17 +142,17 @@ namespace Aurora.ClientStack
                         //    newRequest.RequestedAssetID, newRequest.DiscardLevel, newRequest.PacketNumber, newRequest.Priority);
 
                         imgrequest = new J2KImage()
-                                         {
-                                             J2KDecoder = m_j2kDecodeModule,
-                                             AssetService = m_assetCache,
-                                             AgentID = m_client.AgentId,
-                                             InventoryAccessModule =
-                                                 m_client.Scene.RequestModuleInterface<IInventoryAccessModule>(),
-                                             DiscardLevel = newRequest.DiscardLevel,
-                                             StartPacket = Math.Max(1, newRequest.PacketNumber),
-                                             Priority = newRequest.Priority,
-                                             TextureID = newRequest.RequestedAssetID
-                                         };
+                        {
+                            J2KDecoder = m_j2kDecodeModule,
+                            AssetService = m_assetCache,
+                            AgentID = m_client.AgentId,
+                            InventoryAccessModule =
+                                m_client.Scene.RequestModuleInterface<IInventoryAccessModule>(),
+                            DiscardLevel = newRequest.DiscardLevel,
+                            StartPacket = Math.Max(1, newRequest.PacketNumber),
+                            Priority = newRequest.Priority,
+                            TextureID = newRequest.RequestedAssetID
+                        };
                         imgrequest.Priority = newRequest.Priority;
 
                         //Add this download to the priority queue
@@ -171,7 +171,7 @@ namespace Aurora.ClientStack
                 return null;
 
             lock (m_syncRoot)
-                return m_queue.Find(new J2KImage() {TextureID = newRequest.RequestedAssetID},
+                return m_queue.Find(new J2KImage() { TextureID = newRequest.RequestedAssetID },
                                     new Comparer());
         }
 
@@ -195,7 +195,7 @@ namespace Aurora.ClientStack
                     if (image.Layers == null)
                     {
                         //We don't have it, tell the client that it doesn't exist
-                        m_client.SendAssetUploadCompleteMessage((sbyte) AssetType.Texture, false, image.TextureID);
+                        m_client.SendAssetUploadCompleteMessage((sbyte)AssetType.Texture, false, image.TextureID);
                         packetsSent++;
                     }
                     else
@@ -214,11 +214,6 @@ namespace Aurora.ClientStack
                     //Add it to the other queue and delete it from the top
                     imagesToReAdd.Add(image);
                     packetsSent++; //We tried to send one
-                    // UNTODO: This was a limitation of how LLImageManager is currently
-                    // written. Undecoded textures should not be going into the priority
-                    // queue, because a high priority undecoded texture will clog up the
-                    // pipeline for a client
-                    //return true;
                 }
             }
 
@@ -310,7 +305,6 @@ namespace Aurora.ClientStack
         #endregion
 
         #region Nested type: J2KImageComparer
-
 
         #endregion
     }

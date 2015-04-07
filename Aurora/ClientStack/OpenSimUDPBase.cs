@@ -130,8 +130,8 @@ namespace Aurora.ClientStack
                 {
                     // This udp socket flag is not supported under mono, 
                     // so we'll catch the exception and continue
-                    if(Util.IsWindows())
-                        m_udpSocket.IOControl(SIO_UDP_CONNRESET, new byte[] {0}, null);
+                    if (Util.IsWindows())
+                        m_udpSocket.IOControl(SIO_UDP_CONNRESET, new byte[] { 0 }, null);
                     //MainConsole.Instance.Debug("[UDPBASE]: SIO_UDP_CONNRESET flag set");
                 }
                 catch (SocketException)
@@ -242,7 +242,7 @@ namespace Aurora.ClientStack
 
                 // get the buffer that was created in AsyncBeginReceive
                 // this is the received data
-                UDPPacketBuffer buffer = (UDPPacketBuffer) iar.AsyncState;
+                UDPPacketBuffer buffer = (UDPPacketBuffer)iar.AsyncState;
 
                 try
                 {

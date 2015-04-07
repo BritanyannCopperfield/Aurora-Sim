@@ -26,6 +26,7 @@
  */
 
 using Amib.Threading;
+
 using Aurora.Framework.ClientInterfaces;
 using Aurora.Framework.ConsoleFramework;
 using Aurora.Framework.Modules;
@@ -66,7 +67,6 @@ namespace Aurora.ClientStack
         private readonly ExpiringCache<UUID, uint> m_inQueueCircuitCodes = new ExpiringCache<UUID, uint>();
         private readonly ThreadMonitor outgoingPacketMonitor = new ThreadMonitor();
 
-        //PacketEventDictionary packetEvents = new PacketEventDictionary();
         /// <summary>
         ///     Handlers for incoming packets
         /// </summary>
@@ -168,7 +168,6 @@ namespace Aurora.ClientStack
         /// </summary>
         private bool m_sendPing;
 
-        //private UDPClientCollection m_clients = new UDPClientCollection();
         /// <summary>
         /// </summary>
         /// <summary>
@@ -214,10 +213,10 @@ namespace Aurora.ClientStack
                 int now = start;
                 while (now == start)
                     now = Environment.TickCount;
-                TickCountResolution += (now - start)*0.2f;
+                TickCountResolution += (now - start) * 0.2f;
             }
             //MainConsole.Instance.Info("[LLUDPSERVER]: Average Environment.TickCount resolution: " + TickCountResolution + "ms");
-            TickCountResolution = (float) Math.Ceiling(TickCountResolution);
+            TickCountResolution = (float)Math.Ceiling(TickCountResolution);
 
             #endregion Environment.TickCount Measurement
 
@@ -285,7 +284,7 @@ namespace Aurora.ClientStack
             IPAddress internalIP = IPAddress.Any;
             if (networkConfig != null)
                 IPAddress.TryParse(networkConfig.GetString("internal_ip", "0.0.0.0"), out internalIP);
-            
+
             base.Initialise(internalIP, (int)port);
         }
 
@@ -353,13 +352,13 @@ namespace Aurora.ClientStack
             if (m_ThreadPool == null)
                 InitThreadPool(15);
             if (m_threadPoolRunning) //Check if the thread pool should be running
-                m_ThreadPool.QueueWorkItem((WorkItemCallback) SmartThreadPoolCallback, new[] {callback, obj});
+                m_ThreadPool.QueueWorkItem((WorkItemCallback)SmartThreadPoolCallback, new[] { callback, obj });
         }
 
         private static object SmartThreadPoolCallback(object o)
         {
-            object[] array = (object[]) o;
-            Action<object> callback = (Action<object>) array[0];
+            object[] array = (object[])o;
+            Action<object> callback = (Action<object>)array[0];
             object obj = array[1];
 
             callback(obj);
@@ -372,7 +371,7 @@ namespace Aurora.ClientStack
             {
                 //This stops more tasks and threads from being started
                 m_threadPoolRunning = false;
-                m_ThreadPool.WaitForIdle(60*1000);
+                m_ThreadPool.WaitForIdle(60 * 1000);
                 //Wait for the threads to be idle, but don't wait for more than a minute
                 //Destroy the threadpool now
                 m_ThreadPool.Dispose();
@@ -410,11 +409,11 @@ namespace Aurora.ClientStack
                     byte[] data = datas[i];
                     ForEachInternalClient(
                         delegate(IClientAPI client)
-                            {
-                                if (client is LLClientView)
-                                    SendPacketData(((LLClientView) client).UDPClient, data, packet, category,
-                                                   resendMethod, finishedMethod);
-                            }
+                        {
+                            if (client is LLClientView)
+                                SendPacketData(((LLClientView)client).UDPClient, data, packet, category,
+                                               resendMethod, finishedMethod);
+                        }
                         );
                 }
             }
@@ -423,11 +422,11 @@ namespace Aurora.ClientStack
                 byte[] data = packet.ToBytes();
                 ForEachInternalClient(
                     delegate(IClientAPI client)
-                        {
-                            if (client is LLClientView)
-                                SendPacketData(((LLClientView) client).UDPClient, data, packet, category, resendMethod,
-                                               finishedMethod);
-                        }
+                    {
+                        if (client is LLClientView)
+                            SendPacketData(((LLClientView)client).UDPClient, data, packet, category, resendMethod,
+                                           finishedMethod);
+                    }
                     );
             }
         }
@@ -477,7 +476,7 @@ namespace Aurora.ClientStack
             // The vast majority of packets are less than 200 bytes, although due to asset transfers and packet splitting
             // there are a decent number of packets in the 1000-1140 byte range. We allocate one of two sizes of data here
             // to accomodate for both common scenarios and provide ample room for ACK appending in both
-            int bufferSize = dataLength*2;
+            int bufferSize = dataLength * 2;
 
             UDPPacketBuffer buffer = new UDPPacketBuffer(udpClient.RemoteEndPoint, bufferSize);
 
@@ -499,7 +498,7 @@ namespace Aurora.ClientStack
                                                ". DataLength=" + dataLength +
                                                " and BufferLength=" + buffer.Data.Length +
                                                ". Removing MSG_ZEROCODED flag");
-                    data[0] = (byte) (data[0] & ~Helpers.MSG_ZEROCODED);
+                    data[0] = (byte)(data[0] & ~Helpers.MSG_ZEROCODED);
                 }
             }
 
@@ -541,16 +540,16 @@ namespace Aurora.ClientStack
             if (udpClient.PendingAcks.TryDequeue(out ack))
             {
                 List<PacketAckPacket.PacketsBlock> blocks = new List<PacketAckPacket.PacketsBlock>();
-                PacketAckPacket.PacketsBlock block = new PacketAckPacket.PacketsBlock {ID = ack};
+                PacketAckPacket.PacketsBlock block = new PacketAckPacket.PacketsBlock { ID = ack };
                 blocks.Add(block);
 
                 while (udpClient.PendingAcks.TryDequeue(out ack))
                 {
-                    block = new PacketAckPacket.PacketsBlock {ID = ack};
+                    block = new PacketAckPacket.PacketsBlock { ID = ack };
                     blocks.Add(block);
                 }
 
-                PacketAckPacket packet = (PacketAckPacket) PacketPool.Instance.GetPacket(PacketType.PacketAck);
+                PacketAckPacket packet = (PacketAckPacket)PacketPool.Instance.GetPacket(PacketType.PacketAck);
                 packet.Header.Reliable = false;
                 packet.Packets = blocks.ToArray();
 
@@ -560,7 +559,7 @@ namespace Aurora.ClientStack
 
         public void SendPing(LLUDPClient udpClient)
         {
-            StartPingCheckPacket pc = (StartPingCheckPacket) PacketPool.Instance.GetPacket(PacketType.StartPingCheck);
+            StartPingCheckPacket pc = (StartPingCheckPacket)PacketPool.Instance.GetPacket(PacketType.StartPingCheck);
             pc.Header.Reliable = false;
 
             pc.PingID.PingID = udpClient.CurrentPingSequence++;
@@ -573,7 +572,7 @@ namespace Aurora.ClientStack
         public void CompletePing(LLUDPClient udpClient, byte pingID)
         {
             CompletePingCheckPacket completePing =
-                (CompletePingCheckPacket) PacketPool.Instance.GetPacket(PacketType.CompletePingCheck);
+                (CompletePingCheckPacket)PacketPool.Instance.GetPacket(PacketType.CompletePingCheck);
             completePing.PingID.PingID = pingID;
             SendPacket(udpClient, completePing, ThrottleOutPacketType.OutBand, false, null, null);
         }
@@ -584,7 +583,7 @@ namespace Aurora.ClientStack
                 return;
 
             // Disconnect an agent if no packets are received for some time
-            if ((Environment.TickCount & Int32.MaxValue) - udpClient.TickLastPacketReceived > 1000*ClientTimeOut &&
+            if ((Environment.TickCount & Int32.MaxValue) - udpClient.TickLastPacketReceived > 1000 * ClientTimeOut &&
                 !udpClient.IsPaused)
             {
                 MainConsole.Instance.Warn("[LLUDPSERVER]: Ack timeout, disconnecting " + udpClient.AgentID);
@@ -619,7 +618,7 @@ namespace Aurora.ClientStack
                     //    outgoingPacket.SequenceNumber, outgoingPacket.ResendCount, Environment.TickCount - outgoingPacket.TickCount);
 
                     // Set the resent flag
-                    outgoingPacket.Buffer.Data[0] = (byte) (outgoingPacket.Buffer.Data[0] | Helpers.MSG_RESENT);
+                    outgoingPacket.Buffer.Data[0] = (byte)(outgoingPacket.Buffer.Data[0] | Helpers.MSG_RESENT);
 
                     // resend in its original category
                     outgoingPacket.Category = ThrottleOutPacketType.Resend;
@@ -676,9 +675,9 @@ namespace Aurora.ClientStack
                 if (ackCount > 0)
                 {
                     // Set the last byte of the packet equal to the number of appended ACKs
-                    buffer.Data[dataLength++] = (byte) ackCount;
+                    buffer.Data[dataLength++] = (byte)ackCount;
                     // Set the appended ACKs flag on this packet
-                    buffer.Data[0] = (byte) (buffer.Data[0] | Helpers.MSG_APPENDED_ACKS);
+                    buffer.Data[0] = (byte)(buffer.Data[0] | Helpers.MSG_APPENDED_ACKS);
                 }
             }
 
@@ -692,7 +691,7 @@ namespace Aurora.ClientStack
             if (!isResend)
             {
                 // Not a resend, assign a new sequence number
-                uint sequenceNumber = (uint) Interlocked.Increment(ref udpClient.CurrentSequence);
+                uint sequenceNumber = (uint)Interlocked.Increment(ref udpClient.CurrentSequence);
                 Utils.UIntToBytesBig(sequenceNumber, buffer.Data, 1);
                 outgoingPacket.SequenceNumber = sequenceNumber;
 
@@ -725,19 +724,17 @@ namespace Aurora.ClientStack
 
         protected override void PacketReceived(UDPPacketBuffer buffer)
         {
-            //MainConsole.Instance.Info("[llupdserver] PacketReceived");
-
             LLUDPClient udpClient = null;
             Packet packet = null;
             int packetEnd = buffer.DataLength - 1;
-            IPEndPoint address = (IPEndPoint) buffer.RemoteEndPoint;
+            IPEndPoint address = (IPEndPoint)buffer.RemoteEndPoint;
 
             #region Decoding
 
             try
             {
                 packet = PacketPool.Instance.GetPacket(buffer.Data, ref packetEnd,
-                                                       // Only allocate a buffer for zerodecoding if the packet is zerocoded
+                    // Only allocate a buffer for zerodecoding if the packet is zerocoded
                                                        ((buffer.Data[0] & Helpers.MSG_ZEROCODED) != 0)
                                                            ? new byte[4096]
                                                            : null);
@@ -763,9 +760,9 @@ namespace Aurora.ClientStack
             // UseCircuitCode handling
             if (packet.Type == PacketType.UseCircuitCode)
             {
-                UseCircuitCodePacket cPacket = (UseCircuitCodePacket) packet;
+                UseCircuitCodePacket cPacket = (UseCircuitCodePacket)packet;
                 AgentCircuitData sessionData;
-                IPEndPoint remoteEndPoint = (IPEndPoint) buffer.RemoteEndPoint;
+                IPEndPoint remoteEndPoint = (IPEndPoint)buffer.RemoteEndPoint;
                 if (IsClientAuthorized(cPacket, remoteEndPoint, out sessionData))
                 {
                     lock (m_inQueueCircuitCodes)
@@ -778,7 +775,7 @@ namespace Aurora.ClientStack
                             return;
                         }
                     }
-                    object[] array = new object[] {buffer, packet, sessionData};
+                    object[] array = new object[] { buffer, packet, sessionData };
                     if (m_asyncPacketHandling)
                         FireAndForget(HandleUseCircuitCode, array);
                     else
@@ -804,7 +801,7 @@ namespace Aurora.ClientStack
                 return;
             }
 
-            udpClient = ((LLClientView) client).UDPClient;
+            udpClient = ((LLClientView)client).UDPClient;
 
             if (!udpClient.IsConnected)
                 return;
@@ -829,7 +826,7 @@ namespace Aurora.ClientStack
             // Handle PacketAck packets
             if (packet.Type == PacketType.PacketAck)
             {
-                PacketAckPacket ackPacket = (PacketAckPacket) packet;
+                PacketAckPacket ackPacket = (PacketAckPacket)packet;
 
                 foreach (PacketAckPacket.PacketsBlock t in ackPacket.Packets)
                     udpClient.NeedAcks.Acknowledge(t.ID, now, packet.Header.Resent);
@@ -852,9 +849,9 @@ namespace Aurora.ClientStack
                 // client.BytesSinceLastACK. Lockless thread safety
                 int bytesSinceLastACK = Interlocked.Exchange(ref udpClient.BytesSinceLastACK, 0);
                 bytesSinceLastACK += buffer.DataLength;
-                if (bytesSinceLastACK > MTU*2)
+                if (bytesSinceLastACK > MTU * 2)
                 {
-                    bytesSinceLastACK -= MTU*2;
+                    bytesSinceLastACK -= MTU * 2;
                     SendAcks(udpClient);
                 }
                 Interlocked.Add(ref udpClient.BytesSinceLastACK, bytesSinceLastACK);
@@ -867,10 +864,6 @@ namespace Aurora.ClientStack
             // Check the archive of received reliable packet IDs to see whether we already received this packet
             if (packet.Header.Reliable && !udpClient.PacketArchive.TryEnqueue(packet.Header.Sequence))
             {
-                //if (packet.Header.Resent)
-                //    MainConsole.Instance.Debug("[LLUDPSERVER]: Received a resend of already processed packet #" + packet.Header.Sequence + ", type: " + packet.Type);
-                //else
-                //    MainConsole.Instance.Warn("[LLUDPSERVER]: Received a duplicate (not marked as resend) of packet #" + packet.Header.Sequence + ", type: " + packet.Type);
                 // Avoid firing a callback twice for the same packet
                 return;
             }
@@ -879,7 +872,7 @@ namespace Aurora.ClientStack
 
             #region BinaryStats
 
-            LogPacketHeader(true, udpClient.CircuitCode, 0, packet.Type, (ushort) packet.Length);
+            LogPacketHeader(true, udpClient.CircuitCode, 0, packet.Type, (ushort)packet.Length);
 
             #endregion BinaryStats
 
@@ -888,7 +881,7 @@ namespace Aurora.ClientStack
             if (packet.Type == PacketType.StartPingCheck)
             {
                 // We don't need to do anything else with ping checks
-                StartPingCheckPacket startPing = (StartPingCheckPacket) packet;
+                StartPingCheckPacket startPing = (StartPingCheckPacket)packet;
                 CompletePing(udpClient, startPing.PingID.PingID);
 
                 if ((Environment.TickCount - m_elapsedMSSinceLastStatReport) >= 3000)
@@ -914,12 +907,12 @@ namespace Aurora.ClientStack
         {
             MainConsole.Instance.Debug("[LLUDPServer] HandelUserCircuitCode");
             DateTime startTime = DateTime.Now;
-            object[] array = (object[]) o;
-            UDPPacketBuffer buffer = (UDPPacketBuffer) array[0];
-            UseCircuitCodePacket packet = (UseCircuitCodePacket) array[1];
-            AgentCircuitData sessionInfo = (AgentCircuitData) array[2];
+            object[] array = (object[])o;
+            UDPPacketBuffer buffer = (UDPPacketBuffer)array[0];
+            UseCircuitCodePacket packet = (UseCircuitCodePacket)array[1];
+            AgentCircuitData sessionInfo = (AgentCircuitData)array[2];
 
-            IPEndPoint remoteEndPoint = (IPEndPoint) buffer.RemoteEndPoint;
+            IPEndPoint remoteEndPoint = (IPEndPoint)buffer.RemoteEndPoint;
 
             // Begin the process of adding the client to the simulator
             if (AddClient(packet.CircuitCode.Code, packet.CircuitCode.ID,
@@ -928,7 +921,7 @@ namespace Aurora.ClientStack
                 uint ack = 0;
                 lock (m_inQueueCircuitCodes)
                 {
-                    ack = (uint) m_inQueueCircuitCodes[sessionInfo.AgentID];
+                    ack = (uint)m_inQueueCircuitCodes[sessionInfo.AgentID];
                     //And remove it
                     m_inQueueCircuitCodes.Remove(sessionInfo.AgentID);
                 }
@@ -944,16 +937,16 @@ namespace Aurora.ClientStack
 
         private void SendAckImmediate(IPEndPoint remoteEndpoint, uint sequenceNumber)
         {
-            PacketAckPacket ack = new PacketAckPacket
-                                      {Header = {Reliable = false}, Packets = new PacketAckPacket.PacketsBlock[1]};
-            ack.Packets[0] = new PacketAckPacket.PacketsBlock {ID = sequenceNumber};
+            PacketAckPacket ack = new PacketAckPacket { Header = { Reliable = false }, Packets = new PacketAckPacket.PacketsBlock[1] };
+            ack.Packets[0] = new PacketAckPacket.PacketsBlock { ID = sequenceNumber };
 
             byte[] packetData = ack.ToBytes();
             int length = packetData.Length;
 
-            UDPPacketBuffer buffer = new UDPPacketBuffer(remoteEndpoint, length) {DataLength = length};
+            UDPPacketBuffer buffer = new UDPPacketBuffer(remoteEndpoint, length) { DataLength = length };
 
             Buffer.BlockCopy(packetData, 0, buffer.Data, 0, length);
+
             SyncSend(buffer);
         }
 
@@ -1091,7 +1084,7 @@ namespace Aurora.ClientStack
                 // If nothing was sent, sleep for the minimum amount of time before a
                 // token bucket could get more tokens
                 if (!m_packetSent)
-                    Thread.Sleep((int) TickCountResolution);
+                    Thread.Sleep((int)TickCountResolution);
             }
             catch (Exception ex)
             {
@@ -1107,7 +1100,7 @@ namespace Aurora.ClientStack
             {
                 if (client is LLClientView)
                 {
-                    LLUDPClient udpClient = ((LLClientView) client).UDPClient;
+                    LLUDPClient udpClient = ((LLClientView)client).UDPClient;
 
                     if (udpClient.IsConnected)
                     {
@@ -1170,7 +1163,7 @@ namespace Aurora.ClientStack
 
         private void ProcessInPacket(object state)
         {
-            IncomingPacket incomingPacket = (IncomingPacket) state;
+            IncomingPacket incomingPacket = (IncomingPacket)state;
             Packet packet = incomingPacket.Packet;
             LLUDPClient udpClient = incomingPacket.Client;
             IClientAPI client;
@@ -1236,8 +1229,8 @@ namespace Aurora.ClientStack
                 flags &= 0xFE;
 
             // Put the flags byte into the most significant bits of the type integer
-            uint type = (uint) packetType;
-            type |= (uint) flags << 24;
+            uint type = (uint)packetType;
+            type |= (uint)flags << 24;
 
             // MainConsole.Instance.Debug("1 LogPacketHeader(): Outside lock");
             lock (binStatsLogLock)
@@ -1256,13 +1249,13 @@ namespace Aurora.ClientStack
 
                         // First log file or time has expired, start writing to a new log file
                         PacketLog = new PacketLogger
-                                        {
-                                            StartTime = now,
-                                            Path = (binStatsDir.Length > 0
-                                                        ? binStatsDir + Path.DirectorySeparatorChar.ToString()
-                                                        : "")
-                                                   + String.Format("packets-{0}.log", now.ToString("yyyyMMddHHmmss"))
-                                        };
+                        {
+                            StartTime = now,
+                            Path = (binStatsDir.Length > 0
+                                        ? binStatsDir + Path.DirectorySeparatorChar.ToString()
+                                        : "")
+                                   + String.Format("packets-{0}.log", now.ToString("yyyyMMddHHmmss"))
+                        };
                         PacketLog.Log = new BinaryWriter(File.Open(PacketLog.Path, FileMode.Append, FileAccess.Write));
                     }
 

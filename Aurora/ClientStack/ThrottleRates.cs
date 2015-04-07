@@ -29,6 +29,7 @@ using System;
 using Aurora.Framework.ClientInterfaces;
 using Nini.Config;
 
+
 namespace Aurora.ClientStack
 {
     /// <summary>

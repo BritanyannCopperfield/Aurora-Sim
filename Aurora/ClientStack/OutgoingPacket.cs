@@ -29,6 +29,7 @@ using Aurora.Framework.ClientInterfaces;
 using OpenMetaverse;
 using OpenMetaverse.Packets;
 
+
 namespace Aurora.ClientStack
 {
     public delegate void UnackedPacketMethod(OutgoingPacket packet);
