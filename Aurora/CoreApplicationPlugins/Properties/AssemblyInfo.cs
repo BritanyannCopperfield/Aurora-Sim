@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+﻿/*
+ * Copyright (c) Contributors, http://aurora-sim.org
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -25,56 +25,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using Aurora.Framework.Modules;
-using Aurora.Framework.Services;
-using Aurora.Services.DataService;
-using Nini.Config;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
-namespace Aurora.CoreApplicationPlugins.AuroraData
-{
-    public class AuroraDataStartupPlugin : IApplicationPlugin
-    {
-        #region IApplicationPlugin Members
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
 
-        public void PreStartup(ISimulationBase simBase)
-        {
-        }
+[assembly: AssemblyTitle("Aurora.CoreApplicationPlugins")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Aurora.CoreApplicationPlugins")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-        public void Initialize(ISimulationBase simBase)
-        {
-            LocalDataService service = new LocalDataService();
-            service.Initialise(simBase.ConfigSource, simBase.ApplicationRegistry);
-        }
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
 
-        public void PostInitialise()
-        {
-        }
+[assembly: ComVisible(false)]
 
-        public void Start()
-        {
-        }
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 
-        public void PostStart()
-        {
-        }
+[assembly: Guid("269c99ff-0740-4886-8593-7527903090bf")]
 
-        public void Close()
-        {
-        }
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 
-        public void ReloadConfiguration(IConfigSource m_config)
-        {
-        }
-
-        public string Name
-        {
-            get { return GetType().Name; }
-        }
-
-        #endregion
-
-        public void Dispose()
-        {
-        }
-    }
-}
+[assembly: AssemblyVersion("0.8.1.*")]
