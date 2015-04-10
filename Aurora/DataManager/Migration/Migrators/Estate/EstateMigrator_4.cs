@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -29,25 +29,42 @@ using System;
 using System.Collections.Generic;
 using Aurora.Framework.Utilities;
 
-namespace Aurora.DataManager.Migration.Migrators.Generics
+namespace Aurora.DataManager.Migration.Migrators.Estate
 {
-    public class GenericsMigrator_4 : Migrator
+    public class EstateMigrator_4 : Migrator
     {
-        public GenericsMigrator_4()
+        public EstateMigrator_4()
         {
             Version = new Version(0, 0, 4);
-            MigrationName = "Generics";
+            MigrationName = "Estate";
 
             schema = new List<SchemaDefinition>();
 
-            AddSchema("generics", ColDefs(
-                ColDef("OwnerID", ColumnTypes.String36),
-                ColDef("Type", ColumnTypes.String64),
-                ColDef("Key", ColumnTypes.String64),
-                ColDef("Value", ColumnTypes.LongText)
-                                      ), IndexDefs(
-                                          IndexDef(new string[3] {"OwnerID", "Type", "Key"}, IndexType.Primary)
-                                             ));
+            RenameSchema("estateregions", "estate_regions");
+            RemoveSchema("estateregions");
+
+            AddSchema("estate_regions", ColDefs(
+                ColDef("RegionID", ColumnTypes.String36),
+                ColDef("EstateID", ColumnTypes.Integer11)
+                                           ), IndexDefs(
+                                               IndexDef(new string[1] {"RegionID"}, IndexType.Primary),
+                                               IndexDef(new string[1] {"EstateID"}, IndexType.Index)
+                                                  ));
+
+            RenameSchema("estatesettings", "estate_settings");
+            RemoveSchema("estatesettings");
+
+            AddSchema("estate_settings", ColDefs(
+                ColDef("EstateID", ColumnTypes.Integer11),
+                ColDef("EstateName", ColumnTypes.String100),
+                ColDef("EstateOwner", ColumnTypes.String36),
+                ColDef("ParentEstateID", ColumnTypes.Integer11),
+                ColDef("Settings", ColumnTypes.Text)
+                                            ), IndexDefs(
+                                                IndexDef(new string[1] {"EstateID"}, IndexType.Primary),
+                                                IndexDef(new string[1] {"EstateOwner"}, IndexType.Index),
+                                                IndexDef(new string[2] {"EstateName", "EstateOwner"}, IndexType.Index)
+                                                   ));
         }
 
         protected override void DoCreateDefaults(IDataConnector genericData)

@@ -38,7 +38,7 @@ namespace Aurora.DataManager
 {
     public abstract class DataManagerBase : IDataConnector
     {
-        private const string VERSION_TABLE_NAME = "aurora_migrator_version";
+        private const string VERSION_TABLE_NAME = "migrator_version";
         private const string COLUMN_NAME = "name";
         private const string COLUMN_VERSION = "version";
 
@@ -48,7 +48,7 @@ namespace Aurora.DataManager
         public abstract bool TableExists(string table);
         public abstract void CreateTable(string table, ColumnDefinition[] columns, IndexDefinition[] indexDefinitions);
 
-        public Version GetAuroraVersion(string migratorName)
+        public Version GetWhiteCoreVersion(string migratorName)
         {
             if (!TableExists(VERSION_TABLE_NAME))
             {
@@ -69,13 +69,13 @@ namespace Aurora.DataManager
 
             Dictionary<string, object> where = new Dictionary<string, object>(1);
             where[COLUMN_NAME] = migratorName;
-            List<string> results = Query(new string[] {COLUMN_VERSION}, VERSION_TABLE_NAME, new QueryFilter
-                                                                                                {
-                                                                                                    andFilters = where
-                                                                                                }, null, null, null);
+            List<string> results = Query(new string[] { COLUMN_VERSION }, VERSION_TABLE_NAME, new QueryFilter
+            {
+                andFilters = where
+            }, null, null, null);
             if (results.Count > 0)
             {
-                Version[] highestVersion = {null};
+                Version[] highestVersion = { null };
                 foreach (
                     var version in
                         results.Where(result => result.Trim() != string.Empty)
@@ -90,7 +90,7 @@ namespace Aurora.DataManager
             return null;
         }
 
-        public void WriteAuroraVersion(Version version, string MigrationName)
+        public void WriteWhiteCoreVersion(Version version, string MigrationName)
         {
             if (!TableExists(VERSION_TABLE_NAME))
             {
@@ -113,7 +113,7 @@ namespace Aurora.DataManager
             filter.andFilters[COLUMN_NAME] = MigrationName;
             Delete(VERSION_TABLE_NAME, filter);
             //Add the new version
-            Insert(VERSION_TABLE_NAME, new[] {version.ToString(), MigrationName});
+            Insert(VERSION_TABLE_NAME, new[] { version.ToString(), MigrationName });
         }
 
         public void CopyTableToTable(string sourceTableName, string destinationTableName,
@@ -150,7 +150,7 @@ namespace Aurora.DataManager
             if (!TableExists(tableName))
             {
                 MainConsole.Instance.Warn("[DataMigrator]: Issue finding table " + tableName +
-                                          " when verifing tables exist!");
+                    " when verifing tables exist!");
                 return false;
             }
 
@@ -277,7 +277,8 @@ namespace Aurora.DataManager
             {
                 if (!VerifyTableExists(tableName, columnDefinitions, indexDefinitions))
                 {
-                    //throw new MigrationOperationException("Cannot create, table with same name and different columns already exists. This should be fixed in a migration: " + tableName);
+                    //throw new MigrationOperationException("Cannot create, table with same name and different columns already exists. 
+                    //This should be fixed in a migration: " + tableName);
                     UpdateTable(tableName, columnDefinitions, indexDefinitions, renameColumns);
                 }
                 return;
@@ -426,7 +427,7 @@ namespace Aurora.DataManager
                     Dictionary<string, ColumnType> regexChecks = new Dictionary<string, ColumnType>(5);
                     regexChecks[regexInt] = ColumnType.Integer;
                     regexChecks[regexTinyint] = ColumnType.TinyInt;
-                    regexChecks[regexChar] = ColumnType.Char;                    
+                    regexChecks[regexChar] = ColumnType.Char;
                     regexChecks[regexString] = ColumnType.String;
                     regexChecks[regexBinary] = ColumnType.Binary;
 
@@ -452,7 +453,7 @@ namespace Aurora.DataManager
                     else
                     {
                         throw new Exception(
-                            "You've discovered some type that's not reconized by Aurora, please place the correct conversion in ConvertTypeToColumnType. Type: " +
+                            "You've discovered some type that's not reconized by WhiteCore, please place the correct conversion in ConvertTypeToColumnType. Type: " +
                             tStr);
                     }
             }

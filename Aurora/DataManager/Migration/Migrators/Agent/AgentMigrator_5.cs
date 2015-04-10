@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * Copyright (c) Contributors, http://aurora-sim.org
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the WhiteCore-Sim Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -89,7 +89,7 @@ namespace Aurora.DataManager.Migration.Migrators.Agent
                                                  IndexDef(new string[1] {"ClassifiedUUID"}, IndexType.Primary),
                                                  IndexDef(new string[2] {"Name", "Category"}, IndexType.Index),
                                                  IndexDef(new string[1] {"OwnerUUID"}, IndexType.Index),
-                                                 IndexDef(new string[1] {"Keyword"}, IndexType.Index)
+                                                 IndexDef(new string[1] {"Keyword"}, IndexType.Index, 255)
                                                     ));
 
             AddSchema("userpicks", ColDefs(

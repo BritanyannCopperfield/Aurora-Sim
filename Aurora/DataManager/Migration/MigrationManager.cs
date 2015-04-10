@@ -50,13 +50,13 @@ namespace Aurora.DataManager.Migration
             this.genericData = genericData;
             this.migratorName = migratorName;
             this.validateTables = validateTables;
-            List<IMigrator> allMigrators = AuroraModuleLoader.PickupModules<IMigrator>();
+            List<IMigrator> allMigrators = WhiteCoreModuleLoader.PickupModules<IMigrator>();
 
             foreach (
                 IMigrator m in
                     allMigrators.Where(m => m.MigrationName != null).Where(m => m.MigrationName == migratorName))
             {
-                migrators.Add((Migrator) m);
+                migrators.Add((Migrator)m);
             }
         }
 
@@ -75,9 +75,9 @@ namespace Aurora.DataManager.Migration
             if (migratorName == "")
                 return;
             executed = false;
-            Version currentVersion = genericData.GetAuroraVersion(migratorName);
+            Version currentVersion = genericData.GetWhiteCoreVersion(migratorName);
 
-            //if there is no aurora version, this is likely an entirely new installation
+            //if there is no WhiteCore version, this is likely an entirely new installation
             if (currentVersion == null)
             {
                 Migrator defaultMigrator = GetHighestVersionMigratorThatCanProvideDefaultSetup();
@@ -189,7 +189,8 @@ namespace Aurora.DataManager.Migration
                         }
                     }
                 }
-                // MainConsole.Instance.Fatal (string.Format ("Failed to validate migration {0}-{1}, continueing...", currentMigrator.MigrationName, currentMigrator.Version));
+                //else
+                //    MainConsole.Instance.Fatal (string.Format ("Failed to validate migration {0}-{1}, continueing...", currentMigrator.MigrationName, currentMigrator.Version));
 
 
                 bool restoreTaken = false;

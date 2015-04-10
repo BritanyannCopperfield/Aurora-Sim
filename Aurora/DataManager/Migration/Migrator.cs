@@ -62,7 +62,7 @@ namespace Aurora.DataManager.Migration
 
         public bool Validate(IDataConnector genericData)
         {
-            if (genericData.GetAuroraVersion(MigrationName) != Version)
+            if (genericData.GetWhiteCoreVersion(MigrationName) != Version)
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace Aurora.DataManager.Migration
         public void Migrate(IDataConnector genericData)
         {
             DoMigrate(genericData);
-            genericData.WriteAuroraVersion(Version, MigrationName);
+            genericData.WriteWhiteCoreVersion(Version, MigrationName);
         }
 
         protected virtual void DoMigrate(IDataConnector genericData)
@@ -97,7 +97,7 @@ namespace Aurora.DataManager.Migration
         public void CreateDefaults(IDataConnector genericData)
         {
             DoCreateDefaults(genericData);
-            genericData.WriteAuroraVersion(Version, MigrationName);
+            genericData.WriteWhiteCoreVersion(Version, MigrationName);
         }
 
         protected virtual void DoCreateDefaults(IDataConnector genericData)
@@ -254,7 +254,7 @@ namespace Aurora.DataManager.Migration
                     type = ColumnTypeDef.Unknown;
                     break;
             }
-            return new ColumnDefinition {Name = name, Type = type};
+            return new ColumnDefinition { Name = name, Type = type };
         }
 
         protected IndexDefinition[] IndexDefs(params IndexDefinition[] defs)
@@ -264,7 +264,12 @@ namespace Aurora.DataManager.Migration
 
         protected IndexDefinition IndexDef(string[] fields, IndexType indexType)
         {
-            return new IndexDefinition {Fields = fields, Type = indexType};
+            return new IndexDefinition { Fields = fields, Type = indexType };
+        }
+
+        protected IndexDefinition IndexDef(string[] fields, IndexType indexType, int indexSize)
+        {
+            return new IndexDefinition { Fields = fields, Type = indexType, IndexSize = indexSize };
         }
 
         protected void AddSchema(string table, ColumnDefinition[] definitions)
@@ -286,11 +291,11 @@ namespace Aurora.DataManager.Migration
         {
             //Remove all of the tables that have this name
             schema.RemoveAll(delegate(SchemaDefinition r)
-                                 {
-                                     if (r.Name == table)
-                                         return true;
-                                     return false;
-                                 });
+            {
+                if (r.Name == table)
+                    return true;
+                return false;
+            });
         }
 
         protected void EnsureAllTablesInSchemaExist(IDataConnector genericData)
