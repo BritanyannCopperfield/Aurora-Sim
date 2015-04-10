@@ -37,7 +37,7 @@ namespace Aurora.ClientStack
     /// <summary>
     ///     Base UDP server
     /// </summary>
-    public abstract class OpenSimUDPBase
+    public abstract class UDPBase
     {
         /// <summary>
         ///     Flag to process packets asynchronously or synchronously
