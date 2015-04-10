@@ -33,11 +33,11 @@ using Aurora.DataManager.Migration.Migrators;
 using Aurora.DataManager.MySQL;
 using Aurora.DataManager.SQLite;
 using NUnit.Framework;
-using Aurora.Framework;
+
 
 namespace Aurora.DataManager.Tests
 {
-    public class MigrationTests 
+    public class MigrationTests
     {
         private string dbFileName = "TestMigration.db";
 
@@ -51,7 +51,7 @@ namespace Aurora.DataManager.Tests
                 schema = new List<Rec<string, ColumnDefinition[]>>();
 
                 AddSchema("test_table", ColDefs(
-                    ColDef("id", ColumnTypes.Integer,true),
+                    ColDef("id", ColumnTypes.Integer, true),
                     ColDef("test_string", ColumnTypes.String),
                     ColDef("test_string1", ColumnTypes.String1),
                     ColDef("test_string2", ColumnTypes.String2),
@@ -103,14 +103,14 @@ namespace Aurora.DataManager.Tests
             var technology = DataManagerTechnology.SQLite;
             //var technology = DataManagerTechnology.MySql;
 
-            var mysqlconnectionstring = "Data Source=localhost;Database=auroratest;User ID=auroratest;Password=test;";
+            var mysqlconnectionstring = "Data Source=localhost;Database=WhiteCoretest;User ID=WhiteCoretest;Password=test;";
             var sqliteconnectionstring = string.Format("URI=file:{0},version=3", dbFileName);
-            string connectionString = (technology==DataManagerTechnology.SQLite)?sqliteconnectionstring:mysqlconnectionstring;
+            string connectionString = (technology == DataManagerTechnology.SQLite) ? sqliteconnectionstring : mysqlconnectionstring;
 
             CreateEmptyDatabase();
             DataSessionProvider sessionProvider = new DataSessionProvider(technology, connectionString);
-            IDataConnector genericData = ((technology==DataManagerTechnology.SQLite)? (IDataConnector) new SQLiteLoader():new MySQLDataLoader());
-            
+            IDataConnector genericData = ((technology == DataManagerTechnology.SQLite) ? (IDataConnector)new SQLiteLoader() : new MySQLDataLoader());
+
             genericData.ConnectToDatabase(connectionString);
 
             var migrators = new List<Migrator>();
@@ -119,7 +119,7 @@ namespace Aurora.DataManager.Tests
 
             var migrationManager = new MigrationManager(sessionProvider, genericData, migrators);
             Assert.AreEqual(testMigrator0.Version, migrationManager.LatestVersion, "Latest version is correct");
-            Assert.IsNull(migrationManager.GetDescriptionOfCurrentOperation(),"Description should be null before deciding what to do.");
+            Assert.IsNull(migrationManager.GetDescriptionOfCurrentOperation(), "Description should be null before deciding what to do.");
             migrationManager.DetermineOperation();
             var operationDescription = migrationManager.GetDescriptionOfCurrentOperation();
             Assert.AreEqual(MigrationOperationTypes.CreateDefaultAndUpgradeToTarget, operationDescription.OperationType, "Operation type is correct.");
@@ -130,14 +130,14 @@ namespace Aurora.DataManager.Tests
             try
             {
                 migrationManager.ExecuteOperation();
-                Assert.AreEqual(testMigrator0.Version, genericData.GetAuroraVersion(), "Version of settings is updated");
+                Assert.AreEqual(testMigrator0.Version, genericData.GetWhiteCoreVersion(), "Version of settings is updated");
             }
-            catch(MigrationOperationException)
+            catch (MigrationOperationException)
             {
-                Assert.Fail("Something failed during execution we weren't expecting.");  
+                Assert.Fail("Something failed during execution we weren't expecting.");
             }
             bool valid = migrationManager.ValidateVersion(migrationManager.LatestVersion);
-            Assert.AreEqual(true,valid,"Database is a valid version");
+            Assert.AreEqual(true, valid, "Database is a valid version");
 
             migrationManager.DetermineOperation();
             var operationDescription2 = migrationManager.GetDescriptionOfCurrentOperation();
@@ -146,13 +146,13 @@ namespace Aurora.DataManager.Tests
             Assert.IsNull(operationDescription2.StartVersion, "Start migration version is correct");
             Assert.IsNull(operationDescription2.EndVersion, "End migration version is correct");
             migrationManager.ExecuteOperation();
-            
+
             genericData.CloseDatabase();
         }
 
         private void CreateEmptyDatabase()
         {
-            if( File.Exists(dbFileName))
+            if (File.Exists(dbFileName))
             {
                 File.Delete(dbFileName);
             }

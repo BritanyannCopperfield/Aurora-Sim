@@ -37,7 +37,7 @@ namespace Aurora.DataManager.Tests
         [Test]
         public void InventoryRepositoryTests()
         {
-            
+
         }
     }
 }
