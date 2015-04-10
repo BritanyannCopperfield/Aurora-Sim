@@ -57,7 +57,7 @@ namespace Aurora.Simulation.Base
         protected ConfigurationLoader m_configurationLoader;
 
         /// <value>
-        ///     The config information passed into the Aurora server.
+        ///     The config information passed into the WhiteCore server.
         /// </value>
         protected IConfigSource m_config;
 
@@ -150,7 +150,7 @@ namespace Aurora.Simulation.Base
         {
             m_commandLineParameters = cmdParams;
             m_StartupTime = DateTime.Now;
-            m_version = VersionInfo.Version + " (" + Util.GetRuntimeInformation() + ")";
+            m_version = VersionInfo.Version;
             m_original_config = originalConfig;
             m_config = configSource;
             m_configurationLoader = configLoader;
@@ -216,7 +216,7 @@ namespace Aurora.Simulation.Base
             if (MainConsole.Instance != null)
             {
                 MainConsole.Instance.DefaultPrompt = m_consolePrompt;
-                MainConsole.Instance.Info(string.Format("[MINAURORA]: STARTING MIN AURORA ({0})...",
+                MainConsole.Instance.Info(string.Format("[MINAURORA]: STARTING MIN Aurora ({0})...",
                                                         (IntPtr.Size == 4 ? "x86" : "x64")));
                 MainConsole.Instance.Info("[MINAURORA]: Version: " + Version + "\n");
             }
@@ -261,15 +261,34 @@ namespace Aurora.Simulation.Base
             if (m_Servers.TryGetValue(port, out server) && server.Secure == useHTTPS)
                 return server;
 
-            string hostName =
-                m_config.Configs["Network"].GetString("HostName",
-                                                      "http" + (useHTTPS ? "s" : "") + "://" + Utilities.GetExternalIp());
             uint threadCount = m_config.Configs["Network"].GetUInt("HttpThreadCount", 5);
-            //Clean it up a bit
-            if (hostName.StartsWith("http://") || hostName.StartsWith("https://"))
-                hostName = hostName.Replace("https://", "").Replace("http://", "");
-            if (hostName.EndsWith("/"))
-                hostName = hostName.Remove(hostName.Length - 1, 1);
+
+            // find out where we live
+            string hostName;
+
+            // been here before?
+            if (Utilities.HostName == "")
+            {
+                hostName = m_config.Configs["Network"].GetString("HostName", "0.0.0.0");
+
+                if ((hostName == "") || (hostName == "0.0.0.0"))
+                {
+                    MainConsole.Instance.Info("[Network]: Retrieving the external IP address");
+                    hostName = "http" + (useHTTPS ? "s" : "") + "://" + Utilities.GetExternalIp();
+                }
+
+                //Clean it up a bit
+                if (hostName.StartsWith("http://") || hostName.StartsWith("https://"))
+                    hostName = hostName.Replace("https://", "").Replace("http://", "");
+                if (hostName.EndsWith("/"))
+                    hostName = hostName.Remove(hostName.Length - 1, 1);
+
+                // save this for posterity in case it is needed
+                MainConsole.Instance.Info("[Network]: Network IP address has been set to " + hostName);
+                Utilities.HostName = hostName;
+            }
+            else
+                hostName = Utilities.HostName;
 
             server = new BaseHttpServer(port, hostName, useHTTPS, threadCount);
 
@@ -309,7 +328,7 @@ namespace Aurora.Simulation.Base
             foreach (dynamic service in modules)
             {
                 if (!(service is IService)) continue;
-                ((IService) service).Start(ConfigSource, ApplicationRegistry);
+                ((IService)service).Start(ConfigSource, ApplicationRegistry);
             }
             foreach (dynamic service in modules)
             {
@@ -339,7 +358,7 @@ namespace Aurora.Simulation.Base
             // Start timer script (run a script every xx seconds)
             if (m_TimerScriptFileName != "disabled")
             {
-                Timer newtimername = new Timer {Enabled = true, Interval = m_TimerScriptTime*60*1000};
+                Timer newtimername = new Timer { Enabled = true, Interval = m_TimerScriptTime * 60 * 1000 };
                 newtimername.Elapsed += RunAutoTimerScript;
             }
         }
@@ -381,24 +400,44 @@ namespace Aurora.Simulation.Base
         {
             if (MainConsole.Instance == null)
                 return;
-            MainConsole.Instance.Commands.AddCommand("quit", "quit", "Quit the application", HandleQuit, false, true);
+            MainConsole.Instance.Commands.AddCommand("quit",
+                                                     "quit",
+                                                     "Quit the application",
+                                                     HandleQuit, false, true);
 
-            MainConsole.Instance.Commands.AddCommand("shutdown", "shutdown", "Quit the application", HandleQuit, false, true);
+            MainConsole.Instance.Commands.AddCommand("shutdown",
+                                                     "shutdown",
+                                                     "Quit the application",
+                                                     HandleQuit, false, true);
 
-            MainConsole.Instance.Commands.AddCommand("show info", "show info",
-                                                     "Show server information (e.g. startup path)", HandleShowInfo, false, true);
-            MainConsole.Instance.Commands.AddCommand("show version", "show version", "Show server version",
+            MainConsole.Instance.Commands.AddCommand("show info",
+                                                     "show info",
+                                                     "Show server information (e.g. startup path)",
+                                                     HandleShowInfo, false, true);
+
+            MainConsole.Instance.Commands.AddCommand("show version",
+                                                     "show version",
+                                                     "Show server version",
                                                      HandleShowVersion, false, true);
 
-            MainConsole.Instance.Commands.AddCommand("reload config", "reload config", "Reloads .ini file configuration",
+            MainConsole.Instance.Commands.AddCommand("reload config",
+                                                     "reload config",
+                                                     "Reloads .ini file configuration",
                                                      HandleConfigRefresh, false, true);
 
-            MainConsole.Instance.Commands.AddCommand("set timer script interval", "set timer script interval",
+            MainConsole.Instance.Commands.AddCommand("set timer script interval",
+                                                     "set timer script interval",
                                                      "Set the interval for the timer script (in minutes).",
                                                      HandleTimerScriptTime, false, true);
 
-            MainConsole.Instance.Commands.AddCommand("force GC", "force GC", "Forces garbage collection.", HandleForceGC, false, true);
-            MainConsole.Instance.Commands.AddCommand("run configurator", "run configurator", "Runs Aurora.Configurator.",
+            MainConsole.Instance.Commands.AddCommand("force GC",
+                                                     "force GC",
+                                                     "Forces garbage collection.",
+                                                     HandleForceGC, false, true);
+
+            MainConsole.Instance.Commands.AddCommand("run configurator",
+                                                     "run configurator",
+                                                     "Runs Aurora.Configurator.",
                                                      runConfig, false, true);
         }
 
@@ -422,7 +461,8 @@ namespace Aurora.Simulation.Base
                     string currentCommand;
                     while ((currentCommand = readFile.ReadLine()) != null)
                     {
-                        if (currentCommand != String.Empty)
+                        if ((currentCommand != String.Empty) &&
+                            (!currentCommand.StartsWith(";")))
                         {
                             commands.Add(currentCommand);
                         }
@@ -457,13 +497,13 @@ namespace Aurora.Simulation.Base
             MainConsole.Instance.Warn("[CONSOLE]: Set Timer Interval to " + cmd[4]);
             m_TimerScriptTime = int.Parse(cmd[4]);
             m_TimerScriptTimer.Enabled = false;
-            m_TimerScriptTimer.Interval = m_TimerScriptTime*60*1000;
+            m_TimerScriptTimer.Interval = m_TimerScriptTime * 60 * 1000;
             m_TimerScriptTimer.Enabled = true;
         }
 
         public virtual void HandleConfigRefresh(IScene scene, string[] cmd)
         {
-            //Rebuild the configs
+            //Rebuild the configuration
             m_config = m_configurationLoader.LoadConfigSettings(m_original_config);
 
             string hostName =
@@ -497,7 +537,7 @@ namespace Aurora.Simulation.Base
         #endregion
 
         /// <summary>
-        ///     Should be overriden and referenced by descendents if they need to perform extra shutdown processing
+        ///     Should be overridden and referenced by descendents if they need to perform extra shutdown processing
         ///     Performs any last-minute sanity checking and shuts down the region server
         /// </summary>
         public virtual void Shutdown(bool close)
