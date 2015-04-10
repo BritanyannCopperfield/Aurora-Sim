@@ -154,7 +154,7 @@ namespace Aurora.Simulation.Base
                         "If you have already configured your *.ini files, please ignore this warning and press enter;\n" +
                         "Otherwise type 'yes' and Aurora will guide you through the configuration process.\n\n" +
                         "Remember, these file names are Case Sensitive in Linux and Proper Cased.\n" +
-                        "1. " + Aurora_ConfigDir + "/WhiteCore.ini\nand\n" +
+                        "1. " + Aurora_ConfigDir + "/Aurora.ini\nand\n" +
                         "2. " + Aurora_ConfigDir + "/Sim/Standalone/StandaloneCommon.ini \nor\n" +
                         "3. " + Aurora_ConfigDir + "/Grid/GridCommon.ini\n" +
                         "\nAlso, you will want to examine these files in great detail because only the basic system will " +
@@ -218,7 +218,7 @@ namespace Aurora.Simulation.Base
                         {
                             Console.WriteLine(
                                 "Note: this setup does not automatically create a MySQL installation for you.\n" +
-                                " This will configure the WhiteCore setting but you must install MySQL as well");
+                                " This will configure the Aurora setting but you must install MySQL as well");
 
                             dbSource = ReadLine("MySQL database IP", dbSource);
                             dbPort = ReadLine("MySQL database port (if not default)", dbPort);
@@ -337,7 +337,7 @@ namespace Aurora.Simulation.Base
                         if (isStandalone)
                             conf.Set("Include-Standalone", "Sim/Standalone/StandaloneCommon.ini");
                         else
-                            conf.Set("Include-Grid", "Sim/Grid/WhiteCoreGridCommon.ini");
+                            conf.Set("Include-Grid", "Sim/Grid/AuroraGridCommon.ini");
                         conf.Set("Include-Includes", "Sim/Includes.ini");
 
                         main_ini.Save();
@@ -400,7 +400,7 @@ namespace Aurora.Simulation.Base
                             Console.ResetColor();
                         }
                     }
-                    if (!isWhiteCoreExe)
+                    if (!isAuroraExe)
                     {
                         string folder = Aurora_ConfigDir;
                         MakeSureExists(folder + "Grid/ServerConfiguration/Login.ini");

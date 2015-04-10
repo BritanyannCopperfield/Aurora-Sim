@@ -57,7 +57,7 @@ namespace Aurora.Simulation.Base
         protected ConfigurationLoader m_configurationLoader;
 
         /// <value>
-        ///     The config information passed into the WhiteCore server.
+        ///     The config information passed into the Aurora server.
         /// </value>
         protected IConfigSource m_config;
 
