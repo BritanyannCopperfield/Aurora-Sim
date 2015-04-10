@@ -57,7 +57,7 @@ namespace Aurora.DataManager.MySQL
             string noDatabaseConnector = m_connectionString.Substring(0, subStrA) +
                                          m_connectionString.Substring(subStrB + 1);
 
-            retry:
+        retry:
             try
             {
                 ExecuteNonQuery(noDatabaseConnector, "create schema IF NOT EXISTS " + c.Database,
@@ -182,13 +182,13 @@ namespace Aurora.DataManager.MySQL
         public override DataReaderConnection QueryData(string whereClause, string table, string wantedValue)
         {
             string query = String.Format("select {0} from {1} {2}", wantedValue, table, whereClause);
-            return new DataReaderConnection {DataReader = QueryData2(query)};
+            return new DataReaderConnection { DataReader = QueryData2(query) };
         }
 
         public override DataReaderConnection QueryData(string whereClause, QueryTables tables, string wantedValue)
         {
             string query = string.Format("SELECT {0} FROM {1} {2}", wantedValue, tables.ToSQL(), whereClause);
-            return new DataReaderConnection {DataReader = QueryData2(query)};
+            return new DataReaderConnection { DataReader = QueryData2(query) };
         }
 
         private IDataReader QueryData2(string query)
@@ -253,7 +253,7 @@ namespace Aurora.DataManager.MySQL
                         for (i = 0; i < reader.FieldCount; i++)
                         {
                             Type r = reader[i].GetType();
-                            retVal.Add(r == typeof (DBNull) ? null : reader.GetString(i));
+                            retVal.Add(r == typeof(DBNull) ? null : reader.GetString(i));
                         }
                     }
                     return retVal;
@@ -304,7 +304,7 @@ namespace Aurora.DataManager.MySQL
                         {
                             Type r = reader[i].GetType();
                             AddValueToList(ref retVal, reader.GetName(i),
-                                           r == typeof (DBNull) ? null : reader[i].ToString());
+                                           r == typeof(DBNull) ? null : reader[i].ToString());
                         }
                     }
                     return retVal;
@@ -624,10 +624,15 @@ namespace Aurora.DataManager.MySQL
                         type = "KEY";
                         break;
                 }
-                indicesQuery.Add(string.Format("{0}( {1} )", type, "`" + string.Join("`, `", index.Fields) + "`"));
+
+                if (index.IndexSize == 0)
+                    indicesQuery.Add(string.Format("{0}( {1} )", type, "`" + string.Join("`, `", index.Fields) + "`"));
+                else
+                    indicesQuery.Add(string.Format("{0}( {1} )", type, "`" + string.Join("`, `", index.Fields) + "`" + "(" + index.IndexSize + ")"));
+
             }
 
-            string query = string.Format("create table " + table + " ( {0} {1}) ",
+            string query = string.Format("create table " + table + " ( {0} {1}) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci",
                                          string.Join(", ", columnDefinition.ToArray()),
                                          indicesQuery.Count > 0
                                              ? ", " + string.Join(", ", indicesQuery.ToArray())
@@ -1029,14 +1034,14 @@ namespace Aurora.DataManager.MySQL
                     ColumnTypeDef typeDef = ConvertTypeToColumnType(type.ToString());
                     typeDef.isNull = rdr["Null"].ToString() == "YES";
                     typeDef.auto_increment = rdr["Extra"].ToString().IndexOf("auto_increment") >= 0;
-                    typeDef.defaultValue = defaultValue.GetType() == typeof (System.DBNull)
+                    typeDef.defaultValue = defaultValue.GetType() == typeof(System.DBNull)
                                                ? null
                                                : defaultValue.ToString();
                     defs.Add(new ColumnDefinition
-                                 {
-                                     Name = name.ToString(),
-                                     Type = typeDef,
-                                 });
+                    {
+                        Name = name.ToString(),
+                        Type = typeDef,
+                    });
                 }
             }
             catch (Exception e)
@@ -1109,13 +1114,13 @@ namespace Aurora.DataManager.MySQL
             {
                 index.Value.OrderBy(x => x.Key);
                 defs[index.Key] = new IndexDefinition
-                                      {
-                                          Fields = index.Value.Values.ToArray<string>(),
-                                          Type =
-                                              (indexIsUnique[index.Key]
-                                                   ? (index.Key == "PRIMARY" ? IndexType.Primary : IndexType.Unique)
-                                                   : IndexType.Index)
-                                      };
+                {
+                    Fields = index.Value.Values.ToArray<string>(),
+                    Type =
+                        (indexIsUnique[index.Key]
+                             ? (index.Key == "PRIMARY" ? IndexType.Primary : IndexType.Unique)
+                             : IndexType.Index)
+                };
             }
 
             return defs;
